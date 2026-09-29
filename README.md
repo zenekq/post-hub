@@ -1,2 +1,2 @@
-# post_hub
+# post-hub
 post hub
