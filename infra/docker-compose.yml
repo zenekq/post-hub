@@ -1,0 +1,11 @@
+services:
+  postgres:
+    extends:
+      file: ./postgres/docker-compose.yml
+      service: postgres
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
+    driver: bridge
