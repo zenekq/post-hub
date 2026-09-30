@@ -1,6 +1,6 @@
 package com.posthub.iam.controller;
 
-import com.posthub.iam.service.PostServiceImpl;
+import com.posthub.iam.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +15,11 @@ import java.util.Map;
 @RequestMapping("/posts")
 public class PostController {
 
-    private final PostServiceImpl postServiceImpl;
+    private final PostService postService;
 
     @Autowired
-    public PostController(PostServiceImpl postServiceImpl) {
-        this.postServiceImpl = postServiceImpl;
+    public PostController(PostService postServiceImpl) {
+        this.postService = postServiceImpl;
     }
 
 
@@ -30,7 +30,7 @@ public class PostController {
 
         String postContent = "Title: " + title + "\nContent: " + content + "\n";
 
-        postServiceImpl.createPost(postContent);
+        postService.createPost(postContent);
 
         return new ResponseEntity<>("Post created with title: " + title, HttpStatus.OK);
     }
