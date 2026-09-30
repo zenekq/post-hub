@@ -1,6 +1,7 @@
 package com.posthub.iam.controller;
 
 import com.posthub.iam.service.PostService;
+import com.posthub.iam.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class PostController {
     private final PostService postService;
 
     @Autowired
-    public PostController(PostService postServiceImpl) {
-        this.postService = postServiceImpl;
+    public PostController(PostServiceImpl postService) {
+        this.postService = postService;
     }
 
 
