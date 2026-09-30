@@ -1,9 +1,8 @@
 package com.posthub.iam.controller;
 
 import com.posthub.iam.service.CommentService;
-import com.posthub.iam.service.impl.CommentServiceImpl;
-import com.posthub.iam.service.impl.SecondCommentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,30 +16,32 @@ import java.util.Map;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService dafaultCommentService;
+    private final CommentService advancedCommentService;
 
     @Autowired
-    public void setCommentService(CommentServiceImpl commentService) {
-        this.commentService = commentService;
+    public CommentController(
+            CommentService commentService,
+            @Qualifier("advancedCommentService") CommentService advancedCommentService) {
+        this.dafaultCommentService = commentService;
+        this.advancedCommentService = advancedCommentService;
     }
 
     @PostMapping("/create")
     public ResponseEntity<String> addComment(@RequestBody Map<String, Object> requestBody) {
 
         String content = (String) requestBody.get("content");
-        commentService.createComment(content);
+        dafaultCommentService.createComment(content);
 
         return new ResponseEntity<>("comment added: " + content, HttpStatus.OK);
     }
 
-    @PostMapping("/switchService")
-    public ResponseEntity<String> switchToSecondComment(@RequestBody Map<String, Object> requestBody) {
-
-        commentService = new SecondCommentServiceImpl();
+    @PostMapping("/createAdvanced")
+    public ResponseEntity<String> addCommentAdvanced(@RequestBody Map<String, Object> requestBody) {
 
         String content = (String) requestBody.get("content");
-        commentService.createComment(content);
+        advancedCommentService.createComment(content);
 
-        return new ResponseEntity<>("switchService comment added: " + content, HttpStatus.OK);
+        return new ResponseEntity<>("createAdvanced comment added: " + content, HttpStatus.OK);
     }
 }
