@@ -1,5 +1,6 @@
 package com.posthub.iam.service.impl;
 
+import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.constants.ApiErrorMassage;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.exception.NotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
 
     @Override
     public ApiResult<PostDTO> getById(@NotNull Integer postId) {
@@ -24,13 +26,7 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() ->
                         new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
 
-        PostDTO postDTO = PostDTO.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .likes(post.getLikes())
-                .created(post.getCreated())
-                .build();
+        PostDTO postDTO = postMapper.toPostDTO(post);
 
         return ApiResult.createSuccessful(postDTO);
     }
