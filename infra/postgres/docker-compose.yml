@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:18.6-alpine3.24
+    container_name: postgres18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Mounts the local folder
+      - ./postgres_data:/var/lib/postgresql
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
+    driver: bridge
