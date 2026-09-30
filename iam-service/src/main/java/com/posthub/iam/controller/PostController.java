@@ -1,9 +1,10 @@
 package com.posthub.iam.controller;
 
-import com.posthub.iam.model.constants.ApiErrorMassage;
 import com.posthub.iam.model.constants.ApiLogMessage;
-import com.posthub.iam.model.entity.Post;
-import com.posthub.iam.repository.PostRepository;
+import com.posthub.iam.model.dto.post.PostDTO;
+import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.service.PostService;
+import com.posthub.iam.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${end.point.posts}")
 public class PostController {
 
-    private final PostRepository postRepository;
+    private final PostService postService;
 
     @GetMapping("${end.point.id}")
-    public ResponseEntity<Post> getPostById(
+    public ResponseEntity<ApiResult<PostDTO>> getPostById(
             @PathVariable("id") Integer postId) {
 
-        log.info(ApiLogMessage.POST_INFO_BY_ID.getMessage(postId));
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        return postRepository.findById(postId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> {
-                    log.info(ApiErrorMassage.POST_NOT_FOUND_BY_ID.getMessage(postId));
-                    return ResponseEntity.notFound().build();
-                });
+        ApiResult<PostDTO> response = postService.getById(postId);
+
+        return ResponseEntity.ok(response);
     }
 
 }
