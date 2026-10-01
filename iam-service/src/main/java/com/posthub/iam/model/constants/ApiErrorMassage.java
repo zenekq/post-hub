@@ -7,12 +7,18 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ApiErrorMassage {
-    POST_NOT_FOUND_BY_ID("Post with ID: %s was not found"),
+    POST_NOT_FOUND_BY_ID("Post with ID: {} was not found"),
     ;
 
-    private final String message;
+    private final String value;
+    private final String formatTemplate;
 
-    public String getMessage(Object... args) {
-        return String.format(message, args);
+    ApiErrorMassage(String value) {
+        this.value = value;
+        this.formatTemplate = value.replace("{}", "%s");
+    }
+
+    public String format(Object... args) {
+        return String.format(formatTemplate, args);
     }
 }

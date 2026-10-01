@@ -13,4 +13,15 @@ public enum ApiLogMessage {
     ;
 
     private final String value;
+    private final String formatTemplate;
+
+    ApiLogMessage(String value) {
+        this.value = value;
+        this.formatTemplate = value.replace("{}", "%s");
+    }
+
+    public String format(Object... args) {
+        return String.format(formatTemplate, args);
+    }
+
 }

@@ -24,7 +24,7 @@ public class PostServiceImpl implements PostService {
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.getMessage(postId)));
+                        new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.format(postId)));
 
         PostDTO postDTO = postMapper.toPostDTO(post);
 
