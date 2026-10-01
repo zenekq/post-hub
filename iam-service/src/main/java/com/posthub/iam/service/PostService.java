@@ -14,4 +14,6 @@ public interface PostService {
 
     ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest);
 
+    void softDeletePost(@NotNull Integer postId);
+
 }
