@@ -2,10 +2,12 @@ package com.posthub.iam.mapper;
 
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.Post;
-import com.posthub.iam.model.request.post.PostRequest;
+import com.posthub.iam.model.request.post.NewPostRequest;
+import com.posthub.iam.model.request.post.UpdatePostRequest;
 import org.hibernate.type.descriptor.DateTimeUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.Objects;
@@ -22,6 +24,10 @@ public interface PostMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
-    Post createPost(PostRequest postRequest);
+    Post createPost(NewPostRequest newPostRequest);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "created", ignore = true)
+    Post updatePost(@MappingTarget Post post, UpdatePostRequest updatePostRequest);
 
 }

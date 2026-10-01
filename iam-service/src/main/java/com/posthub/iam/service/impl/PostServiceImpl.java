@@ -6,13 +6,16 @@ import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.dto.post.PostDTO;
-import com.posthub.iam.model.request.post.PostRequest;
+import com.posthub.iam.model.request.post.NewPostRequest;
+import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.service.PostService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -34,14 +37,30 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ApiResult<PostDTO> createPost(@NotNull PostRequest postRequest) {
+    public ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest) {
 
-        if (postRepository.existsByTitle(postRequest.getTitle())) {
-            throw new DataExistException(ApiErrorMassage.POST_ALREADY_EXIST.format(postRequest.getTitle()));
+        if (postRepository.existsByTitle(newPostRequest.getTitle())) {
+            throw new DataExistException(ApiErrorMassage.POST_ALREADY_EXIST.format(newPostRequest.getTitle()));
         }
 
-        Post post = postMapper.createPost(postRequest);
+        Post post = postMapper.createPost(newPostRequest);
         Post savedPost = postRepository.save(post);
+        PostDTO postDTO = postMapper.toPostDTO(savedPost);
+
+        return ApiResult.createSuccessful(postDTO);
+    }
+
+    @Override
+    public ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() ->
+                        new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.format(postId)));
+
+        postMapper.updatePost(post, updatePostRequest);
+        post.setUpdated(LocalDateTime.now());
+        Post savedPost = postRepository.save(post);
+
         PostDTO postDTO = postMapper.toPostDTO(savedPost);
 
         return ApiResult.createSuccessful(postDTO);
