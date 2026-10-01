@@ -5,6 +5,7 @@ import com.posthub.iam.model.constants.ApiErrorMassage;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.dto.post.PostDTO;
+import com.posthub.iam.model.request.post.PostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.service.PostService;
@@ -27,6 +28,16 @@ public class PostServiceImpl implements PostService {
                         new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.format(postId)));
 
         PostDTO postDTO = postMapper.toPostDTO(post);
+
+        return ApiResult.createSuccessful(postDTO);
+    }
+
+    @Override
+    public ApiResult<PostDTO> createPost(@NotNull PostRequest postRequest) {
+
+        Post post = postMapper.createPost(postRequest);
+        Post savedPost = postRepository.save(post);
+        PostDTO postDTO = postMapper.toPostDTO(savedPost);
 
         return ApiResult.createSuccessful(postDTO);
     }
