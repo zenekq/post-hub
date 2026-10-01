@@ -3,6 +3,7 @@ package com.posthub.iam.service.impl;
 import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.constants.ApiErrorMassage;
 import com.posthub.iam.model.entity.Post;
+import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.request.post.PostRequest;
@@ -34,6 +35,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ApiResult<PostDTO> createPost(@NotNull PostRequest postRequest) {
+
+        if (postRepository.existsByTitle(postRequest.getTitle())) {
+            throw new DataExistException(ApiErrorMassage.POST_ALREADY_EXIST.format(postRequest.getTitle()));
+        }
 
         Post post = postMapper.createPost(postRequest);
         Post savedPost = postRepository.save(post);

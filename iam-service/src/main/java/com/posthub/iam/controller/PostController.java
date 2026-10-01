@@ -6,6 +6,7 @@ import com.posthub.iam.model.request.post.PostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.service.PostService;
 import com.posthub.iam.utils.ApiUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class PostController {
 
     @PostMapping("${end.point.create}")
     public ResponseEntity<ApiResult<PostDTO>> createPost(
-            @RequestBody PostRequest postRequest) {
+            @RequestBody @Valid PostRequest postRequest) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
