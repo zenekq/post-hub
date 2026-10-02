@@ -20,5 +20,6 @@ public class PostSearchDTO {
     private Integer likes;
     private LocalDateTime created;
     private Boolean deleted;
+    private String createdBy;
 
 }
