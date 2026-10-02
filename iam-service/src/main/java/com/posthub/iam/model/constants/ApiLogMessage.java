@@ -10,7 +10,6 @@ public enum ApiLogMessage {
 
     POST_INFO_BY_ID("Receiving post with ID: {}"),
     NAME_OF_CURRENT_METHOD("Current method: {}"),
-    USER_NOT_FOUND("User not found with ID: {}"),
     ;
 
     private final String value;

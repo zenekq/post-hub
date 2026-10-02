@@ -30,10 +30,10 @@ public class User {
     private String email;
 
     @Column(nullable = false, name = "created")
-    private LocalDateTime created;
+    private LocalDateTime created = LocalDateTime.now();
 
     @Column(nullable = false)
-    private LocalDateTime updated;
+    private LocalDateTime updated  = LocalDateTime.now();
 
     @Column(nullable = false, name = "last_login")
     private LocalDateTime lastLogin;

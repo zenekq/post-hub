@@ -2,9 +2,11 @@ package com.posthub.iam.controller;
 
 import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.user.UserDTO;
+import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.service.UserService;
 import com.posthub.iam.utils.ApiUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,17 @@ public class UserController {
         ApiResult<UserDTO> response = userService.getById(userId);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("${end.point.create}")
+    public ResponseEntity<ApiResult<UserDTO>> createUser(
+            @Valid @RequestBody NewUserRequest newUserRequest) {
+
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        ApiResult<UserDTO> user = userService.createUser(newUserRequest);
+
+        return ResponseEntity.ok(user);
     }
 
 }
