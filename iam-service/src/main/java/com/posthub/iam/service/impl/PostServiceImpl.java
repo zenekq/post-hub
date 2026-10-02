@@ -8,15 +8,19 @@ import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.request.post.NewPostRequest;
+import com.posthub.iam.model.request.post.PostSearchRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.repository.PostRepository;
+import com.posthub.iam.repository.criteria.PostSearchCriteria;
 import com.posthub.iam.service.PostService;
 import jakarta.validation.constraints.NotNull;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -96,6 +100,28 @@ public class PostServiceImpl implements PostService {
                         posts.getTotalPages()
                 )
         );
+
+        return ApiResult.createSuccessful(paginationResponse);
+    }
+
+    @Override
+    public ApiResult<PaginationResponse<PostSearchDTO>> searchPosts(
+            @NonNull PostSearchRequest postSearchRequest, Pageable pageable) {
+
+        Specification<Post> specification = new PostSearchCriteria(postSearchRequest);
+
+        Page<PostSearchDTO> posts = postRepository.findAll(specification, pageable)
+                .map(postMapper::toPostSearchDTO);
+
+        PaginationResponse<PostSearchDTO> paginationResponse = PaginationResponse.<PostSearchDTO>builder()
+                .content(posts.getContent())
+                .pagination(PaginationResponse.Pagination.builder()
+                        .total(posts.getTotalElements())
+                        .limit(pageable.getPageSize())
+                        .page(posts.getNumber() + 1)
+                        .pages(posts.getTotalPages())
+                        .build()
+                ).build();
 
         return ApiResult.createSuccessful(paginationResponse);
     }
