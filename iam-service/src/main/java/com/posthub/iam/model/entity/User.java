@@ -29,7 +29,7 @@ public class User {
     @Size(max = 50)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "created")
     private LocalDateTime created;
 
     @Column(nullable = false)
