@@ -1,6 +1,7 @@
 package com.posthub.iam.mapper;
 
 import com.posthub.iam.model.dto.post.PostDTO;
+import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
@@ -29,5 +30,7 @@ public interface PostMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
     void updatePost(@MappingTarget Post post, UpdatePostRequest updatePostRequest);
+
+    PostSearchDTO toPostSearchDTO(Post post);
 
 }

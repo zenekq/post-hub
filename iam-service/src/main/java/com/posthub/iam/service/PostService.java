@@ -1,9 +1,12 @@
 package com.posthub.iam.service;
 
 import com.posthub.iam.model.dto.post.PostDTO;
+import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.responce.PaginationResponse;
+import org.springframework.data.domain.Pageable;
 import jakarta.validation.constraints.NotNull;
 
 public interface PostService {
@@ -15,5 +18,7 @@ public interface PostService {
     ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest);
 
     void softDeletePost(@NotNull Integer postId);
+
+    ApiResult<PaginationResponse<PostSearchDTO>> findAllPosts(Pageable pageable);
 
 }

@@ -2,6 +2,7 @@ package com.posthub.iam.service.impl;
 
 import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.constants.ApiErrorMassage;
+import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
@@ -9,10 +10,13 @@ import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.service.PostService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -75,6 +79,25 @@ public class PostServiceImpl implements PostService {
 
         post.setDeleted(true);
         postRepository.save(post);
+    }
+
+    @Override
+    public ApiResult<PaginationResponse<PostSearchDTO>> findAllPosts(Pageable pageable) {
+
+        Page<PostSearchDTO> posts = postRepository.findAll(pageable)
+                .map(postMapper::toPostSearchDTO);
+
+        PaginationResponse<PostSearchDTO> paginationResponse = new PaginationResponse<>(
+                posts.getContent(),
+                new PaginationResponse.Pagination(
+                        posts.getTotalElements(),
+                        pageable.getPageSize(),
+                        posts.getNumber() + 1,
+                        posts.getTotalPages()
+                )
+        );
+
+        return ApiResult.createSuccessful(paginationResponse);
     }
 
 }
