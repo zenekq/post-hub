@@ -28,11 +28,13 @@ public class PostSearchCriteria implements Specification<Post> {
         List<Predicate> predicates = new ArrayList<>();
 
         if (Objects.nonNull(request.getTitle())) {
-            predicates.add(criteriaBuilder.like(root.get(Post.TITLE_NAME_FIELD), "%" + request.getTitle() + "%"));
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Post.TITLE_NAME_FIELD)),
+                    "%" + request.getTitle().toLowerCase() + "%"));
         }
 
         if (Objects.nonNull(request.getContent())) {
-            predicates.add(criteriaBuilder.like(root.get(Post.CONTENT_NAME_FIELD), "%" + request.getContent() + "%"));
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Post.CONTENT_NAME_FIELD)),
+                    "%" + request.getContent().toLowerCase() + "%"));
         }
 
         if (Objects.nonNull(request.getLikes())) {
