@@ -20,6 +20,7 @@ import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ApiResult<UserDTO> getById(Integer userId) {
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.createUser(newUserRequest);
+        user.setPassword(passwordEncoder.encode(newUserRequest.getPassword()));
         User savedUser = userRepository.save(user);
         UserDTO userDTO = userMapper.userToUserDTO(savedUser);
 
