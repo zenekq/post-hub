@@ -24,10 +24,26 @@ CREATE TABLE posts (
     UNIQUE (title)
 );
 
+CREATE TABLE roles(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(16) NOT NULL,
+    user_system_role VARCHAR(32) NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT true,
+    created_by VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE user_roles(
+    user_id BIGINT NOT NULL,
+    roles_id INT NOT NULL,
+    PRIMARY KEY (user_id, roles_id),
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (roles_id) REFERENCES roles (id)
+);
+
 INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
-    ('first_user', '$2a$10$esq3XddqYdSzyvfKmIXn1OXspdvzk98kDAUzmbE.1jjxY26D72quq', 'first_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('second_user', '$2a$10$g6H7do4Txmgraarf9HwxHe4brj72TlPFfps78w/ThixIaOvPv1ZPK', 'second_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('third_user', '$2a$10$HT/VouLOxW0EDuLLgPASsuSN9MeDTkP1V5zpCW0pN9rNkV/R5Vuma', 'third_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('super_admin', '$2a$10$esq3XddqYdSzyvfKmIXn1OXspdvzk98kDAUzmbE.1jjxY26D72quq', 'super_admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('admin', '$2a$10$g6H7do4Txmgraarf9HwxHe4brj72TlPFfps78w/ThixIaOvPv1ZPK', 'admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('user', '$2a$10$HT/VouLOxW0EDuLLgPASsuSN9MeDTkP1V5zpCW0pN9rNkV/R5Vuma', 'user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
     ('fourth_user', '$2a$10$a3iM0krwVEiECG3EbzxNBOTJBNVaHPVEjLPEOOp4ysvJSje54j/Be', 'fourth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
     ('fifth_user', '$2a$10$eiiNTTyQTH8Aa8/UbCayZuPybkToefdtUswsYn6OumCfXyhSGyDuW', 'fifth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
 
@@ -46,3 +62,15 @@ INSERT INTO posts (user_id ,title, content, created, updated, deleted, likes) VA
     (3,'Thirteenth Posts', 'This is a content for thirteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 2),
     (4,'Fourteenth Posts', 'This is a content for fourteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3),
     (5,'Fifteenth Posts', 'This is a content for fifteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 1);
+
+INSERT INTO roles (name, user_system_role, created_by) VALUES
+    ('SUPER_ADMIN', 'SUPER_ADMIN','SUPER_ADMIN'),
+    ('ADMIN', 'ADMIN', 'SUPER_ADMIN'),
+    ('USER', 'USER', 'SUPER_ADMIN');
+
+INSERT INTO user_roles (user_id, roles_id) VALUES
+    (1,1),
+    (2,2),
+    (3,3),
+    (4,1),
+    (5,2);
