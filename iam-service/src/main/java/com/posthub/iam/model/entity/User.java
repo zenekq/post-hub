@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +18,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class User {
+
+    public static final String ID_FIELD = "id";
+    public static final String USER_NAME_FIELD = "username";
+    public static final String EMAIL_NAME_FIELD = "email";
+    public static final String DELETED_FIELD = "deleted";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +38,12 @@ public class User {
     private String email;
 
     @Column(nullable = false, name = "created")
-    private LocalDateTime created = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime created;
 
     @Column(nullable = false)
-    private LocalDateTime updated  = LocalDateTime.now();
+    @UpdateTimestamp
+    private LocalDateTime updated;
 
     @Column(nullable = false, name = "last_login")
     private LocalDateTime lastLogin;
