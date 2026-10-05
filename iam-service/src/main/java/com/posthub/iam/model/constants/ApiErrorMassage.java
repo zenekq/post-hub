@@ -12,6 +12,7 @@ public enum ApiErrorMassage {
     USER_NOT_FOUND("User not found with ID: {}"),
     USERNAME_ALREADY_EXIST("Username: {} already exists"),
     EMAIL_ALREADY_EXIST("Email: {} already exists"),
+    USER_ROLE_NOT_FOUND("Role: {} was not found"),
     ;
 
     private final String value;

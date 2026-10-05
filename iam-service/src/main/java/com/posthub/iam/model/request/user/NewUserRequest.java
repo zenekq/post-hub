@@ -18,10 +18,10 @@ public class NewUserRequest {
 
     @NotBlank
     @Size(max = 64)
-    @Email
     private String password;
 
     @NotBlank
     @Size(max = 50)
+    @Email
     private String email;
 }

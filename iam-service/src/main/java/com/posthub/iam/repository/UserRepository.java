@@ -1,6 +1,7 @@
 package com.posthub.iam.repository;
 
 import com.posthub.iam.model.entity.User;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecifi
 
     boolean existsByEmail(String email);
 
+    @EntityGraph(attributePaths = "roles")
     Optional<User> findByIdAndDeletedFalse(Integer userId);
 
 }

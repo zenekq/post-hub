@@ -1,7 +1,9 @@
 package com.posthub.iam.mapper;
 
+import com.posthub.iam.model.dto.role.RoleDTO;
 import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.dto.user.UserSearchDTO;
+import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.enums.RegistrationStatus;
 import com.posthub.iam.model.request.user.NewUserRequest;
@@ -11,6 +13,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import java.util.Collection;
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -18,6 +23,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 )
 public interface UserMapper {
 
+    @Mapping(target = "roles", expression = "java(mapRoles(user.getRoles()))")
     UserDTO userToUserDTO(User user);
 
     @Mapping(target = "id", ignore = true)
@@ -29,6 +35,13 @@ public interface UserMapper {
     @Mapping(target = "created", ignore = true)
     void updateUser(@MappingTarget User user, UpdateUserRequest updateUserRequest);
 
+    @Mapping(target = "roles", expression = "java(mapRoles(user.getRoles()))")
     UserSearchDTO toUserSearchDTO(User user);
+
+    default List<RoleDTO> mapRoles(Collection<Role> roles) {
+        return roles.stream()
+                .map(role -> new RoleDTO(role.getId(), role.getName()))
+                .toList();
+    }
 
 }
