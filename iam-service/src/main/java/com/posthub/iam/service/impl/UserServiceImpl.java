@@ -1,7 +1,7 @@
 package com.posthub.iam.service.impl;
 
 import com.posthub.iam.mapper.UserMapper;
-import com.posthub.iam.model.constants.ApiErrorMassage;
+import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.dto.user.UserSearchDTO;
 import com.posthub.iam.model.entity.Role;
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult<UserDTO> getById(Integer userId) {
         User user = userRepository.findByIdAndDeletedFalse(userId)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMassage.USER_NOT_FOUND.format(userId)));
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
 
         UserDTO userDTO = userMapper.userToUserDTO(user);
         return ApiResult.createSuccessful(userDTO);
@@ -52,15 +52,15 @@ public class UserServiceImpl implements UserService {
     public ApiResult<UserDTO> createUser(NewUserRequest newUserRequest) {
 
         if (userRepository.existsByUsername(newUserRequest.getUsername())) {
-            throw new DataExistException(ApiErrorMassage.USERNAME_ALREADY_EXIST.format(newUserRequest.getUsername()));
+            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(newUserRequest.getUsername()));
         }
 
         if (userRepository.existsByEmail(newUserRequest.getEmail())) {
-            throw new DataExistException(ApiErrorMassage.EMAIL_ALREADY_EXIST.format(newUserRequest.getEmail()));
+            throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(newUserRequest.getEmail()));
         }
 
         Role userRole = roleRepository.findByName(IamServiceUserRole.USER.getRole())
-                .orElseThrow(() -> new NotFoundException(ApiErrorMassage.USER_ROLE_NOT_FOUND.format(IamServiceUserRole.USER.getRole())));
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_ROLE_NOT_FOUND.format(IamServiceUserRole.USER.getRole())));
 
         User user = userMapper.createUser(newUserRequest);
         user.setPassword(passwordEncoder.encode(newUserRequest.getPassword()));
@@ -79,14 +79,14 @@ public class UserServiceImpl implements UserService {
     public ApiResult<UserDTO> updateUser(Integer userId, UpdateUserRequest updateUserRequest) {
 
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMassage.USER_NOT_FOUND.format(userId)));
+                new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
 
         if (userRepository.existsByUsername(updateUserRequest.getUsername())) {
-            throw new DataExistException(ApiErrorMassage.USERNAME_ALREADY_EXIST.format(updateUserRequest.getUsername()));
+            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(updateUserRequest.getUsername()));
         }
 
         if (userRepository.existsByEmail(updateUserRequest.getEmail())) {
-            throw new DataExistException(ApiErrorMassage.EMAIL_ALREADY_EXIST.format(updateUserRequest.getEmail()));
+            throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(updateUserRequest.getEmail()));
         }
 
         userMapper.updateUser(user, updateUserRequest);
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public void softDeleteUser(Integer userId) {
 
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMassage.USER_NOT_FOUND.format(userId)));
+                new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
 
         user.setDeleted(true);
         userRepository.save(user);

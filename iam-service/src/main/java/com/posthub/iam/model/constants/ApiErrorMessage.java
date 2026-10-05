@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum ApiErrorMassage {
+public enum ApiErrorMessage {
     POST_NOT_FOUND_BY_ID("Post with ID: {} was not found"),
     POST_ALREADY_EXIST("Post with Title: {} already exists"),
     USER_NOT_FOUND("User not found with ID: {}"),
@@ -31,7 +31,7 @@ public enum ApiErrorMassage {
     private final String value;
     private final String formatTemplate;
 
-    ApiErrorMassage(String value) {
+    ApiErrorMessage(String value) {
         this.value = value;
         this.formatTemplate = value.replace("{}", "'%s'");
     }

@@ -1,8 +1,7 @@
 package com.posthub.iam.security;
 
 
-import com.posthub.iam.model.constants.ApiErrorMassage;
-import com.posthub.iam.security.JwtTokenProvider;
+import com.posthub.iam.model.constants.ApiErrorMessage;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -50,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String jwt = authHeader.get().substring(BEARER_PREFIX.length());
             try {
                 if (!jwtTokenProvider.validateToken(jwt)) {
-                    throw new ExpiredJwtException(null, null, ApiErrorMassage.TOKEN_EXPIRED.getValue());
+                    throw new ExpiredJwtException(null, null, ApiErrorMessage.TOKEN_EXPIRED.getValue());
                 }
 
                 Optional<String> emailOpt = Optional.ofNullable(jwtTokenProvider.getEmail(jwt));
@@ -88,17 +87,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String refreshedToken = jwtTokenProvider.refreshToken(jwt);
             response.setHeader(AUTHORIZATION_HEADER, BEARER_PREFIX + refreshedToken);
         } else {
-            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMassage.TOKEN_EXPIRED.getValue());
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMessage.TOKEN_EXPIRED.getValue());
         }
     }
 
     private void handleSignatureException(HttpServletResponse response) throws IOException {
-        sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMassage.INVALID_TOKEN_SIGNATURE.getValue());
+        sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMessage.INVALID_TOKEN_SIGNATURE.getValue());
     }
 
     private void handleUnexpectedException(HttpServletResponse response, Exception e) throws IOException {
-        log.error(ApiErrorMassage.ERROR_DURING_JWT_PROCESSING.format(), e);
-        sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMassage.UNEXPECTED_ERROR_OCCURRED.getValue());
+        log.error(ApiErrorMessage.ERROR_DURING_JWT_PROCESSING.format(), e);
+        sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessage.UNEXPECTED_ERROR_OCCURRED.getValue());
     }
 
     private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {

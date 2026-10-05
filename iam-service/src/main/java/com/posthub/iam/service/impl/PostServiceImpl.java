@@ -1,7 +1,7 @@
 package com.posthub.iam.service.impl;
 
 import com.posthub.iam.mapper.PostMapper;
-import com.posthub.iam.model.constants.ApiErrorMassage;
+import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
@@ -17,7 +17,6 @@ import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.PostSearchCriteria;
 import com.posthub.iam.service.PostService;
-import com.posthub.iam.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +40,7 @@ public class PostServiceImpl implements PostService {
 
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.format(postId)));
+                        new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
 
         PostDTO postDTO = postMapper.toPostDTO(post);
 
@@ -52,11 +51,11 @@ public class PostServiceImpl implements PostService {
     public ApiResult<PostDTO> createPost(@NotNull Integer userId, NewPostRequest newPostRequest) {
 
         if (postRepository.existsByTitle(newPostRequest.getTitle())) {
-            throw new DataExistException(ApiErrorMassage.POST_ALREADY_EXIST.format(newPostRequest.getTitle()));
+            throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXIST.format(newPostRequest.getTitle()));
         }
 
         User user = userRepository.findById(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMassage.USER_NOT_FOUND.format(userId)));
+                new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
 
         Post post = postMapper.createPost(newPostRequest, user);
         Post savedPost = postRepository.save(post);
@@ -70,7 +69,7 @@ public class PostServiceImpl implements PostService {
 
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.format(postId)));
+                        new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
 
         postMapper.updatePost(post, updatePostRequest);
         post.setUpdated(LocalDateTime.now());
@@ -86,7 +85,7 @@ public class PostServiceImpl implements PostService {
 
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMassage.POST_NOT_FOUND_BY_ID.format(postId)));
+                        new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
 
         post.setDeleted(true);
         postRepository.save(post);
