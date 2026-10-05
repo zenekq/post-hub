@@ -9,9 +9,10 @@ import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @NullMarked
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     ApiResult<UserDTO> getById(Integer userId);
 
