@@ -3,8 +3,6 @@ package com.posthub.iam.service.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Arrays;
-
 @Getter
 @AllArgsConstructor
 public enum IamServiceUserRole {
