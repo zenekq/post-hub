@@ -2,6 +2,7 @@ package com.posthub.iam.mapper;
 
 import com.posthub.iam.model.dto.role.RoleDTO;
 import com.posthub.iam.model.dto.user.UserDTO;
+import com.posthub.iam.model.dto.user.UserProfileDTO;
 import com.posthub.iam.model.dto.user.UserSearchDTO;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
@@ -37,6 +38,12 @@ public interface UserMapper {
 
     @Mapping(target = "roles", expression = "java(mapRoles(user.getRoles()))")
     UserSearchDTO toUserSearchDTO(User user);
+
+    @Mapping(target = "roles", expression = "java(mapRoles(user.getRoles()))")
+    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "token", source = "token")
+    UserProfileDTO toUserProfileDTO(User user, String token);
 
     default List<RoleDTO> mapRoles(Collection<Role> roles) {
         return roles.stream()
