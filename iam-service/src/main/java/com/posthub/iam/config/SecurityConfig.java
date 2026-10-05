@@ -30,6 +30,7 @@ public class SecurityConfig {
 
     private static final String POST = "POST";
 
+    @Bean
     public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)

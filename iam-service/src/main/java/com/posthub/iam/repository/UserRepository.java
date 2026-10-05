@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecifi
 
     Optional<User> findUserByEmailAndDeletedFalse(String email);
 
+    @EntityGraph(attributePaths = "roles")
     Optional<User> findByEmail(String email);
 
 }
