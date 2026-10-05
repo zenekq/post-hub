@@ -1,5 +1,6 @@
 package com.posthub.iam.model.request.user;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ public class UpdateUserRequest {
 
     @NotBlank
     @Size(max = 50)
+    @Email
     private String email;
 
     private Boolean deleted = false;
