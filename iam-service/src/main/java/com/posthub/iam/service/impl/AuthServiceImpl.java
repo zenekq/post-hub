@@ -15,6 +15,7 @@ import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
+import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.AuthService;
 import com.posthub.iam.service.RefreshTokenService;
 import com.posthub.iam.service.model.IamServiceUserRole;
@@ -46,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccessValidator accessValidator;
 
     @Override
     @Transactional
@@ -89,27 +91,12 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public ApiResult<UserProfileDTO> registerUser(RegistrationUserRequest request) {
 
-        userRepository.findByUsername(request.getUsername())
-            .ifPresent(existingUser -> {
-                throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(request.getUsername()));
-            });
-
-        userRepository.findByEmail(request.getEmail())
-            .ifPresent(existingUser -> {
-                throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(request.getEmail()));
-            });
-
-        String password = request.getPassword();
-        String confirmPassword = request.getConfirmPassword();
-
-        if (!password.equals(confirmPassword)) {
-            throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getValue());
-        }
-
-        if (PasswordUtils.isNotValidPassword(password)) {
-            throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getValue());
-        }
-
+        accessValidator.validateNewUser(
+                request.getUsername(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getConfirmPassword()
+        );
 
         String stringRole = IamServiceUserRole.USER.getRole();
         Role role = roleRepository.findByName(stringRole)
