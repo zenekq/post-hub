@@ -4,6 +4,8 @@ import com.posthub.iam.model.constants.ApiConstants;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.HttpHeaders;
 
+import java.util.UUID;
+
 public class ApiUtils {
 
     private static final StackWalker WALKER =
@@ -27,5 +29,9 @@ public class ApiUtils {
         authorizationCookie.setPath("/");
         authorizationCookie.setMaxAge(300);
         return authorizationCookie;
+    }
+
+    public static String generateUidWithoutDash() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }
