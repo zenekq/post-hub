@@ -40,6 +40,15 @@ CREATE TABLE user_roles(
     FOREIGN KEY (roles_id) REFERENCES roles (id)
 );
 
+CREATE TABLE refresh_token (
+    id SERIAL PRIMARY KEY,
+    token VARCHAR(128) NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id BIGINT NOT NULL,
+    CONSTRAINT FK_refresh_token_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT refresh_token_UNIQUE UNIQUE (user_id, id)
+);
+
 INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
     ('super_admin', '$2a$10$esq3XddqYdSzyvfKmIXn1OXspdvzk98kDAUzmbE.1jjxY26D72quq', 'super_admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
     ('admin', '$2a$10$g6H7do4Txmgraarf9HwxHe4brj72TlPFfps78w/ThixIaOvPv1ZPK', 'admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
