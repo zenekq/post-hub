@@ -1,15 +1,19 @@
 package com.posthub.iam.advice;
 
 import com.posthub.iam.model.exception.DataExistException;
+import com.posthub.iam.model.exception.InvalidDataException;
+import com.posthub.iam.model.exception.InvalidPasswordException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.net.URI;
 import java.time.Instant;
@@ -64,5 +68,30 @@ public class CommonControllerAdvice {
     }
 
     public record ValidationError(String field, String reason) {}
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseBody
+    protected ResponseEntity<String> handleAuthenticationException(AuthenticationException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidDataException.class)
+    @ResponseBody
+    protected ResponseEntity<String> handleInvalidDataException(InvalidDataException ex) {
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String handleInvalidPasswordException(InvalidPasswordException ex) {
+        return ex.getMessage();
+    }
 
 }

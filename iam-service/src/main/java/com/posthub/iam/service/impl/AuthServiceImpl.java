@@ -18,6 +18,7 @@ import com.posthub.iam.security.JwtTokenProvider;
 import com.posthub.iam.service.AuthService;
 import com.posthub.iam.service.RefreshTokenService;
 import com.posthub.iam.service.model.IamServiceUserRole;
+import com.posthub.iam.utils.PasswordUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
@@ -97,6 +98,18 @@ public class AuthServiceImpl implements AuthService {
             .ifPresent(existingUser -> {
                 throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(request.getEmail()));
             });
+
+        String password = request.getPassword();
+        String confirmPassword = request.getConfirmPassword();
+
+        if (!password.equals(confirmPassword)) {
+            throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getValue());
+        }
+
+        if (PasswordUtils.isNotValidPassword(password)) {
+            throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getValue());
+        }
+
 
         String stringRole = IamServiceUserRole.USER.getRole();
         Role role = roleRepository.findByName(stringRole)
