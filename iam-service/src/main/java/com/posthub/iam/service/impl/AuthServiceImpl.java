@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
 
     @Override
+    @Transactional
     public ApiResult<UserProfileDTO> login(@NonNull LoginRequest loginRequest) {
 
         try {
@@ -56,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ApiResult<UserProfileDTO> refreshAccessToken(String refreshTokenValue) {
 
         RefreshToken refreshToken = refreshTokenService.validateAndRefreshToken(refreshTokenValue);

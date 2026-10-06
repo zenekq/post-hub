@@ -40,6 +40,7 @@ public class SecurityConfig {
                                 "/auth/login",
                                 "/auth/register"
                                 ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/refresh/token").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions
