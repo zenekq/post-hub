@@ -1,7 +1,9 @@
 package com.posthub.iam.service.impl;
 
+import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.entity.RefreshToken;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.repository.RefreshTokenRepository;
 import com.posthub.iam.service.RefreshTokenService;
 import com.posthub.iam.utils.ApiUtils;
@@ -33,4 +35,17 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                       return refreshTokenRepository.save(newToken);
                 });
     }
+
+    @Override
+    public RefreshToken validateAndRefreshToken(String requestRefreshToken) {
+
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(requestRefreshToken)
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.NOT_FOUND_REFRESH_TOKEN.getValue()));
+
+        refreshToken.setCreated(LocalDateTime.now());
+        refreshToken.setToken(ApiUtils.generateUidWithoutDash());
+
+        return refreshTokenRepository.save(refreshToken);
+    }
+
 }
