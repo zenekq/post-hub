@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecifi
     @EntityGraph(attributePaths = "roles")
     Optional<User> findByEmail(String email);
 
+    @EntityGraph(attributePaths = "roles")
+    Optional<User> findByUsername(String username);
+
 }

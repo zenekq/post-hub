@@ -5,25 +5,37 @@ import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.dto.user.LoginRequest;
 import com.posthub.iam.model.dto.user.UserProfileDTO;
 import com.posthub.iam.model.entity.RefreshToken;
+import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.InvalidDataException;
+import com.posthub.iam.model.exception.NotFoundException;
+import com.posthub.iam.model.request.user.RegistrationUserRequest;
 import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import com.posthub.iam.service.AuthService;
 import com.posthub.iam.service.RefreshTokenService;
+import com.posthub.iam.service.model.IamServiceUserRole;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @Service
 @AllArgsConstructor
+@NullMarked
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -31,10 +43,12 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public ApiResult<UserProfileDTO> login(@NonNull LoginRequest loginRequest) {
+    public ApiResult<UserProfileDTO> login(LoginRequest loginRequest) {
 
         try {
             authenticationManager.authenticate(
@@ -68,6 +82,41 @@ public class AuthServiceImpl implements AuthService {
 
 
         return ApiResult.createSuccessfulWithNewToken(userMapper.toUserProfileDTO(user, accessToken, refreshToken.getToken()));
+    }
+
+    @Override
+    @Transactional
+    public ApiResult<UserProfileDTO> registerUser(RegistrationUserRequest request) {
+
+        userRepository.findByUsername(request.getUsername())
+            .ifPresent(existingUser -> {
+                throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(request.getUsername()));
+            });
+
+        userRepository.findByEmail(request.getEmail())
+            .ifPresent(existingUser -> {
+                throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(request.getEmail()));
+            });
+
+        String stringRole = IamServiceUserRole.USER.getRole();
+        Role role = roleRepository.findByName(stringRole)
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_ROLE_NOT_FOUND.format(stringRole)));
+
+        User newUser = userMapper.fromDto(request);
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        newUser.setRoles(roles);
+        userRepository.save(newUser);
+
+        RefreshToken refreshToken = refreshTokenService.generateOrUpdateRefreshToken(newUser);
+        String token = jwtTokenProvider.generateToken(newUser);
+
+        UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(newUser, token, refreshToken.getToken());
+        userProfileDTO.setToken(token);
+
+        return ApiResult.createSuccessfulWithNewToken(userProfileDTO);
     }
 
 }
