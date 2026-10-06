@@ -48,7 +48,8 @@ public class AuthServiceImpl implements AuthService {
 
         String token = jwtTokenProvider.generateToken(user);
 
-        UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token);
+        RefreshToken refreshToken = refreshTokenService.generateOrUpdateRefreshToken(user);
+        UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
         userProfileDTO.setToken(token);
 
         return ApiResult.createSuccessfulWithNewToken(userProfileDTO);
@@ -63,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = jwtTokenProvider.generateToken(user);
 
 
-        return ApiResult.createSuccessfulWithNewToken(userMapper.toUserProfileDTO(user, accessToken));
+        return ApiResult.createSuccessfulWithNewToken(userMapper.toUserProfileDTO(user, accessToken, refreshToken.getToken()));
     }
 
 }

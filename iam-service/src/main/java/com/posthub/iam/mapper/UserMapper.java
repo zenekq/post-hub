@@ -43,7 +43,8 @@ public interface UserMapper {
     @Mapping(target = "username", source = "user.username")
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "token", source = "token")
-    UserProfileDTO toUserProfileDTO(User user, String token);
+    @Mapping(target = "refreshToken", source = "refreshToken")
+    UserProfileDTO toUserProfileDTO(User user, String token, String refreshToken);
 
     default List<RoleDTO> mapRoles(Collection<Role> roles) {
         return roles.stream()
