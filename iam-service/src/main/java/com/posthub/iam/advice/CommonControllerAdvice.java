@@ -3,6 +3,7 @@ package com.posthub.iam.advice;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.InvalidDataException;
 import com.posthub.iam.model.exception.InvalidPasswordException;
+import com.posthub.iam.model.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.net.URI;
+import java.net.http.HttpHeaders;
+import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class CommonControllerAdvice {
 
     @ExceptionHandler
     @ResponseBody
-    protected ResponseEntity<String> handleException(Exception ex) {
+    protected ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
         log.error(ex.getMessage(), ex);
 
         return ResponseEntity
@@ -92,6 +95,16 @@ public class CommonControllerAdvice {
     @ResponseBody
     public String handleInvalidPasswordException(InvalidPasswordException ex) {
         return ex.getMessage();
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    protected ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
+        log.error(ex.getMessage(), ex);
+
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ex.getMessage());
     }
 
 }

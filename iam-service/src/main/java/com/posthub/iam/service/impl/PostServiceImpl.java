@@ -16,7 +16,9 @@ import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.PostSearchCriteria;
+import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.PostService;
+import com.posthub.iam.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final UserRepository userRepository;
+    private final AccessValidator accessValidator;
 
     @Override
     public ApiResult<PostDTO> getById(@NotNull Integer postId) {
@@ -41,6 +44,8 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() ->
                         new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
+
+        accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
 
         PostDTO postDTO = postMapper.toPostDTO(post);
 
@@ -73,6 +78,12 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() ->
                         new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
 
+        accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
+
+        if (postRepository.existsByTitle(updatePostRequest.getTitle())) {
+            throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXIST.format(updatePostRequest.getTitle()));
+        }
+
         postMapper.updatePost(post, updatePostRequest);
         post.setUpdated(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
@@ -88,6 +99,8 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalse(postId)
                 .orElseThrow(() ->
                         new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
+
+        accessValidator.validateAdminOrOwnerAccess(post.getUser().getUsername(), post.getCreatedBy());
 
         post.setDeleted(true);
         postRepository.save(post);

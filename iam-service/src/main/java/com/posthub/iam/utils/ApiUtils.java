@@ -3,6 +3,7 @@ package com.posthub.iam.utils;
 import com.posthub.iam.model.constants.ApiConstants;
 import jakarta.servlet.http.Cookie;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
@@ -34,4 +35,9 @@ public class ApiUtils {
     public static String generateUidWithoutDash() {
         return UUID.randomUUID().toString().replace("-", "");
     }
+
+    public static String getCurrentUserName() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
 }
