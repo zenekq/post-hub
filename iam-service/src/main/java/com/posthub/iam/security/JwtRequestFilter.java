@@ -52,7 +52,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     throw new ExpiredJwtException(null, null, ApiErrorMessage.TOKEN_EXPIRED.getValue());
                 }
 
-                Optional<String> emailOpt = Optional.ofNullable(jwtTokenProvider.getEmail(jwt));
+                Optional<String> emailOpt = Optional.ofNullable(jwtTokenProvider.getUsername(jwt));
                 emailOpt.ifPresent(email -> {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         List<SimpleGrantedAuthority> authorities = jwtTokenProvider.getRoles(jwt).stream()

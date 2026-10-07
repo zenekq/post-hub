@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult<UserDTO> getById(Integer userId) {
         User user = userRepository.findByIdAndDeletedFalse(userId)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
 
         UserDTO userDTO = userMapper.userToUserDTO(user);
         return ApiResult.createSuccessful(userDTO);
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     public ApiResult<UserDTO> updateUser(Integer userId, UpdateUserRequest updateUserRequest) {
 
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
+                new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
 
         if (userRepository.existsByUsername(updateUserRequest.getUsername())) {
             throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(updateUserRequest.getUsername()));
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     public void softDeleteUser(Integer userId) {
 
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(userId)));
+                new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
 
         user.setDeleted(true);
         userRepository.save(user);
@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
 
     static UserDetails getUserDetails(String email, UserRepository userRepository) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_NOT_FOUND.format(email)));
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(email)));
 
         user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);

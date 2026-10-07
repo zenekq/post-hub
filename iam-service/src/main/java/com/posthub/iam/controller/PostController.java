@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Slf4j
 @RestController
 @Validated
@@ -41,14 +43,11 @@ public class PostController {
 
     @PostMapping("${end.point.create}")
     public ResponseEntity<ApiResult<PostDTO>> createPost(
-            @RequestBody @Valid NewPostRequest newPostRequest) {
+            @RequestBody @Valid NewPostRequest newPostRequest, Principal principal) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        //TODO: replace with the real user_id
-        int userId = 1;
-
-        ApiResult<PostDTO> response = postService.createPost(userId, newPostRequest);
+        ApiResult<PostDTO> response = postService.createPost(newPostRequest, principal.getName());
 
         return ResponseEntity.ok(response);
     }

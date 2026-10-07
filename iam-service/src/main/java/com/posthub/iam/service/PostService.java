@@ -15,7 +15,7 @@ public interface PostService {
 
     ApiResult<PostDTO> getById(@NotNull Integer id);
 
-    ApiResult<PostDTO> createPost(@NotNull Integer userId, NewPostRequest newPostRequest);
+    ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest, String username);
 
     ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest);
 
