@@ -18,7 +18,6 @@ import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.PostSearchCriteria;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.PostService;
-import com.posthub.iam.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -57,8 +56,7 @@ public class PostServiceImpl implements PostService {
             throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXIST.format(newPostRequest.getTitle()));
         }
 
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new NotFoundException(ApiErrorMessage.USER_WITH_USERNAME_NOT_FOUND.format(username)));
+        User user = userRepository.findByUsernameOrThrow(username);
 
         Post post = postMapper.createPost(newPostRequest);
         post.setUser(user);

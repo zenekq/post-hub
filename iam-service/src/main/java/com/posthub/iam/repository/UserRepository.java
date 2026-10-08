@@ -29,6 +29,12 @@ public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecifi
     @EntityGraph(attributePaths = "roles")
     Optional<User> findByUsername(String username);
 
+    default User findByUsernameOrThrow(String username) {
+        return findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(
+                        ApiErrorMessage.USER_WITH_USERNAME_NOT_FOUND.format(username)));
+    }
+
     default User findByIdAndDeletedFalseOrThrow(Integer userId) {
         return findByIdAndDeletedFalse(userId)
                 .orElseThrow(() -> new NotFoundException(
