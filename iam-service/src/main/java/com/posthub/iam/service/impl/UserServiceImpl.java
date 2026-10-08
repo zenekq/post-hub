@@ -47,8 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ApiResult<UserDTO> getById(Integer userId) {
-        User user = userRepository.findByIdAndDeletedFalse(userId)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 
         UserDTO userDTO = userMapper.userToUserDTO(user);
         return ApiResult.createSuccessful(userDTO);
@@ -57,13 +56,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult<UserDTO> createUser(NewUserRequest newUserRequest) {
 
-        if (userRepository.existsByUsername(newUserRequest.getUsername())) {
-            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(newUserRequest.getUsername()));
-        }
+        userRepository.assertUsernameNotExists(newUserRequest.getUsername());
 
-        if (userRepository.existsByEmail(newUserRequest.getEmail())) {
-            throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(newUserRequest.getEmail()));
-        }
+        userRepository.assertEmailNotExists(newUserRequest.getEmail());
 
         Role userRole = roleRepository.findByName(IamServiceUserRole.USER.getRole())
                 .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_ROLE_NOT_FOUND.format(IamServiceUserRole.USER.getRole())));
@@ -84,18 +79,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult<UserDTO> updateUser(Integer userId, UpdateUserRequest updateUserRequest) {
 
-        User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 
         accessValidator.validateAdminOrOwnerAccess(user.getId());
 
-        if (userRepository.existsByUsername(updateUserRequest.getUsername())) {
-            throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(updateUserRequest.getUsername()));
-        }
+        userRepository.assertUsernameNotExists(updateUserRequest.getUsername());
 
-        if (userRepository.existsByEmail(updateUserRequest.getEmail())) {
-            throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(updateUserRequest.getEmail()));
-        }
+        userRepository.assertEmailNotExists(updateUserRequest.getEmail());
 
         userMapper.updateUser(user, updateUserRequest);
         user = userRepository.save(user);
@@ -107,8 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void softDeleteUser(Integer userId) {
 
-        User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
-                new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 
         accessValidator.validateAdminOrOwnerAccess(user.getId());
 
