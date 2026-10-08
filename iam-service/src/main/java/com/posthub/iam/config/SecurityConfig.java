@@ -1,7 +1,9 @@
 package com.posthub.iam.config;
 
 import com.posthub.iam.security.JwtRequestFilter;
+import com.posthub.iam.security.handler.AccessRestrictionHandler;
 import com.posthub.iam.service.UserService;
+import com.posthub.iam.service.model.IamServiceUserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
-
-    private static final String POST = "POST";
+    private final AccessRestrictionHandler accessRestrictionHandler;
 
     @Bean
     public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,10 +43,14 @@ public class SecurityConfig {
                                 "/auth/register"
                                 ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/refresh/token").permitAll()
+     //                   .requestMatchers(HttpMethod.GET, "/users/all").hasAnyAuthority(adminAccessSecurityRoles())
+     //                   .requestMatchers(HttpMethod.GET, "/posts/all").hasAnyAuthority(adminAccessSecurityRoles())
+                        .requestMatchers(HttpMethod.POST, "/users/create").hasAnyAuthority(adminAccessSecurityRoles())
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                        .accessDeniedHandler(accessRestrictionHandler)
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -67,6 +72,13 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
+    }
+
+    private String[] adminAccessSecurityRoles() {
+        return new String[]{
+                IamServiceUserRole.SUPER_ADMIN.name(),
+                IamServiceUserRole.ADMIN.name()
+        };
     }
 
 }
