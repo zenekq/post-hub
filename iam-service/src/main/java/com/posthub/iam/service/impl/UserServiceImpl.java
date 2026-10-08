@@ -16,6 +16,7 @@ import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.UserSearchCriteria;
+import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.UserService;
 import com.posthub.iam.service.model.IamServiceUserRole;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final AccessValidator accessValidator;
 
     @Override
     public ApiResult<UserDTO> getById(Integer userId) {
@@ -85,6 +87,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
                 new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
 
+        accessValidator.validateAdminOrOwnerAccess(user.getId());
+
         if (userRepository.existsByUsername(updateUserRequest.getUsername())) {
             throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(updateUserRequest.getUsername()));
         }
@@ -105,6 +109,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() ->
                 new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
+
+        accessValidator.validateAdminOrOwnerAccess(user.getId());
 
         user.setDeleted(true);
         userRepository.save(user);
