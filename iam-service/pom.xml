@@ -18,6 +18,8 @@
 		<java.version>27</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
+		<hibernate.version>7.4.12.Final</hibernate.version>
+		<hibernate-validator.version>9.1.4.Final</hibernate-validator.version>
 	</properties>
 	<dependencies>
 		<dependency>
