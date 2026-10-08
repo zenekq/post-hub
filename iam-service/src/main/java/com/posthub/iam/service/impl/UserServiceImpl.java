@@ -60,8 +60,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.assertEmailNotExists(newUserRequest.getEmail());
 
-        Role userRole = roleRepository.findByName(IamServiceUserRole.USER.getRole())
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_ROLE_NOT_FOUND.format(IamServiceUserRole.USER.getRole())));
+        Role userRole = roleRepository.findByNameOrThrow(IamServiceUserRole.USER.getRole());
 
         User user = userMapper.createUser(newUserRequest);
         user.setPassword(passwordEncoder.encode(newUserRequest.getPassword()));

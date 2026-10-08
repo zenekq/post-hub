@@ -99,8 +99,7 @@ public class AuthServiceImpl implements AuthService {
         );
 
         String stringRole = IamServiceUserRole.USER.getRole();
-        Role role = roleRepository.findByName(stringRole)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.USER_ROLE_NOT_FOUND.format(stringRole)));
+        Role role = roleRepository.findByNameOrThrow(stringRole);
 
         User newUser = userMapper.fromDto(request);
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
