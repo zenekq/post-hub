@@ -1,12 +1,9 @@
 package com.posthub.iam.service.impl;
 
 import com.posthub.iam.mapper.PostMapper;
-import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
-import com.posthub.iam.model.exception.DataExistException;
-import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
@@ -40,9 +37,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ApiResult<PostDTO> getById(@NotNull Integer postId) {
 
-        Post post = postRepository.findByIdAndDeletedFalse(postId)
-                .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
+        Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
         PostDTO postDTO = postMapper.toPostDTO(post);
 
@@ -52,9 +47,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest, String username) {
 
-        if (postRepository.existsByTitle(newPostRequest.getTitle())) {
-            throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXIST.format(newPostRequest.getTitle()));
-        }
+        postRepository.assertTitleNotExists(newPostRequest.getTitle());
 
         User user = userRepository.findByUsernameOrThrow(username);
 
@@ -70,15 +63,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest) {
 
-        Post post = postRepository.findByIdAndDeletedFalse(postId)
-                .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
+        Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
         accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
 
-        if (postRepository.existsByTitle(updatePostRequest.getTitle())) {
-            throw new DataExistException(ApiErrorMessage.POST_ALREADY_EXIST.format(updatePostRequest.getTitle()));
-        }
+        postRepository.assertTitleNotExists(updatePostRequest.getTitle());
 
         postMapper.updatePost(post, updatePostRequest);
         post.setUpdated(LocalDateTime.now());
@@ -92,9 +81,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void softDeletePost(Integer postId) {
 
-        Post post = postRepository.findByIdAndDeletedFalse(postId)
-                .orElseThrow(() ->
-                        new NotFoundException(ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(postId)));
+        Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
         accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
 
