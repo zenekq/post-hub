@@ -6,7 +6,6 @@ import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.dto.user.UserSearchDTO;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
-import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.request.user.UpdateUserRequest;
