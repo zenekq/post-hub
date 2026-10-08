@@ -1,13 +1,21 @@
 package com.posthub.iam.utils;
 
 import com.posthub.iam.model.constants.ApiConstants;
+import com.posthub.iam.security.JwtTokenProvider;
 import jakarta.servlet.http.Cookie;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
+@RequiredArgsConstructor
 public class ApiUtils {
+
+    private final JwtTokenProvider jwtTokenProvider;
 
     private static final StackWalker WALKER =
             StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
@@ -38,6 +46,11 @@ public class ApiUtils {
 
     public static String getCurrentUserName() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    public Integer getUserIdFromAuthentication() {
+        String jwtToken = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+        return Integer.parseInt(jwtTokenProvider.getUserId(jwtToken));
     }
 
 }

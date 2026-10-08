@@ -14,13 +14,13 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.AccessDeniedException;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class AccessValidator {
 
     private final UserRepository userRepository;
+    private final ApiUtils apiUtils;
 
     public void validateNewUser(String username, String email, String password, String confirmPassword) {
 
@@ -44,9 +44,9 @@ public class AccessValidator {
 
     }
 
-    public boolean isAdminOrSuperAdmin(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
-                new NotFoundException(ApiErrorMessage.USER_WITH_USERNAME_NOT_FOUND.format(username)));
+    public boolean isAdminOrSuperAdmin(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
 
         return user.getRoles().stream()
                 .map(role -> IamServiceUserRole.fromName(role.getName()))
@@ -54,12 +54,10 @@ public class AccessValidator {
     }
 
     @SneakyThrows
-   public void validateAdminOrOwnerAccess(String ownerUsername, String createdBy) {
-       String currentUsername = ApiUtils.getCurrentUserName();
+   public void validateAdminOrOwnerAccess(Integer ownerUserId) {
+       Integer currentUserId = apiUtils.getUserIdFromAuthentication();
 
-       if (!currentUsername.equals(ownerUsername) &&
-               !currentUsername.equals(createdBy) &&
-               !isAdminOrSuperAdmin(currentUsername)) {
+       if (!currentUserId.equals(ownerUserId) && !isAdminOrSuperAdmin(currentUserId)) {
             throw new AccessDeniedException(ApiErrorMessage.HAVE_NO_ACCESS.getValue());
        }
    }
