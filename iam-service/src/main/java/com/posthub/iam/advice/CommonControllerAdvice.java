@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.net.URI;
-import java.net.http.HttpHeaders;
 import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 import java.util.List;
