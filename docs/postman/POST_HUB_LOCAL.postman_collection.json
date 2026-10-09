@@ -1,0 +1,715 @@
+{
+  "info": {
+    "_postman_id": "894b7ad0-72b5-48b4-8e0e-6c87148a2aef",
+    "name": "POST_HUB_LOCAL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "user-controller",
+      "item": [
+        {
+          "name": "/users/{id} Get",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/users/1",
+              "host": ["{{IamUrl}}"],
+              "path": ["users", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/{id} Update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"fifth_user_update_name\",\n    \"email\": \"user5_update_email@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/users/5",
+              "host": ["{{IamUrl}}"],
+              "path": ["users", "5"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/{id} Delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/users/4",
+              "host": ["{{IamUrl}}"],
+              "path": ["users", "4"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/all  Get All",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/users/all",
+              "host": ["{{IamUrl}}"],
+              "path": ["users", "all"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"sixth_user\",\n    \"password\": \"pas5435365fE\",\n    \"email\": \"sixth_user@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/users/create",
+              "host": ["{{IamUrl}}"],
+              "path": ["users", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/users/search",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"user\",\n    \"email\": null,\n    \"deleted\": false,\n    \"keyword\": \"user\",\n    \"sortField\": \"USERNAME\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/users/search",
+              "host": ["{{IamUrl}}"],
+              "path": ["users", "search"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "post-controller",
+      "item": [
+        {
+          "name": "/post/{id} Get",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/posts/1",
+              "host": ["{{IamUrl}}"],
+              "path": ["posts", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/posts/{id} Update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Update post tilte\",\r\n    \"content\": \"Update post content\",\r\n    \"likes\": 39\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/posts/2",
+              "host": ["{{IamUrl}}"],
+              "path": ["posts", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/posts/{id} Delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/posts/5",
+              "host": ["{{IamUrl}}"],
+              "path": ["posts", "5"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/posts/all Get All",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{IamUrl}}/posts/all?page=0&limit=100",
+              "host": ["{{IamUrl}}"],
+              "path": ["posts", "all"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "100"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/post/create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"My test tilte post x\",\r\n    \"content\": \"yet another post\",\r\n    \"likes\": 5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/posts/create",
+              "host": ["{{IamUrl}}"],
+              "path": ["posts", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/posts/search",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{   \r\n    \"title\": \"post\",\r\n    //\"content\": \"tenth\"\r\n    //\"likes\": 6\r\n    //\"deleted\": true\r\n    //\"keyword\": \"update\"\r\n    //\"sortField\": \"LIKES\"\r\n    \"createdBy\": \"fifth_user\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/posts/search",
+              "host": ["{{IamUrl}}"],
+              "path": ["posts", "search"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth-controller",
+      "item": [
+        {
+          "name": "/auth/login  -> super_admin",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"super_admin@example.com\",\r\n    \"password\": \"pas1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/auth/login",
+              "host": ["{{IamUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/auth/login -> new_user_from_postman",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"new_user_from_postman@example.com\",\r\n    \"password\": \"pas1Postman_\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/auth/login",
+              "host": ["{{IamUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/auth/register",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"new_user_from_postman\",\r\n    \"email\": \"new_user_from_postman@example.com\",\r\n    \"password\": \"pas1Postman_\",\r\n    \"confirmPassword\": \"pas1Postman_\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/auth/register",
+              "host": ["{{IamUrl}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "/auth/refresh/token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/auth/refresh/token?token=",
+              "host": ["{{IamUrl}}"],
+              "path": ["auth", "refresh", "token"],
+              "query": [
+                {
+                  "key": "token",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "comment-controller",
+      "item": [
+        {
+          "name": "comments/{id} Get",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{IamUrl}}/comments/1",
+              "host": ["{{IamUrl}}"],
+              "path": ["comments", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "comments/{id} Update",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"postId\": 1,\r\n    \"message\": \"update comment for first post\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/comments/1",
+              "host": ["{{IamUrl}}"],
+              "path": ["comments", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "comments/{id} Delete",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{IamUrl}}/comments/2",
+              "host": ["{{IamUrl}}"],
+              "path": ["comments", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "comments/all GET ALL",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{IamUrl}}/comments/all?page=0&limit=10",
+              "host": ["{{IamUrl}}"],
+              "path": ["comments", "all"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "comments/create",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"postId\": 1,\r\n    \"message\": \"This comment for first post\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/comments/create",
+              "host": ["{{IamUrl}}"],
+              "path": ["comments", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "comments/search",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JwtToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"message\": \"Test\",\r\n   // \"deleted\": false,\r\n    \"keyword\": \"post\",\r\n    \"sortFiled\": \"MESSAGE\"\r\n    //\"postId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{IamUrl}}/comments/search?page=0&limit=10",
+              "host": ["{{IamUrl}}"],
+              "path": ["comments", "search"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{JwtToken}}",
+        "type": "string"
+      }
+    ]
+  }
+}
