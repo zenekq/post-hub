@@ -4,12 +4,19 @@ import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Integer>, JpaSpecificationExecutor<Post> {
+
+    //TODO: fix n+1 problem
+    //@EntityGraph(attributePaths = "user")
+    //Page<Post> findAll(Pageable pageable);
 
     boolean existsByTitle(String title);
 
