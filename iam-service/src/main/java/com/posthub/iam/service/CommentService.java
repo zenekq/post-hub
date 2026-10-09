@@ -14,4 +14,6 @@ public interface CommentService {
 
     ApiResult<CommentDTO> updateComment(@NotNull Integer commentId, @NotNull UpdateCommentRequest request);
 
+    void softDelete(@NotNull Integer commentId);
+
 }

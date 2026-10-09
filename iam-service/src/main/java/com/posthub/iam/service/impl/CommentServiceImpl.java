@@ -1,7 +1,9 @@
 package com.posthub.iam.service.impl;
 
 import com.posthub.iam.mapper.CommentMapper;
+import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.dto.comment.CommentDTO;
+import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
@@ -28,6 +30,7 @@ public class CommentServiceImpl implements CommentService {
     private final ApiUtils apiUtils;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -73,6 +76,23 @@ public class CommentServiceImpl implements CommentService {
         CommentDTO commentDTO = commentMapper.toDTO(savedComment);
 
         return ApiResult.createSuccessful(commentDTO);
+    }
+
+    @Override
+    @Transactional
+    public void softDelete(Integer commentId) {
+
+        Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
+
+        comment.setDeleted(true);
+        commentRepository.save(comment);
+
+        Post post = comment.getPost();
+        postRepository.save(post);
+
+        PostDTO postDTO = postMapper.toPostDTO(post);
+
+        ApiResult.createSuccessful(postDTO);
     }
 
 }
