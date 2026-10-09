@@ -1,6 +1,7 @@
 package com.posthub.iam.mapper;
 
 import com.posthub.iam.model.dto.comment.CommentDTO;
+import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
@@ -39,5 +40,11 @@ public interface CommentMapper {
     @Mapping(target = "post", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     void updateComment(@MappingTarget Comment comment, UpdateCommentRequest request);
+
+    @Mapping(source = "user.id", target = "owner.id")
+    @Mapping(source = "user.username", target = "owner.username")
+    @Mapping(source = "user.email", target = "owner.email")
+    @Mapping(source = "post.id", target = "postId")
+    CommentSearchDTO toCommentSearchDTO(Comment comment);
 
 }

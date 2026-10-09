@@ -2,15 +2,18 @@ package com.posthub.iam.controller;
 
 import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.comment.CommentDTO;
+import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
 import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.service.CommentService;
 import com.posthub.iam.utils.ApiUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +65,19 @@ public class CommentController {
         commentService.softDelete(commentId);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("${end.point.all}")
+    public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> getAllComments(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        PageRequest pageRequest = PageRequest.of(page, limit);
+
+        ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(pageRequest);
+
+        return ResponseEntity.ok(result);
     }
 
 }

@@ -3,6 +3,7 @@ package com.posthub.iam.service.impl;
 import com.posthub.iam.mapper.CommentMapper;
 import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.dto.comment.CommentDTO;
+import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
@@ -10,6 +11,7 @@ import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
 import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.repository.CommentRepository;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
@@ -17,6 +19,8 @@ import com.posthub.iam.service.CommentService;
 import com.posthub.iam.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,6 +97,26 @@ public class CommentServiceImpl implements CommentService {
         PostDTO postDTO = postMapper.toPostDTO(post);
 
         ApiResult.createSuccessful(postDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ApiResult<PaginationResponse<CommentSearchDTO>> findAllComments(Pageable pageable) {
+
+        Page<CommentSearchDTO> comments = commentRepository.findAll(pageable)
+                .map(commentMapper::toCommentSearchDTO);
+
+        PaginationResponse<CommentSearchDTO> paginationResponse = new PaginationResponse<>(
+                comments.getContent(),
+                new PaginationResponse.Pagination(
+                        comments.getTotalElements(),
+                        pageable.getPageSize(),
+                        comments.getNumber() + 1,
+                        comments.getTotalPages()
+                )
+        );
+
+        return ApiResult.createSuccessful(paginationResponse);
     }
 
 }
