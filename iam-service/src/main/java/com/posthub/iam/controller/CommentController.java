@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${end.point.comments}")
+@RequestMapping("${end.points.comments}")
 @NullMarked
 public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("${end.point.id}")
+    @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<CommentDTO>> getCommentById(
             @PathVariable(name = "id") Integer commentId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
@@ -40,7 +40,7 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("${end.point.create}")
+    @PostMapping("${end.points.create}")
     public ResponseEntity<ApiResult<CommentDTO>> createComment(
             @RequestBody @Valid CommentRequest commentRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
@@ -49,7 +49,7 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("${end.point.id}")
+    @PutMapping("${end.points.id}")
     public ResponseEntity<ApiResult<CommentDTO>> updateComment(
             @PathVariable(name = "id") Integer commentId,
             @RequestBody @Valid UpdateCommentRequest updateCommentRequest) {
@@ -59,7 +59,7 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("${end.point.id}")
+    @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeleteComment(
             @PathVariable(name = "id") Integer commentId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
@@ -69,7 +69,7 @@ public class CommentController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("${end.point.all}")
+    @GetMapping("${end.points.all}")
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> getAllComments(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
@@ -82,7 +82,7 @@ public class CommentController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("${end.point.search}")
+    @PostMapping("${end.points.search}")
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> searchComments(
             @RequestBody @Valid CommentSearchRequest request,
             @RequestParam(name = "page", defaultValue = "0") int page,

@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${end.point.auth}")
+@RequestMapping("${end.points.auth}")
 public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("${end.point.login}")
+    @PostMapping("${end.points.login}")
     public ResponseEntity<?> login(
             @RequestBody @Valid LoginRequest loginRequest,
             HttpServletResponse response) {
@@ -36,7 +36,7 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("${end.point.refresh.token}")
+    @GetMapping("${end.points.refresh.token}")
     public ResponseEntity<ApiResult<UserProfileDTO>> refreshToken(
           @RequestParam(name = "token") String refreshToken,
           HttpServletResponse response) {
@@ -49,7 +49,7 @@ public class AuthController {
         return  ResponseEntity.ok(result);
     }
 
-    @PostMapping("${end.point.register}")
+    @PostMapping("${end.points.register}")
     public ResponseEntity<?> register(
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {
