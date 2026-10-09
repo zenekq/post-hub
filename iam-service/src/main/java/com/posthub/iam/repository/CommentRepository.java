@@ -11,6 +11,11 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
+    //TODO: fix n+1 problem
+    //@EntityGraph(attributePaths = {"user"})
+    //Page<Comment> findAll(Pageable pageable);
+
+
     Optional<Comment> findByIdAndDeletedFalse(Integer commentId);
 
     default Comment findByIdAndDeletedFalseOrThrow(Integer commentId) {
