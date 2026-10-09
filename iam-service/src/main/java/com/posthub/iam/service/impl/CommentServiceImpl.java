@@ -6,6 +6,7 @@ import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.comment.CommentRequest;
+import com.posthub.iam.model.request.comment.UpdateCommentRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.CommentRepository;
 import com.posthub.iam.repository.PostRepository;
@@ -51,6 +52,24 @@ public class CommentServiceImpl implements CommentService {
         Comment savedComment = commentRepository.save(comment);
         postRepository.save(post);
 
+        CommentDTO commentDTO = commentMapper.toDTO(savedComment);
+
+        return ApiResult.createSuccessful(commentDTO);
+    }
+
+    @Override
+    @Transactional
+    public ApiResult<CommentDTO> updateComment(Integer commentId, UpdateCommentRequest request) {
+
+        Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
+
+        if (request.getPostId() != null) {
+            Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.getPostId());
+            comment.setPost(post);
+        }
+
+        commentMapper.updateComment(comment, request);
+        Comment savedComment = commentRepository.save(comment);
         CommentDTO commentDTO = commentMapper.toDTO(savedComment);
 
         return ApiResult.createSuccessful(commentDTO);

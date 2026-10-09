@@ -3,6 +3,7 @@ package com.posthub.iam.controller;
 import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.comment.CommentDTO;
 import com.posthub.iam.model.request.comment.CommentRequest;
+import com.posthub.iam.model.request.comment.UpdateCommentRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.service.CommentService;
 import com.posthub.iam.utils.ApiUtils;
@@ -43,4 +44,13 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("${end.point.id}")
+    public ResponseEntity<ApiResult<CommentDTO>> updateComment(
+            @PathVariable(name = "id") Integer commentId,
+            @RequestBody @Valid UpdateCommentRequest updateCommentRequest) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        ApiResult<CommentDTO> response = commentService.updateComment(commentId, updateCommentRequest);
+        return ResponseEntity.ok(response);
+    }
 }

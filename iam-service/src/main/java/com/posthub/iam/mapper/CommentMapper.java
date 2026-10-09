@@ -5,8 +5,10 @@ import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.comment.CommentRequest;
+import com.posthub.iam.model.request.comment.UpdateCommentRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(
@@ -29,5 +31,13 @@ public interface CommentMapper {
     @Mapping(target = "post", source = "post")
     @Mapping(target = "createdBy", source = "user.email")
     Comment createComment(CommentRequest commentRequest, User user, Post post);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "created", ignore = true)
+    @Mapping(target = "updated", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(target = "post", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    void updateComment(@MappingTarget Comment comment, UpdateCommentRequest request);
 
 }
