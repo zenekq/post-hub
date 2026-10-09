@@ -4,6 +4,7 @@ import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.comment.CommentDTO;
 import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.request.comment.CommentRequest;
+import com.posthub.iam.model.request.comment.CommentSearchRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +80,20 @@ public class CommentController {
         ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(pageRequest);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("${end.point.search}")
+    public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> searchComments(
+            @RequestBody @Valid CommentSearchRequest request,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        Pageable pageable = PageRequest.of(page, limit);
+
+        ApiResult<PaginationResponse<CommentSearchDTO>> response = commentService.searchComments(request, pageable);
+
+        return  ResponseEntity.ok(response);
     }
 
 }

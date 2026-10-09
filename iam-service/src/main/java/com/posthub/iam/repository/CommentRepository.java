@@ -4,12 +4,13 @@ import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.exception.NotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Integer> {
+public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
 
     //TODO: fix n+1 problem
     //@EntityGraph(attributePaths = {"user"})
