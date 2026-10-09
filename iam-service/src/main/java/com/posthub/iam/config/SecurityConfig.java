@@ -46,6 +46,10 @@ public class SecurityConfig {
      //                   .requestMatchers(HttpMethod.GET, "/users/all").hasAnyAuthority(adminAccessSecurityRoles())
      //                   .requestMatchers(HttpMethod.GET, "/posts/all").hasAnyAuthority(adminAccessSecurityRoles())
                         .requestMatchers(HttpMethod.POST, "/users/create").hasAnyAuthority(adminAccessSecurityRoles())
+
+                        // Swagger / OpenAPI endpoints
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "//webjars/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions
