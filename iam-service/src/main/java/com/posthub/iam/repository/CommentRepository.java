@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaSpecificationExecutor<Comment> {
 
-    //TODO: fix n+1 problem
+    //fix n+1 problem
     @EntityGraph(attributePaths = {"user"})
     Page<Comment> findAll(Pageable pageable);
 
