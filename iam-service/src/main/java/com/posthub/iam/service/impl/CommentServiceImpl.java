@@ -17,6 +17,7 @@ import com.posthub.iam.repository.CommentRepository;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.CommentSearchCriteria;
+import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.CommentService;
 import com.posthub.iam.utils.ApiUtils;
 import jakarta.validation.constraints.NotNull;
@@ -39,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private final AccessValidator accessValidator;
 
     @Override
     @Transactional(readOnly = true)
@@ -74,6 +76,8 @@ public class CommentServiceImpl implements CommentService {
 
         Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
 
+        accessValidator.validateAdminOrOwnerAccess(comment.getUser().getId());
+
         if (request.getPostId() != null) {
             Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.getPostId());
             comment.setPost(post);
@@ -91,6 +95,8 @@ public class CommentServiceImpl implements CommentService {
     public void softDelete(Integer commentId) {
 
         Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
+
+        accessValidator.validateAdminOrOwnerAccess(comment.getUser().getId());
 
         comment.setDeleted(true);
         commentRepository.save(comment);
