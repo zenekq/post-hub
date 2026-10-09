@@ -1,0 +1,22 @@
+package com.posthub.iam.repository;
+
+import com.posthub.iam.model.constants.ApiErrorMessage;
+import com.posthub.iam.model.entity.Comment;
+import com.posthub.iam.model.exception.NotFoundException;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface CommentRepository extends JpaRepository<Comment, Integer> {
+
+    Optional<Comment> findByIdAndDeletedFalse(Integer commentId);
+
+    default Comment findByIdAndDeletedFalseOrThrow(Integer commentId) {
+        return findByIdAndDeletedFalse(commentId)
+                .orElseThrow(() ->
+                        new NotFoundException(ApiErrorMessage.COMMENT_NOT_FOUND_BY_ID.format(commentId)));
+    }
+
+}
