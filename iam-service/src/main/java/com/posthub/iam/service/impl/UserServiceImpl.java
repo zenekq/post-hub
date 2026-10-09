@@ -18,6 +18,7 @@ import com.posthub.iam.repository.criteria.UserSearchCriteria;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.UserService;
 import com.posthub.iam.service.model.IamServiceUserRole;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
@@ -104,6 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ApiResult<PaginationResponse<UserSearchDTO>> findAllUsers(Pageable pageable) {
 
         Page<UserSearchDTO> users = userRepository.findAll(pageable)
