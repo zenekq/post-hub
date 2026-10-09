@@ -75,9 +75,9 @@ public class CommentController {
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
 
-        PageRequest pageRequest = PageRequest.of(page, limit);
+        Pageable pageable = PageRequest.of(page, limit);
 
-        ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(pageRequest);
+        ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(pageable);
 
         return ResponseEntity.ok(result);
     }
