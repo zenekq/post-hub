@@ -2,7 +2,6 @@ package com.posthub.iam.repository;
 
 import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.entity.Comment;
-import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +22,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaS
 
     @EntityGraph(attributePaths = {"user"})
     Page<Comment> findAll(Specification<Comment> specification, Pageable pageable);
-
 
     Optional<Comment> findByIdAndDeletedFalse(Integer commentId);
 
