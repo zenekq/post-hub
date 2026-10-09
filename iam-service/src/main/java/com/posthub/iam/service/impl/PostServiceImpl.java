@@ -15,6 +15,7 @@ import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.PostSearchCriteria;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.PostService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest) {
 
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);

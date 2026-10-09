@@ -18,7 +18,6 @@ import com.posthub.iam.repository.criteria.UserSearchCriteria;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.UserService;
 import com.posthub.iam.service.model.IamServiceUserRole;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
@@ -29,6 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public ApiResult<UserDTO> updateUser(Integer userId, UpdateUserRequest updateUserRequest) {
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
@@ -94,6 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void softDeleteUser(Integer userId) {
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
@@ -105,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ApiResult<PaginationResponse<UserSearchDTO>> findAllUsers(Pageable pageable) {
 
         Page<UserSearchDTO> users = userRepository.findAll(pageable)
@@ -125,6 +127,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiResult<PaginationResponse<UserSearchDTO>> searchUsers(UserSearchRequest request, Pageable pageable) {
 
         Specification<User> userSearchCriteria = new UserSearchCriteria(request);
