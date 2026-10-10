@@ -8,7 +8,7 @@ public class PostSearchRequest {
 
     private String title;
     private String content;
-    private String likes;
+    private Integer likes;
 
     private Boolean deleted;
     private String keyword;

@@ -18,5 +18,5 @@ public class NewPostRequest {
    private String content;
 
    @NotNull
-   private String likes;
+   private Integer likes;
 }
