@@ -1,13 +1,25 @@
 package com.posthub.iam.security.encrypt;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 public class PasswordHasher {
 
-    static void main() {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private static final int SALT_LENGTH   = 16;
+    private static final int HASH_LENGTH   = 32;
+    private static final int PARALLELISM   = 1;
+    private static final int MEMORY        = 4096;
+    private static final int ITERATIONS    = 3;
 
-        // Note: BCrypt generates a different hash every time due to random salt.
+    static void main() {
+
+        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(
+                SALT_LENGTH,
+                HASH_LENGTH,
+                PARALLELISM,
+                MEMORY,
+                ITERATIONS
+        );
+
         // Always use encoder.matches(rawPassword, hashedPassword) for verification.
 
         String password1 = encoder.encode("pas1");
@@ -22,13 +34,6 @@ public class PasswordHasher {
         IO.println("password pas4: " + password4);
         IO.println("password pas5: " + password5);
 
-        /*
-        password pas1: $2a$10$esq3XddqYdSzyvfKmIXn1OXspdvzk98kDAUzmbE.1jjxY26D72quq
-        password pas2: $2a$10$g6H7do4Txmgraarf9HwxHe4brj72TlPFfps78w/ThixIaOvPv1ZPK
-        password pas3: $2a$10$HT/VouLOxW0EDuLLgPASsuSN9MeDTkP1V5zpCW0pN9rNkV/R5Vuma
-        password pas4: $2a$10$a3iM0krwVEiECG3EbzxNBOTJBNVaHPVEjLPEOOp4ysvJSje54j/Be
-        password pas5: $2a$10$eiiNTTyQTH8Aa8/UbCayZuPybkToefdtUswsYn6OumCfXyhSGyDuW
-        */
     }
 
 }

@@ -50,11 +50,11 @@ CREATE TABLE refresh_token (
 );
 
 INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
-    ('super_admin', '$2a$10$esq3XddqYdSzyvfKmIXn1OXspdvzk98kDAUzmbE.1jjxY26D72quq', 'super_admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('admin', '$2a$10$g6H7do4Txmgraarf9HwxHe4brj72TlPFfps78w/ThixIaOvPv1ZPK', 'admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('user', '$2a$10$HT/VouLOxW0EDuLLgPASsuSN9MeDTkP1V5zpCW0pN9rNkV/R5Vuma', 'user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('fourth_user', '$2a$10$a3iM0krwVEiECG3EbzxNBOTJBNVaHPVEjLPEOOp4ysvJSje54j/Be', 'fourth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('fifth_user', '$2a$10$eiiNTTyQTH8Aa8/UbCayZuPybkToefdtUswsYn6OumCfXyhSGyDuW', 'fifth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
+    ('super_admin', '$argon2id$v=19$m=4096,t=3,p=1$qug41fE4Du1KOSxx5q1P9g$Jb6Tv1t8ShC4fowDuGi2LVGsg6g5CPQANeet4qVCmgg', 'super_admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('admin', '$argon2id$v=19$m=4096,t=3,p=1$Sy54v7HacX48ICKoMsuwTA$O0tdHrUOkzwbZr1O7gi/LnLznKrUVH5AgkE721KCYGo', 'admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('user', '$argon2id$v=19$m=4096,t=3,p=1$z8XAiCqGuVPJJbULaG6Yyg$Pozjdvl6MGtMsGmOs3+xkzA+rH9EbEGLUpg/76ZDWqE', 'user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('fourth_user', '$argon2id$v=19$m=4096,t=3,p=1$nl4YqL2aFDJ8RTwJelR4cg$+jhYq/lW5H7a+BwnuxyNIsWpwbpo5B9hUB58ZjNZYIg', 'fourth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
+    ('fifth_user', '$argon2id$v=19$m=4096,t=3,p=1$pqTsS0z5PPni05kHThP/aQ$hFf4HzdXLjYI9e3lBsbBrrfVnGMtjA0CoJqGXIv3jbA', 'fifth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
 
 INSERT INTO posts (user_id ,title, content, created, updated, deleted, likes) VALUES
     (1,'First Posts', 'This is a content for first post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),

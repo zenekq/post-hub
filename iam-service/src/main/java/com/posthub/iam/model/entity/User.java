@@ -32,7 +32,7 @@ public class User {
     @Size(max = 30)
     private String username;
 
-    @Size(max = 63)
+    @Size(max = 255)
     private String password;
 
     @Size(max = 50)
