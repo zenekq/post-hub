@@ -12,12 +12,12 @@ public enum ApiLogMessage {
     NAME_OF_CURRENT_METHOD("Current method: {}"),
     ;
 
-    private final String value;
+    private final String message;
     private final String formatTemplate;
 
-    ApiLogMessage(String value) {
-        this.value = value;
-        this.formatTemplate = value.replace("{}", "%s");
+    ApiLogMessage(String message) {
+        this.message = message;
+        this.formatTemplate = message.replace("{}", "%s");
     }
 
     public String format(Object... args) {

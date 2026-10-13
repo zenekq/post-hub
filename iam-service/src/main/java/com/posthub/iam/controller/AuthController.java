@@ -42,7 +42,7 @@ public class AuthController {
     public ResponseEntity<ApiResult<UserProfileDTO>> login(
             @RequestBody @Valid LoginRequest loginRequest,
             HttpServletResponse response) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.login(loginRequest);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
@@ -59,7 +59,7 @@ public class AuthController {
     public ResponseEntity<ApiResult<UserProfileDTO>> refreshToken(
           @RequestParam(name = "token") String refreshToken,
           HttpServletResponse response) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.refreshAccessToken(refreshToken);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
@@ -76,7 +76,7 @@ public class AuthController {
     ResponseEntity<ApiResult<UserProfileDTO>> register(
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.registerUser(request);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());

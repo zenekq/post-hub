@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> getUserById(
             @PathVariable(name = "id") Integer userId) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<UserDTO> response = userService.getById(userId);
 
@@ -43,7 +43,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> createUser(
             @Valid @RequestBody NewUserRequest newUserRequest) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<UserDTO> user = userService.createUser(newUserRequest);
 
@@ -54,7 +54,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> updateUserById(
             @PathVariable(name = "id") Integer userId,
             @RequestBody @Valid UpdateUserRequest updateUserRequest) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<UserDTO> response = userService.updateUser(userId,updateUserRequest);
         return ResponseEntity.ok(response);
@@ -63,7 +63,7 @@ public class UserController {
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeleteUser(
             @PathVariable(name = "id") Integer userId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         userService.softDeleteUser(userId);
         return ResponseEntity.ok().build();
@@ -73,7 +73,7 @@ public class UserController {
     public ResponseEntity<ApiResult<PaginationResponse<UserSearchDTO>>> getAllUsers(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.findAllUsers(pageable);
@@ -85,7 +85,7 @@ public class UserController {
             @RequestBody @Valid UserSearchRequest request,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.searchUsers(request, pageable);

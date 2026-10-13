@@ -33,7 +33,7 @@ public class CommentController {
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<CommentDTO>> getCommentById(
             @PathVariable(name = "id") Integer commentId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.getCommentById(commentId);
 
@@ -43,7 +43,7 @@ public class CommentController {
     @PostMapping("${end.points.create}")
     public ResponseEntity<ApiResult<CommentDTO>> createComment(
             @RequestBody @Valid CommentRequest commentRequest) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.createComment(commentRequest);
         return ResponseEntity.ok(response);
@@ -53,7 +53,7 @@ public class CommentController {
     public ResponseEntity<ApiResult<CommentDTO>> updateComment(
             @PathVariable(name = "id") Integer commentId,
             @RequestBody @Valid UpdateCommentRequest updateCommentRequest) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.updateComment(commentId, updateCommentRequest);
         return ResponseEntity.ok(response);
@@ -62,7 +62,7 @@ public class CommentController {
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeleteComment(
             @PathVariable(name = "id") Integer commentId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         commentService.softDelete(commentId);
 
@@ -73,7 +73,7 @@ public class CommentController {
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> getAllComments(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
 
@@ -87,7 +87,7 @@ public class CommentController {
             @RequestBody @Valid CommentSearchRequest request,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
 

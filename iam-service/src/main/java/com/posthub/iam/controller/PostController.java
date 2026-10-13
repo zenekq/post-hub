@@ -34,7 +34,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> getPostById(
             @PathVariable("id") Integer postId) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<PostDTO> response = postService.getById(postId);
 
@@ -45,7 +45,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> createPost(
             @RequestBody @Valid NewPostRequest newPostRequest, Principal principal) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<PostDTO> response = postService.createPost(newPostRequest, principal.getName());
 
@@ -57,7 +57,7 @@ public class PostController {
             @PathVariable("id") Integer postId,
             @RequestBody @Valid UpdatePostRequest updatePostRequest) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<PostDTO> response = postService.updatePost(postId, updatePostRequest);
 
@@ -67,7 +67,7 @@ public class PostController {
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> deletePostById(
             @PathVariable("id") Integer postId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         postService.softDeletePost(postId);
 
@@ -78,7 +78,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PaginationResponse<PostSearchDTO>>> getAllPosts(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
         ApiResult<PaginationResponse<PostSearchDTO>> allPosts = postService.findAllPosts(pageable);
@@ -91,7 +91,7 @@ public class PostController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "limit", defaultValue = "10") int limit) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         Pageable pageable = PageRequest.of(page, limit);
         ApiResult<PaginationResponse<PostSearchDTO>> respose = postService.searchPosts(postSearchRequest, pageable);

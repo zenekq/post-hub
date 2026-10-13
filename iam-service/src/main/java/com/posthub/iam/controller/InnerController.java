@@ -19,7 +19,7 @@ public class InnerController {
     @Hidden
     @GetMapping("/healthCheck")
     public ResponseEntity<Void> healthCheck() {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         return ResponseEntity.ok().build();
     }
