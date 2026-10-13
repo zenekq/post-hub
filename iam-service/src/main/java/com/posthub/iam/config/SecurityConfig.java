@@ -62,14 +62,15 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private static final int SALT_LENGTH   = 16;
-    private static final int HASH_LENGTH   = 32;
-    private static final int PARALLELISM   = 2;
-    private static final int MEMORY        = 4096;
-    private static final int ITERATIONS    = 3;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
+
+        final int SALT_LENGTH   = 16;
+        final int HASH_LENGTH   = 32;
+        final int PARALLELISM   = 2;
+        final int MEMORY        = 4096;
+        final int ITERATIONS    = 3;
+
         return new Argon2PasswordEncoder(
                 SALT_LENGTH,
                 HASH_LENGTH,
