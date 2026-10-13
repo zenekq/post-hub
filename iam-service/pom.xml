@@ -20,6 +20,7 @@
 		<jjwt.version>0.13.0</jjwt.version>
 		<hibernate.version>7.4.12.Final</hibernate.version>
 		<hibernate-validator.version>9.1.4.Final</hibernate-validator.version>
+		<flyway.version>13.9.0</flyway.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -45,7 +46,7 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
-			<version>13.8.1</version>
+			<version>13.9.0</version>
 			<scope>runtime</scope>
 		</dependency>
 
