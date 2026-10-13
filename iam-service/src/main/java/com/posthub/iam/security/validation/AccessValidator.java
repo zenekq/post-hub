@@ -35,11 +35,11 @@ public class AccessValidator {
                 });
 
         if (!password.equals(confirmPassword)) {
-            throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getValue());
+            throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getMessage());
         }
 
         if (PasswordUtils.isNotValidPassword(password)) {
-            throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getValue());
+            throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getMessage());
         }
 
     }
@@ -58,7 +58,7 @@ public class AccessValidator {
        Integer currentUserId = apiUtils.getUserIdFromAuthentication();
 
        if (!currentUserId.equals(ownerUserId) && !isAdminOrSuperAdmin(currentUserId)) {
-            throw new AccessDeniedException(ApiErrorMessage.HAVE_NO_ACCESS.getValue());
+            throw new AccessDeniedException(ApiErrorMessage.HAVE_NO_ACCESS.getMessage());
        }
    }
 

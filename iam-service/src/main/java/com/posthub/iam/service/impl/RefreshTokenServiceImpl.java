@@ -40,7 +40,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public RefreshToken validateAndRefreshToken(String requestRefreshToken) {
 
         RefreshToken refreshToken = refreshTokenRepository.findByToken(requestRefreshToken)
-                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.NOT_FOUND_REFRESH_TOKEN.getValue()));
+                .orElseThrow(() -> new NotFoundException(ApiErrorMessage.NOT_FOUND_REFRESH_TOKEN.getMessage()));
 
         refreshToken.setCreated(LocalDateTime.now());
         refreshToken.setToken(ApiUtils.generateUidWithoutDash());

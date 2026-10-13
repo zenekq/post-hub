@@ -54,12 +54,12 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new InvalidDataException(ApiErrorMessage.INVALID_USER_OR_PASSWORD.getValue());
+            throw new InvalidDataException(ApiErrorMessage.INVALID_USER_OR_PASSWORD.getMessage());
 
         }
 
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new InvalidDataException(ApiErrorMessage.INVALID_USER_OR_PASSWORD.getValue()));
+                .orElseThrow(() -> new InvalidDataException(ApiErrorMessage.INVALID_USER_OR_PASSWORD.getMessage()));
 
         String token = jwtTokenProvider.generateToken(user);
 

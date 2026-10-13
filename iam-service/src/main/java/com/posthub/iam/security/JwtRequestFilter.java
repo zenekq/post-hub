@@ -49,7 +49,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String jwt = authHeader.get().substring(BEARER_PREFIX.length());
             try {
                 if (!jwtTokenProvider.validateToken(jwt)) {
-                    throw new ExpiredJwtException(null, null, ApiErrorMessage.TOKEN_EXPIRED.getValue());
+                    throw new ExpiredJwtException(null, null, ApiErrorMessage.TOKEN_EXPIRED.getMessage());
                 }
 
                 Optional<String> emailOpt = Optional.ofNullable(jwtTokenProvider.getUsername(jwt));
@@ -89,17 +89,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String refreshedToken = jwtTokenProvider.refreshToken(jwt);
             response.setHeader(AUTHORIZATION_HEADER, BEARER_PREFIX + refreshedToken);
         } else {
-            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMessage.TOKEN_EXPIRED.getValue());
+            sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMessage.TOKEN_EXPIRED.getMessage());
         }
     }
 
     private void handleSignatureException(HttpServletResponse response) throws IOException {
-        sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMessage.INVALID_TOKEN_SIGNATURE.getValue());
+        sendErrorResponse(response, HttpStatus.UNAUTHORIZED, ApiErrorMessage.INVALID_TOKEN_SIGNATURE.getMessage());
     }
 
     private void handleUnexpectedException(HttpServletResponse response, Exception e) throws IOException {
         log.error(ApiErrorMessage.ERROR_DURING_JWT_PROCESSING.format(), e);
-        sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessage.UNEXPECTED_ERROR_OCCURRED.getValue());
+        sendErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, ApiErrorMessage.UNEXPECTED_ERROR_OCCURRED.getMessage());
     }
 
     private void sendErrorResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {

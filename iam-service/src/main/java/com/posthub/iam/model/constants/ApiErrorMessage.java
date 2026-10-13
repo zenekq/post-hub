@@ -38,12 +38,12 @@ public enum ApiErrorMessage {
     HAVE_NO_ACCESS("You don`t have the necessary permission"),
     ;
 
-    private final String value;
+    private final String message;
     private final String formatTemplate;
 
-    ApiErrorMessage(String value) {
-        this.value = value;
-        this.formatTemplate = value.replace("{}", "'%s'");
+    ApiErrorMessage(String message) {
+        this.message = message;
+        this.formatTemplate = message.replace("{}", "'%s'");
     }
 
     public String format(Object... args) {

@@ -19,7 +19,7 @@ public class AccessRestrictionHandler implements AccessDeniedHandler {
                        AccessDeniedException accessDeniedException) {
 
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        response.getWriter().write(ApiErrorMessage.HAVE_NO_ACCESS.getValue());
+        response.getWriter().write(ApiErrorMessage.HAVE_NO_ACCESS.getMessage());
 
     }
 }
