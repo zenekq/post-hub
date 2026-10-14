@@ -7,8 +7,10 @@ import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
+import com.posthub.iam.service.impl.UserServiceImpl;
 import com.posthub.iam.service.model.IamServiceUserRole;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -35,11 +40,13 @@ public class UserServiceTest {
     private RoleRepository roleRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     private User testUser;
-    private UserDTO teatUserDTO;
+    private UserDTO testUserDTO;
     private Role superAdminRole;
+
+    private static int userId = 1;
 
     @BeforeEach
     void setUp() {
@@ -47,18 +54,32 @@ public class UserServiceTest {
         superAdminRole.setName(IamServiceUserRole.SUPER_ADMIN.getRole());
 
         testUser = new User();
-        testUser.setId(1);
+        testUser.setId(userId);
         testUser.setUsername("TestUser");
         testUser.setEmail("TestUser@example.com");
         testUser.setPassword("encodedPassword");
         testUser.setRoles(Set.of(superAdminRole));
 
-        teatUserDTO = new UserDTO();
-        teatUserDTO.setId(testUser.getId());
-        teatUserDTO.setUsername(testUser.getUsername());
-        teatUserDTO.setEmail(testUser.getEmail());
-
+        testUserDTO = new UserDTO();
+        testUserDTO.setId(testUser.getId());
+        testUserDTO.setUsername(testUser.getUsername());
+        testUserDTO.setEmail(testUser.getEmail());
     }
 
+    @Test
+    void getById_UserExists_ReturnsUserDTO() {
+        when(userRepository.findByIdAndDeletedFalseOrThrow(userId)).thenReturn(testUser);
+        when(userMapper.userToUserDTO(testUser)).thenReturn(testUserDTO);
+
+        UserDTO result = userService.getById(userId).getPayload();
+
+        assertNotNull(result);
+        assertEquals(testUserDTO.getId(), result.getId());
+        assertEquals(testUserDTO.getUsername(), result.getUsername());
+        assertEquals(testUserDTO.getEmail(), result.getEmail());
+
+        verify(userRepository, times(1)).findByIdAndDeletedFalseOrThrow(1);
+        verify(userMapper, times(1)).userToUserDTO(testUser);
+    }
 
 }
