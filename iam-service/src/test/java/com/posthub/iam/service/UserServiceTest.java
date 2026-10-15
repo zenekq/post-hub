@@ -5,6 +5,7 @@ import com.posthub.iam.mapper.UserMapper;
 import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.service.impl.UserServiceImpl;
@@ -13,13 +14,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -27,7 +31,7 @@ import static org.mockito.Mockito.*;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class UserServiceTest {
 
-    @Mock
+    @Mock(answer = Answers.CALLS_REAL_METHODS)
     private UserRepository userRepository;
 
     @Mock
@@ -46,7 +50,7 @@ public class UserServiceTest {
     private UserDTO testUserDTO;
     private Role superAdminRole;
 
-    private static int userId = 1;
+    private static final int USER_ID = 1;
 
     @BeforeEach
     void setUp() {
@@ -54,7 +58,7 @@ public class UserServiceTest {
         superAdminRole.setName(IamServiceUserRole.SUPER_ADMIN.getRole());
 
         testUser = new User();
-        testUser.setId(userId);
+        testUser.setId(USER_ID);
         testUser.setUsername("TestUser");
         testUser.setEmail("TestUser@example.com");
         testUser.setPassword("encodedPassword");
@@ -68,18 +72,34 @@ public class UserServiceTest {
 
     @Test
     void getById_UserExists_ReturnsUserDTO() {
-        when(userRepository.findByIdAndDeletedFalseOrThrow(userId)).thenReturn(testUser);
+        when(userRepository.findByIdAndDeletedFalse(USER_ID)).thenReturn(Optional.of(testUser));
         when(userMapper.userToUserDTO(testUser)).thenReturn(testUserDTO);
 
-        UserDTO result = userService.getById(userId).getPayload();
+        UserDTO result = userService.getById(USER_ID).getPayload();
 
         assertNotNull(result);
         assertEquals(testUserDTO.getId(), result.getId());
         assertEquals(testUserDTO.getUsername(), result.getUsername());
         assertEquals(testUserDTO.getEmail(), result.getEmail());
 
-        verify(userRepository, times(1)).findByIdAndDeletedFalseOrThrow(1);
+        verify(userRepository, times(1)).findByIdAndDeletedFalse(USER_ID);
+        verify(userRepository, times(1)).findByIdAndDeletedFalseOrThrow(USER_ID);
         verify(userMapper, times(1)).userToUserDTO(testUser);
+    }
+
+    @Test
+    void getById_UserNotFound_ThrowException() {
+
+        final int NON_EXISTENT_USER_ID = 999;
+
+        when(userRepository.findByIdAndDeletedFalse(NON_EXISTENT_USER_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getById(NON_EXISTENT_USER_ID))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("not found");
+
+        verify(userRepository, times(1)).findByIdAndDeletedFalse(NON_EXISTENT_USER_ID);
+        verify(userMapper, times(0)).userToUserDTO(any(User.class));
     }
 
 }
