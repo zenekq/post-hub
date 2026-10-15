@@ -6,6 +6,7 @@ import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.exception.NotFoundException;
+import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.repository.CommentRepository;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
@@ -32,10 +33,10 @@ public class CommentServiceTest {
     @Mock(answer = Answers.CALLS_REAL_METHODS)
     private CommentRepository commentRepository;
 
-    @Mock
+    @Mock(answer = Answers.CALLS_REAL_METHODS)
     private UserRepository userRepository;
 
-    @Mock
+    @Mock(answer = Answers.CALLS_REAL_METHODS)
     private PostRepository postRepository;
 
     @Mock
@@ -105,6 +106,30 @@ public class CommentServiceTest {
 
         verify(commentRepository, times(1)).findByIdAndDeletedFalse(NON_EXISTENT_COMMENT_ID);
         verify(commentMapper, never()).toDTO(any(Comment.class));
+    }
+
+    @Test
+    void createComment_OK() {
+
+        CommentRequest request = new CommentRequest(1, "New comment");
+
+        when(apiUtils.getUserIdFromAuthentication()).thenReturn(testUser.getId());
+        when(userRepository.findByIdAndDeletedFalse(testUser.getId())).thenReturn(Optional.of(testUser));
+        when(postRepository.findByIdAndDeletedFalse(testPost.getId())).thenReturn(Optional.of(testPost));
+        when(commentMapper.createComment(request, testUser, testPost)).thenReturn(testComment);
+        when(commentRepository.save(any(Comment.class))).thenReturn(testComment);
+        when(commentMapper.toDTO(testComment)).thenReturn(testCommentDTO);
+
+        CommentDTO result = commentService.createComment(request).getPayload();
+
+        assertNotNull(result);
+        assertEquals(testCommentDTO.getMessage(), result.getMessage());
+
+        verify(apiUtils, times(1)).getUserIdFromAuthentication();
+        verify(userRepository, times(1)).findByIdAndDeletedFalse(testUser.getId());
+        verify(postRepository, times(1)).findByIdAndDeletedFalse(testPost.getId());
+        verify(commentRepository, times(1)).save(any(Comment.class));
+        verify(commentMapper, times(1)).toDTO(any(Comment.class));
     }
 
 }
