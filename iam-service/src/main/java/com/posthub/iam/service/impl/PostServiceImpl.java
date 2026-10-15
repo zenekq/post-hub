@@ -15,6 +15,7 @@ import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.repository.criteria.PostSearchCriteria;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.PostService;
+import com.posthub.iam.utils.ApiUtils;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
@@ -34,6 +35,7 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
     private final UserRepository userRepository;
     private final AccessValidator accessValidator;
+    private final ApiUtils apiUtils;
 
     @Override
     public ApiResult<PostDTO> getById(@NotNull Integer postId) {
@@ -46,13 +48,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest, String username) {
+    public ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest) {
 
         postRepository.assertTitleNotExists(newPostRequest.getTitle());
 
-        User user = userRepository.findByUsernameOrThrow(username);
+        Integer userId = apiUtils.getUserIdFromAuthentication();
 
-        Post post = postMapper.createPost(newPostRequest, user, username);
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
+
+        Post post = postMapper.createPost(newPostRequest, user, user.getUsername());
 
         Post savedPost = postRepository.save(post);
         PostDTO postDTO = postMapper.toPostDTO(savedPost);
