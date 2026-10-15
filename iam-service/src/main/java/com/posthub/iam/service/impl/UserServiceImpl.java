@@ -65,9 +65,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.createUser(newUserRequest);
         user.setPassword(passwordEncoder.encode(newUserRequest.getPassword()));
 
-        Set<Role> roles = new HashSet<>();
-        roles.add(userRole);
-        user.setRoles(roles);
+        user.setRoles(Set.of(userRole));
 
         User savedUser = userRepository.save(user);
         UserDTO userDTO = userMapper.userToUserDTO(savedUser);
