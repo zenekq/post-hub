@@ -52,9 +52,8 @@ public class PostServiceImpl implements PostService {
 
         User user = userRepository.findByUsernameOrThrow(username);
 
-        Post post = postMapper.createPost(newPostRequest);
-        post.setUser(user);
-        post.setCreatedBy(username);
+        Post post = postMapper.createPost(newPostRequest, user, username);
+
         Post savedPost = postRepository.save(post);
         PostDTO postDTO = postMapper.toPostDTO(savedPost);
 

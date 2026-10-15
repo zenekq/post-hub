@@ -3,6 +3,7 @@ package com.posthub.iam.mapper;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
+import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import org.mapstruct.Mapper;
@@ -21,7 +22,11 @@ public interface PostMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
-    Post createPost(NewPostRequest newPostRequest);
+    @Mapping(target = "updated", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    @Mapping(source = "user", target = "user")
+    @Mapping(source = "createdBy", target = "createdBy")
+    Post createPost(NewPostRequest newPostRequest, User user, String createdBy);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "created", ignore = true)
