@@ -1,15 +1,6 @@
 package com.posthub.iam.model.dto.role;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class RoleDTO {
-
-    private Integer id;
-    private String name;
-
-}
+public record RoleDTO(
+        Integer id,
+        String name
+) {}
