@@ -22,8 +22,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,7 +64,7 @@ public class UserServiceTest {
         testUser.setUsername("TestUser");
         testUser.setEmail("TestUser@example.com");
         testUser.setPassword("encodedPassword");
-        testUser.setRoles(Set.of(superAdminRole));
+        testUser.setRoles(Collections.singleton(superAdminRole));
 
         testUserDTO = new UserDTO();
         testUserDTO.setId(testUser.getId());
@@ -116,7 +116,7 @@ public class UserServiceTest {
         newUser.setUsername(request.getUsername());
         newUser.setEmail(request.getEmail());
         newUser.setPassword("encodedPassword");
-        newUser.setRoles(Set.of(superAdminRole));
+        newUser.setRoles(Collections.singleton(superAdminRole));
 
         when(userMapper.createUser(request)).thenReturn(newUser);
 
