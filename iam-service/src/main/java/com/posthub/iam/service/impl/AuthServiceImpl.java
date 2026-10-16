@@ -91,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
         Role role = roleRepository.findByNameOrThrow(stringRole);
 
         User newUser = userMapper.fromDto(request);
-        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(request.password()));
 
         newUser.setRoles(Collections.singleton(role));
         userRepository.save(newUser);

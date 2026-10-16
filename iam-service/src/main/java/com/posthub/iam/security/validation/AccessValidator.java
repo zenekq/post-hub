@@ -25,21 +25,21 @@ public class AccessValidator {
 
     public void validateNewUser(RegistrationUserRequest request) {
 
-        userRepository.findByUsername(request.getUsername())
+        userRepository.findByUsername(request.username())
                 .ifPresent(existingUser -> {
-                    throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(request.getUsername()));
+                    throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(request.username()));
                 });
 
-        userRepository.findByEmail(request.getEmail())
+        userRepository.findByEmail(request.email())
                 .ifPresent(existingUser -> {
-                    throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(request.getEmail()));
+                    throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(request.email()));
                 });
 
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
+        if (!request.password().equals(request.confirmPassword())) {
             throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getMessage());
         }
 
-        if (PasswordUtils.isNotValidPassword(request.getPassword())) {
+        if (PasswordUtils.isNotValidPassword(request.password())) {
             throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getMessage());
         }
 

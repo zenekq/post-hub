@@ -2,24 +2,18 @@ package com.posthub.iam.model.request.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class RegistrationUserRequest {
+public record RegistrationUserRequest(
+        @NotBlank
+        String username,
 
-    @NotBlank
-    private String username;
+        @NotBlank
+        @Email
+        String email,
 
-    @NotBlank
-    @Email
-    private String email;
+        @NotBlank
+        String password,
 
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    private String confirmPassword;
-
-}
+        @NotBlank
+        String confirmPassword
+) {}

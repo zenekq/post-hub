@@ -9,6 +9,6 @@ import jakarta.validation.ConstraintValidatorContext;
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, RegistrationUserRequest> {
     @Override
     public boolean isValid(RegistrationUserRequest request, ConstraintValidatorContext context) {
-        return request.getPassword().equals(request.getConfirmPassword());
+        return request.password().equals(request.confirmPassword());
     }
 }
