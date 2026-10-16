@@ -59,10 +59,14 @@ public class PostServiceTest {
         testPost.setContent("Test Content");
         testPost.setUser(testUser);
 
-        testPostDTO = new PostDTO();
-        testPostDTO.setId(testPost.getId());
-        testPostDTO.setTitle(testPost.getTitle());
-        testPostDTO.setContent(testPost.getContent());
+        testPostDTO = new PostDTO(
+                testPost.getId(),
+                testPost.getTitle(),
+                testPost.getContent(),
+                testPost.getLikes(),
+                testPost.getCreated(),
+                testPost.getCreatedBy()
+        );
     }
 
     @Test
@@ -73,9 +77,9 @@ public class PostServiceTest {
         PostDTO result = postService.getById(1).getPayload();
 
         assertNotNull(result);
-        assertEquals(testPost.getId(), result.getId());
-        assertEquals(testPost.getTitle(), result.getTitle());
-        assertEquals(testPost.getContent(), result.getContent());
+        assertEquals(testPost.getId(), result.id());
+        assertEquals(testPost.getTitle(), result.title());
+        assertEquals(testPost.getContent(), result.content());
 
         verify(postRepository, times(1)).findByIdAndDeletedFalse(1);
         verify(postMapper, times(1)).toPostDTO(testPost);
@@ -108,9 +112,9 @@ public class PostServiceTest {
         PostDTO result = postService.createPost(newPostRequest).getPayload();
 
         assertNotNull(result);
-        assertEquals(testPostDTO.getId(), result.getId());
-        assertEquals(testPostDTO.getTitle(), result.getTitle());
-        assertEquals(testPostDTO.getContent(), result.getContent());
+        assertEquals(testPostDTO.id(), result.id());
+        assertEquals(testPostDTO.title(), result.title());
+        assertEquals(testPostDTO.content(), result.content());
 
         verify(apiUtils, times(1)).getUserIdFromAuthentication();
         verify(userRepository, times(1)).findByIdAndDeletedFalse(testUser.getId());
