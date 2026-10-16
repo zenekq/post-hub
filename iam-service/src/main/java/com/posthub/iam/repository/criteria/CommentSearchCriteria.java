@@ -27,28 +27,28 @@ public class CommentSearchCriteria implements Specification<Comment> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (Objects.nonNull(request.getMessage())) {
+        if (Objects.nonNull(request.message())) {
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Comment.MESSAGE_NAME_FIELD)),
-                    "%" + request.getMessage().toLowerCase() + "%"));
+                    "%" + request.message().toLowerCase() + "%"));
         }
 
-        if (Objects.nonNull(request.getCratedBy())) {
+        if (Objects.nonNull(request.cratedBy())) {
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Comment.CRATED_BY_FIELD)),
-                    "%" + request.getCratedBy().toLowerCase() + "%"));
+                    "%" + request.cratedBy().toLowerCase() + "%"));
         }
 
-        if (Objects.nonNull(request.getDeleted())) {
-            predicates.add(criteriaBuilder.equal(root.get(Comment.DELETED_FIELD), request.getDeleted()));
+        if (Objects.nonNull(request.deleted())) {
+            predicates.add(criteriaBuilder.equal(root.get(Comment.DELETED_FIELD), request.deleted()));
         }
 
-        if (Objects.nonNull(request.getPostId())) {
-            predicates.add(criteriaBuilder.equal(root.get("post").get("id"), request.getPostId()));
+        if (Objects.nonNull(request.postId())) {
+            predicates.add(criteriaBuilder.equal(root.get("post").get("id"), request.postId()));
         }
 
-        if (Objects.nonNull(request.getKeyword())) {
+        if (Objects.nonNull(request.keyword())) {
             Predicate keywordPredicate = criteriaBuilder.or(
-                    criteriaBuilder.like(root.get(Comment.MESSAGE_NAME_FIELD), "%" + request.getKeyword() + "%"),
-                    criteriaBuilder.like(root.get(Comment.CRATED_BY_FIELD), "%" + request.getKeyword() + "%")
+                    criteriaBuilder.like(root.get(Comment.MESSAGE_NAME_FIELD), "%" + request.keyword() + "%"),
+                    criteriaBuilder.like(root.get(Comment.CRATED_BY_FIELD), "%" + request.keyword() + "%")
             );
 
             predicates.add(keywordPredicate);
@@ -60,8 +60,8 @@ public class CommentSearchCriteria implements Specification<Comment> {
     }
 
     private void sort(Root<Comment> root, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> query) {
-        if (Objects.nonNull(request.getSortField())) {
-            switch (request.getSortField()) {
+        if (Objects.nonNull(request.sortField())) {
+            switch (request.sortField()) {
                 case MASSAGE -> query.orderBy(criteriaBuilder.desc(root.get(Comment.MESSAGE_NAME_FIELD)));
                 case CREATED_BY -> query.orderBy(criteriaBuilder.desc(root.get(Comment.CRATED_BY_FIELD)));
                 default -> query.orderBy(criteriaBuilder.desc(root.get(Comment.ID_FIELD)));
