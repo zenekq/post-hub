@@ -50,7 +50,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest) {
 
-        postRepository.assertTitleNotExists(newPostRequest.getTitle());
+        postRepository.assertTitleNotExists(newPostRequest.title());
 
         Integer userId = apiUtils.getUserIdFromAuthentication();
 
