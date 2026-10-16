@@ -11,6 +11,7 @@ import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.CommentSearchRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.repository.CommentRepository;
@@ -24,6 +25,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -111,7 +113,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public ApiResult<PaginationResponse<CommentSearchDTO>> findAllComments(Pageable pageable) {
+    public ApiResult<PaginationResponse<CommentSearchDTO>> findAllComments(PaginationRequest paginationRequest) {
+
+        Pageable pageable = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
         Page<CommentSearchDTO> comments = commentRepository.findAll(pageable)
                 .map(commentMapper::toCommentSearchDTO);
@@ -132,7 +136,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(readOnly = true)
     public ApiResult<PaginationResponse<CommentSearchDTO>> searchComments(
-            @NotNull CommentSearchRequest request, Pageable pageable) {
+            @NotNull CommentSearchRequest request, PaginationRequest paginationRequest) {
+
+        Pageable pageable = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
         Specification<Comment> specification = new CommentSearchCriteria(request);
 

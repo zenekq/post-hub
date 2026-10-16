@@ -3,6 +3,7 @@ package com.posthub.iam.controller;
 import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.dto.post.PostSearchDTO;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
@@ -13,13 +14,9 @@ import com.posthub.iam.utils.ApiUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -67,6 +64,7 @@ public class PostController {
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> deletePostById(
             @PathVariable("id") Integer postId) {
+
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         postService.softDeletePost(postId);
@@ -76,28 +74,25 @@ public class PostController {
 
     @GetMapping("${end.points.all}")
     public ResponseEntity<ApiResult<PaginationResponse<PostSearchDTO>>> getAllPosts(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+            @ModelAttribute PaginationRequest paginationRequest) {
+
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        Pageable pageable = PageRequest.of(page, limit);
-        ApiResult<PaginationResponse<PostSearchDTO>> allPosts = postService.findAllPosts(pageable);
+        ApiResult<PaginationResponse<PostSearchDTO>> allPosts = postService.findAllPosts(paginationRequest);
         return ResponseEntity.ok(allPosts);
     }
 
     @PostMapping("${end.points.search}")
     public ResponseEntity<ApiResult<PaginationResponse<PostSearchDTO>>> searchPosts(
             @RequestBody @Valid PostSearchRequest postSearchRequest,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+            @ModelAttribute PaginationRequest paginationRequest) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        Pageable pageable = PageRequest.of(page, limit);
-        ApiResult<PaginationResponse<PostSearchDTO>> respose = postService.searchPosts(postSearchRequest, pageable);
+        ApiResult<PaginationResponse<PostSearchDTO>> response = postService.
+                searchPosts(postSearchRequest, paginationRequest);
 
-        return ResponseEntity.ok(respose);
+        return ResponseEntity.ok(response);
     }
-
 
 }

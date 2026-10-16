@@ -5,6 +5,7 @@ import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.dto.post.PostDTO;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
@@ -21,6 +22,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -95,7 +97,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ApiResult<PaginationResponse<PostSearchDTO>> findAllPosts(Pageable pageable) {
+    public ApiResult<PaginationResponse<PostSearchDTO>> findAllPosts(PaginationRequest paginationRequest) {
+
+        Pageable pageable = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
         Page<PostSearchDTO> posts = postRepository.findAll(pageable)
                 .map(postMapper::toPostSearchDTO);
@@ -115,7 +119,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ApiResult<PaginationResponse<PostSearchDTO>> searchPosts(
-            @NonNull PostSearchRequest postSearchRequest, Pageable pageable) {
+            @NonNull PostSearchRequest postSearchRequest, PaginationRequest paginationRequest) {
+
+        Pageable pageable = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
         Specification<Post> specification = new PostSearchCriteria(postSearchRequest);
 

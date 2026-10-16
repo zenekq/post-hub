@@ -6,6 +6,7 @@ import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.CommentSearchRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.service.CommentService;
@@ -71,13 +72,11 @@ public class CommentController {
 
     @GetMapping("${end.points.all}")
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> getAllComments(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+            @ModelAttribute PaginationRequest paginationRequest) {
+
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        Pageable pageable = PageRequest.of(page, limit);
-
-        ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(pageable);
+        ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(paginationRequest);
 
         return ResponseEntity.ok(result);
     }
@@ -85,13 +84,11 @@ public class CommentController {
     @PostMapping("${end.points.search}")
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> searchComments(
             @RequestBody @Valid CommentSearchRequest request,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+            @ModelAttribute PaginationRequest paginationRequest) {
+
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        Pageable pageable = PageRequest.of(page, limit);
-
-        ApiResult<PaginationResponse<CommentSearchDTO>> response = commentService.searchComments(request, pageable);
+        ApiResult<PaginationResponse<CommentSearchDTO>> response = commentService.searchComments(request, paginationRequest);
 
         return  ResponseEntity.ok(response);
     }

@@ -5,10 +5,10 @@ import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.CommentSearchRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.domain.Pageable;
 
 public interface CommentService {
 
@@ -20,8 +20,9 @@ public interface CommentService {
 
     void softDelete(@NotNull Integer commentId);
 
-    ApiResult<PaginationResponse<CommentSearchDTO>> findAllComments(Pageable pageable);
+    ApiResult<PaginationResponse<CommentSearchDTO>> findAllComments(PaginationRequest paginationRequest);
 
-    ApiResult<PaginationResponse<CommentSearchDTO>> searchComments(@NotNull CommentSearchRequest request, Pageable pageable);
+    ApiResult<PaginationResponse<CommentSearchDTO>> searchComments
+            (@NotNull CommentSearchRequest request, PaginationRequest paginationRequest);
 
 }

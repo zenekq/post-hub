@@ -3,6 +3,7 @@ package com.posthub.iam.controller;
 import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.dto.user.UserSearchDTO;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.request.user.UpdateUserRequest;
 import com.posthub.iam.model.request.user.UserSearchRequest;
@@ -71,24 +72,22 @@ public class UserController {
 
     @GetMapping("${end.points.all}")
     public ResponseEntity<ApiResult<PaginationResponse<UserSearchDTO>>> getAllUsers(
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+            @ModelAttribute PaginationRequest paginationRequest) {
+
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        Pageable pageable = PageRequest.of(page, limit);
-        ApiResult<PaginationResponse<UserSearchDTO>> response = userService.findAllUsers(pageable);
+        ApiResult<PaginationResponse<UserSearchDTO>> response = userService.findAllUsers(paginationRequest);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("${end.points.search}")
     public ResponseEntity<ApiResult<PaginationResponse<UserSearchDTO>>> searchUsers(
             @RequestBody @Valid UserSearchRequest request,
-            @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+            @ModelAttribute PaginationRequest paginationRequest) {
+
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
-        Pageable pageable = PageRequest.of(page, limit);
-        ApiResult<PaginationResponse<UserSearchDTO>> response = userService.searchUsers(request, pageable);
+        ApiResult<PaginationResponse<UserSearchDTO>> response = userService.searchUsers(request, paginationRequest);
         return ResponseEntity.ok(response);
     }
 

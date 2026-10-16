@@ -7,6 +7,7 @@ import com.posthub.iam.model.dto.user.UserSearchDTO;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.exception.NotFoundException;
+import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.request.user.UpdateUserRequest;
 import com.posthub.iam.model.request.user.UserSearchRequest;
@@ -21,6 +22,7 @@ import com.posthub.iam.service.model.IamServiceUserRole;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -106,7 +107,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public ApiResult<PaginationResponse<UserSearchDTO>> findAllUsers(Pageable pageable) {
+    public ApiResult<PaginationResponse<UserSearchDTO>> findAllUsers(PaginationRequest paginationRequest) {
+
+        Pageable pageable = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
         Page<UserSearchDTO> users = userRepository.findAll(pageable)
                 .map(userMapper::toUserSearchDTO);
@@ -126,9 +129,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public ApiResult<PaginationResponse<UserSearchDTO>> searchUsers(UserSearchRequest request, Pageable pageable) {
+    public ApiResult<PaginationResponse<UserSearchDTO>> searchUsers
+            (UserSearchRequest request, PaginationRequest paginationRequest) {
 
         Specification<User> userSearchCriteria = new UserSearchCriteria(request);
+
+        Pageable pageable = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
         Page<UserSearchDTO> users = userRepository.findAll(userSearchCriteria, pageable)
                 .map(userMapper::toUserSearchDTO);
