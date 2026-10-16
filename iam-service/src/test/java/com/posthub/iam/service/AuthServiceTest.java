@@ -9,13 +9,11 @@ import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.enums.RegistrationStatus;
 import com.posthub.iam.model.exception.InvalidDataException;
 import com.posthub.iam.model.request.user.RegistrationUserRequest;
-import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.impl.AuthServiceImpl;
-import com.posthub.iam.service.model.IamServiceUserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -34,7 +32,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -107,7 +104,7 @@ public class AuthServiceTest {
 
         LoginRequest request = new LoginRequest(testUser.getEmail(), testUser.getPassword());
         when(authenticationManager.authenticate(any())).thenReturn(null);
-        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(testUser));
+        when(userRepository.findByEmail(request.email())).thenReturn(Optional.of(testUser));
         when(jwtTokenProvider.generateToken(testUser)).thenReturn("access_token_123");
         when(refreshTokenService.generateOrUpdateRefreshToken(testUser)).thenReturn(testRefreshToken);
         when(userMapper.toUserProfileDTO(testUser, "access_token_123", testRefreshToken.getToken()))
@@ -137,6 +134,13 @@ public class AuthServiceTest {
 
         RegistrationUserRequest request = new RegistrationUserRequest(
                 "newUser", "test@example.com", "password123!", "password123!"
+        );
+
+        doNothing().when(accessValidator).validateNewUser(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyString()
         );
 
         when(roleRepository.findByNameOrThrow(any())).thenReturn(userRole);
