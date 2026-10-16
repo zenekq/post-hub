@@ -1,27 +1,36 @@
 package com.posthub.iam.service;
 
 import com.posthub.iam.mapper.UserMapper;
+import com.posthub.iam.model.dto.user.LoginRequest;
 import com.posthub.iam.model.dto.user.UserProfileDTO;
 import com.posthub.iam.model.entity.RefreshToken;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.enums.RegistrationStatus;
+import com.posthub.iam.model.exception.InvalidDataException;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.impl.AuthServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -87,6 +96,36 @@ public class AuthServiceTest {
                 testRefreshToken.getToken(),
                 Collections.emptyList()
         );
+    }
+
+    @Test
+    void login_ValidCredentials_ReturnsUserProfile() {
+
+        LoginRequest request = new LoginRequest(testUser.getEmail(), testUser.getPassword());
+        when(authenticationManager.authenticate(any())).thenReturn(null);
+        when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(testUser));
+        when(jwtTokenProvider.generateToken(testUser)).thenReturn("access_token_123");
+        when(refreshTokenService.generateOrUpdateRefreshToken(testUser)).thenReturn(testRefreshToken);
+        when(userMapper.toUserProfileDTO(testUser, "access_token_123", testRefreshToken.getToken()))
+                .thenReturn(testUserProfileDTO);
+
+        UserProfileDTO result = authService.login(request).getPayload();
+
+        assertNotNull(result);
+        assertEquals(testUserProfileDTO, result);
+    }
+
+    @Test
+    void login_InvalidCredentials_ThrowsException() {
+
+        LoginRequest request = new LoginRequest("test@example.com", "wrongPassword");
+        when(authenticationManager.authenticate(any()))
+                .thenThrow(new BadCredentialsException("Invalid credentials"));
+
+        InvalidDataException ex = assertThrows(InvalidDataException.class,
+                () -> authService.login(request));
+
+        assertTrue(ex.getMessage().contains("Invalid"));
     }
 
 }
