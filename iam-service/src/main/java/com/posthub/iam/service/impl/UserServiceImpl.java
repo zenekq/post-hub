@@ -81,9 +81,9 @@ public class UserServiceImpl implements UserService {
 
         accessValidator.validateAdminOrOwnerAccess(user.getId());
 
-        userRepository.assertUsernameNotExists(updateUserRequest.getUsername());
+        userRepository.assertUsernameNotExists(updateUserRequest.username());
 
-        userRepository.assertEmailNotExists(updateUserRequest.getEmail());
+        userRepository.assertEmailNotExists(updateUserRequest.email());
 
         userMapper.updateUser(user, updateUserRequest);
         user = userRepository.save(user);
