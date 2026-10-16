@@ -8,11 +8,14 @@ import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.enums.RegistrationStatus;
 import com.posthub.iam.model.exception.InvalidDataException;
+import com.posthub.iam.model.request.user.RegistrationUserRequest;
+import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.RoleRepository;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.impl.AuthServiceImpl;
+import com.posthub.iam.service.model.IamServiceUserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -30,7 +33,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
@@ -126,6 +130,28 @@ public class AuthServiceTest {
                 () -> authService.login(request));
 
         assertTrue(ex.getMessage().contains("Invalid"));
+    }
+
+    @Test
+    void registerUser_ValidRequest_CreatesUserSuccessfully() {
+
+        RegistrationUserRequest request = new RegistrationUserRequest(
+                "newUser", "test@example.com", "password123!", "password123!"
+        );
+
+        when(roleRepository.findByNameOrThrow(any())).thenReturn(userRole);
+        when(userMapper.fromDto(request)).thenReturn(testUser);
+        when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword");
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        when(refreshTokenService.generateOrUpdateRefreshToken(testUser)).thenReturn(testRefreshToken);
+        when(jwtTokenProvider.generateToken(testUser)).thenReturn("access_token_123");
+        when(userMapper.toUserProfileDTO(testUser, "access_token_123", testRefreshToken.getToken()))
+                .thenReturn(testUserProfileDTO);
+
+        UserProfileDTO result = authService.registerUser(request).getPayload();
+
+        assertNotNull(result);
+        assertEquals(testUserProfileDTO, result);
     }
 
 }
