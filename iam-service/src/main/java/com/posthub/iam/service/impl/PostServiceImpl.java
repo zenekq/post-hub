@@ -72,7 +72,7 @@ public class PostServiceImpl implements PostService {
 
         accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
 
-        postRepository.assertTitleNotExists(updatePostRequest.getTitle());
+        postRepository.assertTitleNotExists(updatePostRequest.title());
 
         postMapper.updatePost(post, updatePostRequest);
         post.setUpdated(LocalDateTime.now());

@@ -2,21 +2,14 @@ package com.posthub.iam.model.request.post;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UpdatePostRequest {
+public record UpdatePostRequest(
+        @NotBlank
+        String title,
 
-   @NotBlank
-   private String title;
+        @NotBlank
+        String content,
 
-   @NotBlank
-   private String content;
-
-   @NotNull
-   private Integer likes;
-}
+        @NotNull
+        Integer likes
+) {}
