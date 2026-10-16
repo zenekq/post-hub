@@ -136,12 +136,7 @@ public class AuthServiceTest {
                 "newUser", "test@example.com", "password123!", "password123!"
         );
 
-        doNothing().when(accessValidator).validateNewUser(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString()
-        );
+        doNothing().when(accessValidator).validateNewUser(any());
 
         when(roleRepository.findByNameOrThrow(any())).thenReturn(userRole);
         when(userMapper.fromDto(request)).thenReturn(testUser);
