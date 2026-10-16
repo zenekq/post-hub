@@ -27,28 +27,28 @@ public class PostSearchCriteria implements Specification<Post> {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (Objects.nonNull(request.getTitle())) {
+        if (Objects.nonNull(request.title())) {
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Post.TITLE_NAME_FIELD)),
-                    "%" + request.getTitle().toLowerCase() + "%"));
+                    "%" + request.title().toLowerCase() + "%"));
         }
 
-        if (Objects.nonNull(request.getContent())) {
+        if (Objects.nonNull(request.content())) {
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(Post.CONTENT_NAME_FIELD)),
-                    "%" + request.getContent().toLowerCase() + "%"));
+                    "%" + request.content().toLowerCase() + "%"));
         }
 
-        if (Objects.nonNull(request.getLikes())) {
-            predicates.add(criteriaBuilder.equal(root.get(Post.LIKES_NAME_FIELD), request.getLikes()));
+        if (Objects.nonNull(request.likes())) {
+            predicates.add(criteriaBuilder.equal(root.get(Post.LIKES_NAME_FIELD), request.likes()));
         }
 
-        if (Objects.nonNull(request.getDeleted())) {
-            predicates.add(criteriaBuilder.equal(root.get(Post.DELETED_FIELD), request.getDeleted()));
+        if (Objects.nonNull(request.deleted())) {
+            predicates.add(criteriaBuilder.equal(root.get(Post.DELETED_FIELD), request.deleted()));
         }
 
-        if (Objects.nonNull(request.getKeyword())) {
+        if (Objects.nonNull(request.keyword())) {
             Predicate keywordPredicate = criteriaBuilder.or(
-                    criteriaBuilder.like(root.get(Post.TITLE_NAME_FIELD), "%" + request.getKeyword() + "%"),
-                    criteriaBuilder.like(root.get(Post.CONTENT_NAME_FIELD), "%" + request.getKeyword() + "%")
+                    criteriaBuilder.like(root.get(Post.TITLE_NAME_FIELD), "%" + request.keyword() + "%"),
+                    criteriaBuilder.like(root.get(Post.CONTENT_NAME_FIELD), "%" + request.keyword() + "%")
             );
 
             predicates.add(keywordPredicate);
@@ -60,8 +60,8 @@ public class PostSearchCriteria implements Specification<Post> {
     }
 
     private void sort(Root<Post> root, CriteriaBuilder criteriaBuilder, CriteriaQuery<?> query) {
-        if (Objects.nonNull(request.getSortField())) {
-            switch (request.getSortField()) {
+        if (Objects.nonNull(request.sortField())) {
+            switch (request.sortField()) {
                 case TITLE -> query.orderBy(criteriaBuilder.desc(root.get(Post.TITLE_NAME_FIELD)));
                 case CONTENT -> query.orderBy(criteriaBuilder.desc(root.get(Post.CONTENT_NAME_FIELD)));
                 case LIKES -> query.orderBy(criteriaBuilder.desc(root.get(Post.LIKES_NAME_FIELD)));
