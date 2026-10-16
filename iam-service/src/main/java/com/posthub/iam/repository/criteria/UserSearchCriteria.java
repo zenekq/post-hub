@@ -26,22 +26,22 @@ public class UserSearchCriteria implements Specification<User> {
 
         ArrayList<Predicate> predicates = new ArrayList<>();
 
-        if (Objects.nonNull(request.getUsername())) {
-            predicates.add(criteriaBuilder.like(root.get(User.USER_NAME_FIELD), "%" + request.getUsername() + "%"));
+        if (Objects.nonNull(request.username())) {
+            predicates.add(criteriaBuilder.like(root.get(User.USER_NAME_FIELD), "%" + request.username() + "%"));
         }
 
-        if (Objects.nonNull(request.getEmail())) {
-            predicates.add(criteriaBuilder.like(root.get(User.EMAIL_NAME_FIELD), "%" + request.getEmail() + "%"));
+        if (Objects.nonNull(request.email())) {
+            predicates.add(criteriaBuilder.like(root.get(User.EMAIL_NAME_FIELD), "%" + request.email() + "%"));
         }
 
-        if (Objects.nonNull(request.getDeleted())) {
-            predicates.add(criteriaBuilder.equal(root.get(User.DELETED_FIELD), request.getDeleted()));
+        if (Objects.nonNull(request.deleted())) {
+            predicates.add(criteriaBuilder.equal(root.get(User.DELETED_FIELD), request.deleted()));
         }
 
-        if (Objects.nonNull(request.getKeyword())) {
+        if (Objects.nonNull(request.keyword())) {
             Predicate keywordPredicate = criteriaBuilder.or(
-                    criteriaBuilder.like(root.get(User.USER_NAME_FIELD), "%" + request.getUsername() + "%"),
-                    criteriaBuilder.like(root.get(User.EMAIL_NAME_FIELD), "%" + request.getEmail() + "%")
+                    criteriaBuilder.like(root.get(User.USER_NAME_FIELD), "%" + request.username() + "%"),
+                    criteriaBuilder.like(root.get(User.EMAIL_NAME_FIELD), "%" + request.email() + "%")
             );
 
             predicates.add(keywordPredicate);
@@ -53,8 +53,8 @@ public class UserSearchCriteria implements Specification<User> {
     }
 
     private void sort(Root<User> root, CriteriaBuilder cb, CriteriaQuery<?> query) {
-        if (Objects.nonNull(request.getSortField())) {
-            switch (request.getSortField()) {
+        if (Objects.nonNull(request.sortField())) {
+            switch (request.sortField()) {
                 case USERNAME -> query.orderBy(cb.asc(root.get(User.USER_NAME_FIELD)));
                 case EMAIL -> query.orderBy(cb.asc(root.get(User.EMAIL_NAME_FIELD)));
                 default -> query.orderBy(cb.asc(root.get(User.ID_FIELD)));
