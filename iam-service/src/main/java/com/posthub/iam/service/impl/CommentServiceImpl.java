@@ -59,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
         Integer userId = apiUtils.getUserIdFromAuthentication();
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
-        Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.getPostId());
+        Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.postId());
 
         Comment comment = commentMapper.createComment(request, user, post);
         Comment savedComment = commentRepository.save(comment);
