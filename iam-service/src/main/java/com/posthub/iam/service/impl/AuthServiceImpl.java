@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -100,16 +101,13 @@ public class AuthServiceImpl implements AuthService {
         User newUser = userMapper.fromDto(request);
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        newUser.setRoles(roles);
+        newUser.setRoles(Collections.singleton(role));
         userRepository.save(newUser);
 
         RefreshToken refreshToken = refreshTokenService.generateOrUpdateRefreshToken(newUser);
         String token = jwtTokenProvider.generateToken(newUser);
 
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(newUser, token, refreshToken.getToken());
-        userProfileDTO.setToken(token);
 
         return ApiResult.createSuccessfulWithNewToken(userProfileDTO);
     }
