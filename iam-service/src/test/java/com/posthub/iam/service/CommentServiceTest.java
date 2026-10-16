@@ -71,9 +71,14 @@ public class CommentServiceTest {
         testComment.setPost(testPost);
         testComment.setUser(testUser);
 
-        testCommentDTO = new CommentDTO();
-        testCommentDTO.setId(testComment.getId());
-        testComment.setMessage(testComment.getMessage());
+        testCommentDTO = new CommentDTO(
+                testComment.getId(),
+                testComment.getMessage(),
+                null,
+                null,
+                null,
+                null
+        );
     }
 
     @Test
@@ -85,8 +90,8 @@ public class CommentServiceTest {
         CommentDTO result = commentService.getCommentById(COMMENT_ID).getPayload();
 
         assertNotNull(result);
-        assertEquals(testCommentDTO.getId(), result.getId());
-        assertEquals(testCommentDTO.getMessage(), result.getMessage());
+        assertEquals(testCommentDTO.id(), result.id());
+        assertEquals(testCommentDTO.message(), result.message());
 
         verify(commentRepository, times(1)).findByIdAndDeletedFalse(COMMENT_ID);
         verify(commentMapper, times(1)).toDTO(testComment);
@@ -123,7 +128,7 @@ public class CommentServiceTest {
         CommentDTO result = commentService.createComment(request).getPayload();
 
         assertNotNull(result);
-        assertEquals(testCommentDTO.getMessage(), result.getMessage());
+        assertEquals(testCommentDTO.message(), result.message());
 
         verify(apiUtils, times(1)).getUserIdFromAuthentication();
         verify(userRepository, times(1)).findByIdAndDeletedFalse(testUser.getId());
