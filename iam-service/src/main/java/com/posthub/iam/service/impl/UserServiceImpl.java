@@ -56,14 +56,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult<UserDTO> createUser(NewUserRequest newUserRequest) {
 
-        userRepository.assertUsernameNotExists(newUserRequest.getUsername());
+        userRepository.assertUsernameNotExists(newUserRequest.username());
 
-        userRepository.assertEmailNotExists(newUserRequest.getEmail());
+        userRepository.assertEmailNotExists(newUserRequest.email());
 
         Role userRole = roleRepository.findByNameOrThrow(IamServiceUserRole.USER.getRole());
 
         User user = userMapper.createUser(newUserRequest);
-        user.setPassword(passwordEncoder.encode(newUserRequest.getPassword()));
+        user.setPassword(passwordEncoder.encode(newUserRequest.password()));
 
         user.setRoles(Set.of(userRole));
 
