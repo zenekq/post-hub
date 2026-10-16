@@ -5,6 +5,7 @@ import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.InvalidDataException;
 import com.posthub.iam.model.exception.NotFoundException;
+import com.posthub.iam.model.request.user.RegistrationUserRequest;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.service.model.IamServiceUserRole;
 import com.posthub.iam.utils.ApiUtils;
@@ -22,23 +23,23 @@ public class AccessValidator {
     private final UserRepository userRepository;
     private final ApiUtils apiUtils;
 
-    public void validateNewUser(String username, String email, String password, String confirmPassword) {
+    public void validateNewUser(RegistrationUserRequest request) {
 
-        userRepository.findByUsername(username)
+        userRepository.findByUsername(request.getUsername())
                 .ifPresent(existingUser -> {
-                    throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(username));
+                    throw new DataExistException(ApiErrorMessage.USERNAME_ALREADY_EXIST.format(request.getUsername()));
                 });
 
-        userRepository.findByEmail(email)
+        userRepository.findByEmail(request.getEmail())
                 .ifPresent(existingUser -> {
-                    throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(email));
+                    throw new DataExistException(ApiErrorMessage.EMAIL_ALREADY_EXIST.format(request.getEmail()));
                 });
 
-        if (!password.equals(confirmPassword)) {
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getMessage());
         }
 
-        if (PasswordUtils.isNotValidPassword(password)) {
+        if (PasswordUtils.isNotValidPassword(request.getPassword())) {
             throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getMessage());
         }
 

@@ -28,8 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -80,7 +78,6 @@ public class AuthServiceImpl implements AuthService {
 
         String accessToken = jwtTokenProvider.generateToken(user);
 
-
         return ApiResult.createSuccessfulWithNewToken(userMapper.toUserProfileDTO(user, accessToken, refreshToken.getToken()));
     }
 
@@ -88,12 +85,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public ApiResult<UserProfileDTO> registerUser(RegistrationUserRequest request) {
 
-        accessValidator.validateNewUser(
-                request.getUsername(),
-                request.getEmail(),
-                request.getPassword(),
-                request.getConfirmPassword()
-        );
+        accessValidator.validateNewUser(request);
 
         String stringRole = IamServiceUserRole.USER.getRole();
         Role role = roleRepository.findByNameOrThrow(stringRole);
