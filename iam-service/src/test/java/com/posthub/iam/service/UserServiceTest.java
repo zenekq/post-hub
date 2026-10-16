@@ -108,19 +108,19 @@ public class UserServiceTest {
     void createUser_AsSuperAdmin_CreatesUserSuccessfully() {
         NewUserRequest request = new NewUserRequest("NewUser", "password123!", "new_user@example.com");
 
-        when(userRepository.existsByEmail(request.getEmail())).thenReturn(false);
-        when(userRepository.existsByUsername(request.getUsername())).thenReturn(false);
+        when(userRepository.existsByEmail(request.email())).thenReturn(false);
+        when(userRepository.existsByUsername(request.username())).thenReturn(false);
         when(roleRepository.findByName(IamServiceUserRole.USER.getRole())).thenReturn(Optional.of(superAdminRole));
 
         User newUser = new User();
-        newUser.setUsername(request.getUsername());
-        newUser.setEmail(request.getEmail());
+        newUser.setUsername(request.username());
+        newUser.setEmail(request.email());
         newUser.setPassword("encodedPassword");
         newUser.setRoles(Collections.singleton(superAdminRole));
 
         when(userMapper.createUser(request)).thenReturn(newUser);
 
-        when(passwordEncoder.encode(request.getPassword())).thenReturn("encodedPassword");
+        when(passwordEncoder.encode(request.password())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(newUser);
         when(userMapper.userToUserDTO(newUser)).thenReturn(testUserDTO);
 
@@ -130,8 +130,8 @@ public class UserServiceTest {
         assertEquals(testUserDTO.getId(), result.getId());
         assertEquals(testUserDTO.getUsername(), result.getUsername());
 
-        verify(userRepository, times(1)).existsByEmail(request.getEmail());
-        verify(userRepository, times(1)).existsByUsername(request.getUsername());
+        verify(userRepository, times(1)).existsByEmail(request.email());
+        verify(userRepository, times(1)).existsByUsername(request.username());
         verify(userRepository, times(1)).save(any(User.class));
         verify(userMapper, times(1)).userToUserDTO(newUser);
     }
@@ -140,14 +140,14 @@ public class UserServiceTest {
     void createUser_EmailAlreadyExists_ThrowsException() {
         NewUserRequest request = new NewUserRequest("NewUser", "password123!", "new_user@example.com");
 
-        when(userRepository.existsByUsername(request.getUsername())).thenReturn(false);
-        when(userRepository.existsByEmail(request.getEmail())).thenReturn(true);
+        when(userRepository.existsByUsername(request.username())).thenReturn(false);
+        when(userRepository.existsByEmail(request.email())).thenReturn(true);
 
         assertThatThrownBy(() -> userService.createUser(request))
                 .isInstanceOf(DataExistException.class)
                 .hasMessageContaining("already exists");
 
-        verify(userRepository, times(1)).existsByEmail(request.getEmail());
+        verify(userRepository, times(1)).existsByEmail(request.email());
         verify(userRepository, times(1)).existsByUsername(anyString());
         verify(userRepository, never()).save(any(User.class));
     }

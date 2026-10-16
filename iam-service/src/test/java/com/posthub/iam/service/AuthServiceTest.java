@@ -140,7 +140,7 @@ public class AuthServiceTest {
 
         when(roleRepository.findByNameOrThrow(any())).thenReturn(userRole);
         when(userMapper.fromDto(request)).thenReturn(testUser);
-        when(passwordEncoder.encode(request.getPassword())).thenReturn("hashedPassword");
+        when(passwordEncoder.encode(request.password())).thenReturn("hashedPassword");
         when(userRepository.save(any(User.class))).thenReturn(testUser);
         when(refreshTokenService.generateOrUpdateRefreshToken(testUser)).thenReturn(testRefreshToken);
         when(jwtTokenProvider.generateToken(testUser)).thenReturn("access_token_123");
