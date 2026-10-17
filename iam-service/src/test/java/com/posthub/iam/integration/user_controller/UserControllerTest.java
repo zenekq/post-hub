@@ -1,10 +1,16 @@
 package com.posthub.iam.integration.user_controller;
 
+import com.posthub.iam.factory.TestDataFactory;
+import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.request.user.NewUserRequest;
+import com.posthub.iam.model.request.user.UpdateUserRequest;
+import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import lombok.Setter;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,9 +25,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.Objects;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,6 +48,7 @@ public class UserControllerTest {
     @Autowired @Setter
     private UserRepository userRepository;
 
+    private final TestDataFactory testDataFactory = new TestDataFactory();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String adminJwt;
     private String userJwt;
@@ -47,6 +57,9 @@ public class UserControllerTest {
 
     @Value("${end.points.all}")
     private String endPointAll;
+
+    @Value("${end.points.create}")
+    private String endPointCreate;
 
     @BeforeAll
     @Transactional
@@ -68,6 +81,82 @@ public class UserControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, adminJwt)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void getAllUsers_Unauthorized_401() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get(prefix + endPointAll))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    @Transactional
+    void createUser_AsAdmin_OK_200() throws Exception {
+        NewUserRequest request = testDataFactory.createTestNewUserRequest();
+
+        MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post(prefix + endPointCreate)
+                        .header(HttpHeaders.AUTHORIZATION, adminJwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        ApiResult<UserDTO> response = parseDTOResponse(requestResult.getResponse().getContentAsByteArray(), UserDTO.class);
+
+        UserDTO resultBody = Objects.nonNull(response.getPayload()) ? response.getPayload() : null;
+        Assertions.assertTrue(response.isSuccess());
+        Assertions.assertNotNull(resultBody);
+        Assertions.assertEquals(request.email(), resultBody.getEmail());
+        Assertions.assertEquals(request.username(), resultBody.getUsername());
+    }
+
+    @Test
+    @Transactional
+    void createUser_asUser_withoutAccess_403() throws Exception {
+
+        NewUserRequest request = testDataFactory.createTestNewUserRequest();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(prefix + endPointCreate)
+                        .header(HttpHeaders.AUTHORIZATION, userJwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    @Transactional
+    void updateUser_AsAdmin_OK_200() throws Exception {
+        UpdateUserRequest request = testDataFactory.createTestUpdateUserRequest();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put(prefix +"/3")
+                        .header(HttpHeaders.AUTHORIZATION, adminJwt)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void deleteUser_AsUser_withoutAccess_403() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete(prefix +"/4")
+                        .header(HttpHeaders.AUTHORIZATION, userJwt)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    private <T> ApiResult<T> parseDTOResponse(byte[] contentAsByteArray, Class<T> payloadClass) {
+        ApiResult<T> rawResult = objectMapper.readValue(contentAsByteArray, ApiResult.class);
+        T payload = objectMapper.convertValue(rawResult.getPayload(), payloadClass);
+        rawResult.setPayload(payload);
+        return rawResult;
     }
 
 }

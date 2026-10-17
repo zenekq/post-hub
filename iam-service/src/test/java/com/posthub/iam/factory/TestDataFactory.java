@@ -7,6 +7,8 @@ import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.request.user.NewUserRequest;
+import com.posthub.iam.model.request.user.UpdateUserRequest;
 import com.posthub.iam.service.model.IamServiceUserRole;
 
 import java.time.LocalDateTime;
@@ -17,7 +19,11 @@ public class TestDataFactory {
 
     public static final int TEST_USER_ID = 1;
     public static final String TEST_USERNAME = "TestUser";
+    public static final String TEST_USERNAME_NEW_USER = "TestNewUser";
+    public static final String TEST_UPDATE_USERNAME = "TestNewUser";
     public static final String TEST_EMAIL = "test_user@example.com";
+    public static final String TEST_NEW_USER_EMAIL = "test_new_user@example.com";
+    public static final String TEST_UPDATE_EMAIL = "test_update_user@example.com";
     public static final String TEST_POST_TITLE = "Test Post";
     public static final String TEST_POST_CONTENT = "Test Content";
     public static final String TEST_COMMENT = "Test Comment";
@@ -57,6 +63,21 @@ public class TestDataFactory {
 
         return userDTO;
     }
+
+    public NewUserRequest createTestNewUserRequest() {
+        return new NewUserRequest(
+                TEST_USERNAME_NEW_USER,
+                TEST_PASSWORD,
+                TEST_NEW_USER_EMAIL);
+    }
+
+    public UpdateUserRequest createTestUpdateUserRequest() {
+        return new UpdateUserRequest(
+                TEST_UPDATE_USERNAME,
+                TEST_NEW_USER_EMAIL,
+                false);
+    }
+
 
     public List<RoleDTO> mapRoles(Collection<Role> roles) {
         return roles.stream()
