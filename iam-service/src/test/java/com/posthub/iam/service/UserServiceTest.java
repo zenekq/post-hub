@@ -52,7 +52,7 @@ public class UserServiceTest {
     private UserDTO testUserDTO;
     private Role superAdminRole;
 
-    private static final int USER_ID = 1;
+    private static final long USER_ID = 1;
 
     @BeforeEach
     void setUp() {
@@ -92,7 +92,7 @@ public class UserServiceTest {
     @Test
     void getById_UserNotFound_ThrowException() {
 
-        final int NON_EXISTENT_USER_ID = 999;
+        final long NON_EXISTENT_USER_ID = 999;
 
         when(userRepository.findByIdAndDeletedFalse(NON_EXISTENT_USER_ID)).thenReturn(Optional.empty());
 

@@ -14,13 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @NullMarked
 public interface UserService extends UserDetailsService {
 
-    ApiResult<UserDTO> getById(Integer userId);
+    ApiResult<UserDTO> getById(Long userId);
 
     ApiResult<UserDTO> createUser(NewUserRequest newUserRequest);
 
-    ApiResult<UserDTO> updateUser(Integer userId, UpdateUserRequest request);
+    ApiResult<UserDTO> updateUser(Long userId, UpdateUserRequest request);
 
-    void softDeleteUser(Integer userId);
+    void softDeleteUser(Long userId);
 
     ApiResult<PaginationResponse<UserSearchDTO>> findAllUsers(PaginationRequest paginationRequest);
 

@@ -4,6 +4,8 @@ import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -12,14 +14,14 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
 
     @EntityGraph(attributePaths = "roles")
-    Optional<User> findByIdAndDeletedFalse(Integer userId);
+    Optional<User> findByIdAndDeletedFalse(Long userId);
 
     Optional<User> findUserByEmailAndDeletedFalse(String email);
 
@@ -29,13 +31,16 @@ public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecifi
     @EntityGraph(attributePaths = "roles")
     Optional<User> findByUsername(String username);
 
+    @EntityGraph(attributePaths = "roles")
+    Page<User> findAll(Pageable pageable);
+
     default User findByUsernameOrThrow(String username) {
         return findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(
                         ApiErrorMessage.USER_WITH_USERNAME_NOT_FOUND.format(username)));
     }
 
-    default User findByIdAndDeletedFalseOrThrow(Integer userId) {
+    default User findByIdAndDeletedFalseOrThrow(Long userId) {
         return findByIdAndDeletedFalse(userId)
                 .orElseThrow(() -> new NotFoundException(
                         ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));

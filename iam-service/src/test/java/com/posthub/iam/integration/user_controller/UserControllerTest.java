@@ -68,11 +68,11 @@ public class UserControllerTest {
     @Transactional
     void authorize() {
 
-        User admin = userRepository.findByIdAndDeletedFalseOrThrow(1);
+        User admin = userRepository.findByIdAndDeletedFalseOrThrow(1L);
 
         adminJwt = "Bearer " + jwtTokenProvider.generateToken(admin);
 
-        User user = userRepository.findByIdAndDeletedFalseOrThrow(3);
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(3L);
 
         userJwt = "Bearer " + jwtTokenProvider.generateToken(user);
     }

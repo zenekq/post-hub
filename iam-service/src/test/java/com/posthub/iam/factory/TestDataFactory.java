@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TestDataFactory {
 
-    public static final int TEST_USER_ID = 1;
+    public static final Long TEST_USER_ID = 1L;
     public static final String TEST_USERNAME = "TestUser";
     public static final String TEST_USERNAME_NEW_USER = "TestNewUser";
     public static final String TEST_UPDATE_USERNAME = "TestNewUser";
@@ -92,7 +92,7 @@ public class TestDataFactory {
 
     public Post createTestPost(User user) {
         Post post = new Post();
-        post.setId(1);
+        post.setId(1L);
         post.setTitle(TEST_POST_TITLE);
         post.setContent(TEST_POST_CONTENT);
         post.setUser(user);
@@ -129,7 +129,7 @@ public class TestDataFactory {
 
     public Comment createTestComment(User user, Post post) {
         Comment comment = new Comment();
-        comment.setId(1);
+        comment.setId(1L);
         comment.setPost(post);
         comment.setUser(user);
         comment.setMessage(TEST_COMMENT);

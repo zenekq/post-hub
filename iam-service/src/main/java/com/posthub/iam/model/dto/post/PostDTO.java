@@ -3,7 +3,7 @@ package com.posthub.iam.model.dto.post;
 import java.time.LocalDateTime;
 
 public record PostDTO(
-        Integer id,
+        Long id,
         String title,
         String content,
         Integer likes,

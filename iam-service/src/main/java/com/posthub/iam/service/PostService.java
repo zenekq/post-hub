@@ -13,13 +13,13 @@ import jakarta.validation.constraints.NotNull;
 
 public interface PostService {
 
-    ApiResult<PostDTO> getById(@NotNull Integer id);
+    ApiResult<PostDTO> getById(@NotNull Long id);
 
     ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest);
 
-    ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest);
+    ApiResult<PostDTO> updatePost(@NotNull Long postId, @NotNull UpdatePostRequest updatePostRequest);
 
-    void softDeletePost(@NotNull Integer postId);
+    void softDeletePost(@NotNull Long postId);
 
     ApiResult<PaginationResponse<PostSearchDTO>> findAllPosts(PaginationRequest paginationRequest);
 

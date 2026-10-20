@@ -12,7 +12,7 @@ CREATE TABLE users (
 
 CREATE TABLE posts (
     id      BIGSERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
+    user_id BIGINT NOT NULL,
     title   VARCHAR(255) NOT NULL,
     content TEXT         NOT NULL,
     created TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -41,7 +41,7 @@ CREATE TABLE user_roles(
 );
 
 CREATE TABLE refresh_token (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     token VARCHAR(128) NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     user_id BIGINT NOT NULL,

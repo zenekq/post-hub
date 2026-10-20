@@ -24,9 +24,9 @@ public interface PostRepository extends JpaRepository<Post, Integer>, JpaSpecifi
 
     boolean existsByTitle(String title);
 
-    Optional<Post> findByIdAndDeletedFalse(Integer postId);
+    Optional<Post> findByIdAndDeletedFalse(Long postId);
 
-    default Post findByIdAndDeletedFalseOrThrow(Integer id) {
+    default Post findByIdAndDeletedFalseOrThrow(Long id) {
         return findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new NotFoundException(
                         ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(id)

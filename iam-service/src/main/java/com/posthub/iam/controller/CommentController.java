@@ -33,7 +33,7 @@ public class CommentController {
 
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<CommentDTO>> getCommentById(
-            @PathVariable(name = "id") Integer commentId) {
+            @PathVariable(name = "id") Long commentId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.getCommentById(commentId);
@@ -52,7 +52,7 @@ public class CommentController {
 
     @PutMapping("${end.points.id}")
     public ResponseEntity<ApiResult<CommentDTO>> updateComment(
-            @PathVariable(name = "id") Integer commentId,
+            @PathVariable(name = "id") Long commentId,
             @RequestBody @Valid UpdateCommentRequest updateCommentRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
@@ -62,7 +62,7 @@ public class CommentController {
 
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeleteComment(
-            @PathVariable(name = "id") Integer commentId) {
+            @PathVariable(name = "id") Long commentId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         commentService.softDelete(commentId);

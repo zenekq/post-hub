@@ -45,7 +45,7 @@ public class AccessValidator {
 
     }
 
-    public boolean isAdminOrSuperAdmin(Integer userId) {
+    public boolean isAdminOrSuperAdmin(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(ApiErrorMessage.USER_WITH_ID_NOT_FOUND.format(userId)));
 
@@ -55,8 +55,8 @@ public class AccessValidator {
     }
 
     @SneakyThrows
-   public void validateAdminOrOwnerAccess(Integer ownerUserId) {
-       Integer currentUserId = apiUtils.getUserIdFromAuthentication();
+   public void validateAdminOrOwnerAccess(Long ownerUserId) {
+       Long currentUserId = apiUtils.getUserIdFromAuthentication();
 
        if (!currentUserId.equals(ownerUserId) && !isAdminOrSuperAdmin(currentUserId)) {
             throw new AccessDeniedException(ApiErrorMessage.HAVE_NO_ACCESS.getMessage());

@@ -3,6 +3,8 @@ package com.posthub.iam.model.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
@@ -10,11 +12,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "refresh_token")
+@DynamicUpdate
+@DynamicInsert
 public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Integer id;
+    private  Long id;
 
     @Column(nullable = false, unique = true)
     private String token;

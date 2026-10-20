@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +17,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Table(name = "roles")
+@DynamicUpdate
+@DynamicInsert
 public class Role {
 
     @Id

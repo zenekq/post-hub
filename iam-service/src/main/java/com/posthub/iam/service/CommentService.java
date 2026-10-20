@@ -12,13 +12,13 @@ import jakarta.validation.constraints.NotNull;
 
 public interface CommentService {
 
-    ApiResult<CommentDTO> getCommentById(@NotNull Integer commentId);
+    ApiResult<CommentDTO> getCommentById(@NotNull Long commentId);
 
     ApiResult<CommentDTO> createComment(@NotNull CommentRequest commentRequest);
 
-    ApiResult<CommentDTO> updateComment(@NotNull Integer commentId, @NotNull UpdateCommentRequest request);
+    ApiResult<CommentDTO> updateComment(@NotNull Long commentId, @NotNull UpdateCommentRequest request);
 
-    void softDelete(@NotNull Integer commentId);
+    void softDelete(@NotNull Long commentId);
 
     ApiResult<PaginationResponse<CommentSearchDTO>> findAllComments(PaginationRequest paginationRequest);
 

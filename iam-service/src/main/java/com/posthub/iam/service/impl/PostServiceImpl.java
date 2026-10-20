@@ -40,7 +40,7 @@ public class PostServiceImpl implements PostService {
     private final ApiUtils apiUtils;
 
     @Override
-    public ApiResult<PostDTO> getById(@NotNull Integer postId) {
+    public ApiResult<PostDTO> getById(@NotNull Long postId) {
 
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
 
         postRepository.assertTitleNotExists(newPostRequest.title());
 
-        Integer userId = apiUtils.getUserIdFromAuthentication();
+        Long userId = apiUtils.getUserIdFromAuthentication();
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 
@@ -68,7 +68,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public ApiResult<PostDTO> updatePost(@NotNull Integer postId, @NotNull UpdatePostRequest updatePostRequest) {
+    public ApiResult<PostDTO> updatePost(@NotNull Long postId, @NotNull UpdatePostRequest updatePostRequest) {
 
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
@@ -86,7 +86,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void softDeletePost(Integer postId) {
+    public void softDeletePost(Long postId) {
 
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
