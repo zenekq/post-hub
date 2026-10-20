@@ -3,6 +3,8 @@ package com.posthub.iam.model.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "posts")
 @Getter
 @Setter
+@DynamicUpdate
+@DynamicInsert
 public class Post {
 
     public static final String ID_FIELD = "id";
