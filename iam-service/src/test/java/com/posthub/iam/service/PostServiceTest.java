@@ -50,11 +50,11 @@ public class PostServiceTest {
     @BeforeEach
     void setUp() {
         testUser = new User();
-        testUser.setId(1);
+        testUser.setId(1L);
         testUser.setUsername("TestUser");
 
         testPost = new Post();
-        testPost.setId(1);
+        testPost.setId(1L);
         testPost.setTitle("Test Post");
         testPost.setContent("Test Content");
         testPost.setUser(testUser);
@@ -71,23 +71,23 @@ public class PostServiceTest {
 
     @Test
     void getById_PostExists_ReturnsPostDTO() {
-        when(postRepository.findByIdAndDeletedFalse(1)).thenReturn(Optional.of(testPost));
+        when(postRepository.findByIdAndDeletedFalse(1L)).thenReturn(Optional.of(testPost));
         when(postMapper.toPostDTO(testPost)).thenReturn(testPostDTO);
 
-        PostDTO result = postService.getById(1).getPayload();
+        PostDTO result = postService.getById(1L).getPayload();
 
         assertNotNull(result);
         assertEquals(testPost.getId(), result.id());
         assertEquals(testPost.getTitle(), result.title());
         assertEquals(testPost.getContent(), result.content());
 
-        verify(postRepository, times(1)).findByIdAndDeletedFalse(1);
+        verify(postRepository, times(1)).findByIdAndDeletedFalse(1L);
         verify(postMapper, times(1)).toPostDTO(testPost);
     }
 
     @Test
     void getById_PostExists_ThrowsException() {
-        final int NON_EXISTENT_POST_ID = 999;
+        final long NON_EXISTENT_POST_ID = 999;
 
         when(postRepository.findByIdAndDeletedFalse(NON_EXISTENT_POST_ID)).thenReturn(Optional.empty());
 

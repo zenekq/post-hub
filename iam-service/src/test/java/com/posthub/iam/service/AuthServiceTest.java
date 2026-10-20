@@ -72,7 +72,7 @@ public class AuthServiceTest {
     @BeforeEach
     void setUp() {
         testUser = new User();
-        testUser.setId(1);
+        testUser.setId(1L);
         testUser.setUsername("TestUser");
         testUser.setEmail("test_user@example.com");
         testUser.setPassword("hashedPassword");

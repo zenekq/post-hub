@@ -60,7 +60,7 @@ public class PostControllerTest {
     @BeforeAll
     @Transactional
     void authorize() {
-        User user = userRepository.findByIdAndDeletedFalseOrThrow(1);
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(1L);
 
         currentJwt = "Bearer " + jwtTokenProvider.generateToken(user);
     }

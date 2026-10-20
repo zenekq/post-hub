@@ -53,16 +53,16 @@ public class CommentServiceTest {
     private User testUser;
     private Post testPost;
 
-    private static final int COMMENT_ID = 1;
+    private static final long COMMENT_ID = 1;
 
     @BeforeEach
     void setUp() {
         testUser = new User();
-        testUser.setId(1);
+        testUser.setId(1L);
         testUser.setUsername("TestUser");
 
         testPost = new Post();
-        testPost.setId(1);
+        testPost.setId(1L);
         testPost.setTitle("TestPost");
 
         testComment = new Comment();
@@ -100,7 +100,7 @@ public class CommentServiceTest {
     @Test
     void getCommentById_CommentNotFound_ThrowsException() {
 
-        final int NON_EXISTENT_COMMENT_ID = 999;
+        final long NON_EXISTENT_COMMENT_ID = 999;
 
         when(commentRepository.findByIdAndDeletedFalse(NON_EXISTENT_COMMENT_ID)).thenReturn(Optional.empty());
 
@@ -116,7 +116,7 @@ public class CommentServiceTest {
     @Test
     void createComment_OK() {
 
-        CommentRequest request = new CommentRequest(1, "New comment");
+        CommentRequest request = new CommentRequest(1L, "New comment");
 
         when(apiUtils.getUserIdFromAuthentication()).thenReturn(testUser.getId());
         when(userRepository.findByIdAndDeletedFalse(testUser.getId())).thenReturn(Optional.of(testUser));
