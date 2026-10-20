@@ -32,6 +32,8 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
+import static com.posthub.iam.util.TestUtil.parseDTOResponse;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest
@@ -50,6 +52,7 @@ public class UserControllerTest {
 
     private final TestDataFactory testDataFactory = new TestDataFactory();
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     private String adminJwt;
     private String userJwt;
 
@@ -150,13 +153,6 @@ public class UserControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, userJwt)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isForbidden());
-    }
-
-    private <T> ApiResult<T> parseDTOResponse(byte[] contentAsByteArray, Class<T> payloadClass) {
-        ApiResult<T> rawResult = objectMapper.readValue(contentAsByteArray, ApiResult.class);
-        T payload = objectMapper.convertValue(rawResult.getPayload(), payloadClass);
-        rawResult.setPayload(payload);
-        return rawResult;
     }
 
 }
