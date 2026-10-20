@@ -47,9 +47,9 @@ public class ApiUtils {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
-    public Integer getUserIdFromAuthentication() {
+    public Long getUserIdFromAuthentication() {
         String jwtToken = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-        return Integer.parseInt(jwtTokenProvider.getUserId(jwtToken));
+        return Long.parseLong(jwtTokenProvider.getUserId(jwtToken));
     }
 
 }

@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public ApiResult<CommentDTO> getCommentById(Integer commentId) {
+    public ApiResult<CommentDTO> getCommentById(Long commentId) {
 
         Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
         CommentDTO commentDTO = commentMapper.toDTO(comment);
@@ -58,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public ApiResult<CommentDTO> createComment(CommentRequest request) {
 
-        Integer userId = apiUtils.getUserIdFromAuthentication();
+        Long userId = apiUtils.getUserIdFromAuthentication();
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.postId());
@@ -74,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public ApiResult<CommentDTO> updateComment(Integer commentId, UpdateCommentRequest request) {
+    public ApiResult<CommentDTO> updateComment(Long commentId, UpdateCommentRequest request) {
 
         Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
 
@@ -94,7 +94,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void softDelete(Integer commentId) {
+    public void softDelete(Long commentId) {
 
         Comment comment = commentRepository.findByIdAndDeletedFalseOrThrow(commentId);
 

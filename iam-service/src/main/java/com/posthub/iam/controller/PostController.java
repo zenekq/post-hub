@@ -29,7 +29,7 @@ public class PostController {
 
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<PostDTO>> getPostById(
-            @PathVariable("id") Integer postId) {
+            @PathVariable("id") Long postId) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
@@ -51,7 +51,7 @@ public class PostController {
 
     @PutMapping("${end.points.id}")
     public ResponseEntity<ApiResult<PostDTO>> updatePostById(
-            @PathVariable("id") Integer postId,
+            @PathVariable("id") Long postId,
             @RequestBody @Valid UpdatePostRequest updatePostRequest) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
@@ -63,7 +63,7 @@ public class PostController {
 
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> deletePostById(
-            @PathVariable("id") Integer postId) {
+            @PathVariable("id") Long postId) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 

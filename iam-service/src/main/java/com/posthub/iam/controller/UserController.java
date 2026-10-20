@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<UserDTO>> getUserById(
-            @PathVariable(name = "id") Integer userId) {
+            @PathVariable(name = "id") Long userId) {
 
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
@@ -53,7 +53,7 @@ public class UserController {
 
     @PutMapping("${end.points.id}")
     public ResponseEntity<ApiResult<UserDTO>> updateUserById(
-            @PathVariable(name = "id") Integer userId,
+            @PathVariable(name = "id") Long userId,
             @RequestBody @Valid UpdateUserRequest updateUserRequest) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
@@ -63,7 +63,7 @@ public class UserController {
 
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeleteUser(
-            @PathVariable(name = "id") Integer userId) {
+            @PathVariable(name = "id") Long userId) {
         log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
 
         userService.softDeleteUser(userId);

@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     private final AccessValidator accessValidator;
 
     @Override
-    public ApiResult<UserDTO> getById(Integer userId) {
+    public ApiResult<UserDTO> getById(Long userId) {
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 
         UserDTO userDTO = userMapper.userToUserDTO(user);
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ApiResult<UserDTO> updateUser(Integer userId, UpdateUserRequest updateUserRequest) {
+    public ApiResult<UserDTO> updateUser(Long userId, UpdateUserRequest updateUserRequest) {
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void softDeleteUser(Integer userId) {
+    public void softDeleteUser(Long userId) {
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
 

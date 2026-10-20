@@ -23,9 +23,9 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>, JpaS
     @EntityGraph(attributePaths = {"user"})
     Page<Comment> findAll(Specification<Comment> specification, Pageable pageable);
 
-    Optional<Comment> findByIdAndDeletedFalse(Integer commentId);
+    Optional<Comment> findByIdAndDeletedFalse(Long commentId);
 
-    default Comment findByIdAndDeletedFalseOrThrow(Integer commentId) {
+    default Comment findByIdAndDeletedFalseOrThrow(Long commentId) {
         return findByIdAndDeletedFalse(commentId)
                 .orElseThrow(() ->
                         new NotFoundException(ApiErrorMessage.COMMENT_NOT_FOUND_BY_ID.format(commentId)));

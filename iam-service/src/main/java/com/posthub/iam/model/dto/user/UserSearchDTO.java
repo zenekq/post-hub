@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserSearchDTO {
 
-    private Integer id;
+    private Long id;
     private String username;
     private String email;
     private LocalDateTime created;
