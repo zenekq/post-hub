@@ -7,6 +7,7 @@ import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.Role;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.request.user.UpdateUserRequest;
 import com.posthub.iam.service.model.IamServiceUserRole;
@@ -111,6 +112,14 @@ public class TestDataFactory {
             post.getLikes(),
             post.getCreated(),
             post.getCreatedBy()
+        );
+    }
+
+    public NewPostRequest createTestNewPostRequest() {
+        return new NewPostRequest(
+            "New post title",
+            "New post content",
+            0
         );
     }
 
