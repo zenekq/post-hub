@@ -1,7 +1,7 @@
 services:
   postgres:
-    image: postgres:19beta4-alpine3.24
-    container_name: postgres19beta
+    image: postgres:19rc1-alpine3.24
+    container_name: postgres19rc1
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
