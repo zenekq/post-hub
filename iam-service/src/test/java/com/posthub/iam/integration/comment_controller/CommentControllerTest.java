@@ -62,7 +62,7 @@ public class CommentControllerTest {
     @BeforeAll
     @Transactional
     void authorize() {
-        User user = userRepository.findByIdAndDeletedFalseOrThrow(1);
+        User user = userRepository.findByIdAndDeletedFalseOrThrow(1L);
 
         currentJwt = "Bearer " + jwtTokenProvider.generateToken(user);
     }
@@ -80,7 +80,7 @@ public class CommentControllerTest {
     @Transactional
     void createComment_OK_200() throws Exception {
 
-        CommentRequest request = new CommentRequest(1, "New Comment");
+        CommentRequest request = new CommentRequest(1L, "New Comment");
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/comments/create")
@@ -95,7 +95,7 @@ public class CommentControllerTest {
     @Transactional
     void updateComment_OK_200() throws Exception {
 
-        UpdateCommentRequest request = new UpdateCommentRequest(1, "Update comment");
+        UpdateCommentRequest request = new UpdateCommentRequest(1L, "Update comment");
 
         MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
                         .put("/comments/1")

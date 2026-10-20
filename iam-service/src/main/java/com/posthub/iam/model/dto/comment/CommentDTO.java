@@ -8,7 +8,7 @@ public record CommentDTO(
         Long id,
         String message,
         PostOwnerDTO owner,
-        Integer postId,
+        Long postId,
         LocalDateTime created,
         LocalDateTime updated
 ) {}
