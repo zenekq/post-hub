@@ -2,11 +2,14 @@ package com.posthub.util.controller;
 
 import com.posthub.util.model.constant.ApiLogMessage;
 import com.posthub.util.model.dto.ActionLogDTO;
+import com.posthub.util.model.request.ActionLogIsReadRequest;
+import com.posthub.util.model.request.ActionLogUpdateResultDTO;
 import com.posthub.util.model.request.PaginationRequest;
 import com.posthub.util.model.response.PaginationResponse;
 import com.posthub.util.model.response.UtilsResponse;
 import com.posthub.util.service.impl.ActionLogServiceImpl;
 import com.posthub.util.utils.ApiUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -42,5 +45,14 @@ public class ActionLogController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("${end.points.markAsRead}")
+    public ResponseEntity<UtilsResponse<ActionLogUpdateResultDTO>> setIsReadEqualsTrue(
+            @RequestBody @Valid ActionLogIsReadRequest request) {
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), ApiUtils.getMethodName());
+
+        return ResponseEntity.ok(service.setIsReadEqualsTrue(request));
+    }
+
 
 }
