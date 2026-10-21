@@ -5,6 +5,6 @@ import com.posthub.util.model.response.UtilsResponse;
 
 public interface ActionLogService {
 
-    UtilsResponse<ActionLogDTO> getActionLogById(Integer logId);
+    UtilsResponse<ActionLogDTO> getActionLogById(Integer logId, Long userId);
 
 }
