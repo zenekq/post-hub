@@ -1,5 +1,6 @@
 package com.posthub.util.config;
 
+import com.posthub.util.config.properties.EndpointsProperties;
 import com.posthub.util.security.filter.JwtTokenFilter;
 import com.posthub.util.security.model.IamServiceUserRole;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
+    private final EndpointsProperties endpoints;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -42,9 +44,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // ActionLogs secured endpoints
-                        .requestMatchers(HttpMethod.GET, "/actionLogs/{id}").hasAnyAuthority(allDashboardSecurityRoles())
-                        .requestMatchers(HttpMethod.GET, "/actionLogs/all").hasAnyAuthority(allDashboardSecurityRoles())
-                        .requestMatchers(HttpMethod.PUT, "/actionLogs/markAsRead").hasAnyAuthority(allDashboardSecurityRoles())
+                        .requestMatchers(HttpMethod.GET,
+                                endpoints.actionLogs() + endpoints.id()).hasAnyAuthority(allDashboardSecurityRoles())
+                        .requestMatchers(HttpMethod.GET,
+                                endpoints.actionLogs() + endpoints.all()).hasAnyAuthority(allDashboardSecurityRoles())
+                        .requestMatchers(HttpMethod.PUT,
+                                endpoints.actionLogs() + endpoints.markAsRead()).hasAnyAuthority(allDashboardSecurityRoles())
 
                         // Everything else denied
                         .anyRequest().denyAll()
