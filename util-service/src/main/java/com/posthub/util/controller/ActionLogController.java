@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("${end.points.actionsLog}")
+@RequestMapping("${end.points.actionLogs}")
 @RequiredArgsConstructor
 public class ActionLogController {
 
