@@ -19,6 +19,9 @@
 		<java.version>27</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
+		<hibernate.version>7.4.13.Final</hibernate.version>
+		<hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
+		<tomcat.version>11.0.27</tomcat.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -45,10 +48,10 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<version>42.7.14</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
