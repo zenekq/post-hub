@@ -11,7 +11,7 @@ public final class AuthenticationConstants {
     public static final String REFERER_HEADER_NAME = "referer";
 
     public static final String USER_EMAIL = "email";
-    public static final String ROLE = "role";
+    public static final String ROLE = "roles";
     public static final String USER_ID = "userId";
 
 
