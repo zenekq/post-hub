@@ -230,5 +230,38 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<envName>local</envName>
+				<skipTests>true</skipTests>
+				<maven-properties.file>src/main/resources/application-local.properties</maven-properties.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<envName>dev</envName>
+				<skipTests>true</skipTests>
+				<maven-properties.file>src/main/resources/application-dev.properties</maven-properties.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<envName>test</envName>
+				<skipTests>false</skipTests>
+				<maven-properties.file>src/main/resources/application-test.properties</maven-properties.file>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<envName>prod</envName>
+				<skipTests>true</skipTests>
+				<maven-properties.file>src/main/resources/application-prod.properties</maven-properties.file>
+			</properties>
+		</profile>
+	</profiles>
 </project>
