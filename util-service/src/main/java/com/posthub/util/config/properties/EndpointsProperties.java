@@ -8,4 +8,19 @@ public record EndpointsProperties(
         String id,
         String all,
         String markAsRead
-) {}
+) {
+
+    public String[] permitGet() {
+        return new String[]{
+                actionLogs + id,
+                actionLogs + all
+        };
+    }
+
+    public String[] permitPut() {
+        return new String[]{
+                actionLogs + markAsRead
+        };
+    }
+
+}
