@@ -1,6 +1,7 @@
 package com.posthub.util.config;
 
 import com.posthub.util.config.properties.EndpointsProperties;
+import com.posthub.util.config.properties.SwaggerEndpointsProperties;
 import com.posthub.util.security.filter.JwtTokenFilter;
 import com.posthub.util.security.model.IamServiceUserRole;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +33,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+
                         // Swagger / OpenAPI
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/v3/api-docs.yaml",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")
-                        .permitAll()
+                        .requestMatchers(SwaggerEndpointsProperties.permit()).permitAll()
 
                         // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
