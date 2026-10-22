@@ -5,6 +5,7 @@ import com.posthub.util.config.properties.SwaggerEndpointsProperties;
 import com.posthub.util.security.filter.JwtTokenFilter;
 import com.posthub.util.security.model.IamServiceUserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
+@EnableConfigurationProperties(EndpointsProperties.class)
 public class SecurityConfig {
 
     private final JwtTokenFilter jwtTokenFilter;
@@ -41,12 +43,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // ActionLogs secured endpoints
-                        .requestMatchers(HttpMethod.GET,
-                                endpoints.actionLogs() + endpoints.id()).hasAnyAuthority(allDashboardSecurityRoles())
-                        .requestMatchers(HttpMethod.GET,
-                                endpoints.actionLogs() + endpoints.all()).hasAnyAuthority(allDashboardSecurityRoles())
-                        .requestMatchers(HttpMethod.PUT,
-                                endpoints.actionLogs() + endpoints.markAsRead()).hasAnyAuthority(allDashboardSecurityRoles())
+                        .requestMatchers(HttpMethod.GET, endpoints.permitGet()).hasAnyAuthority(allDashboardSecurityRoles())
+                        .requestMatchers(HttpMethod.PUT, endpoints.permitPut()).hasAnyAuthority(allDashboardSecurityRoles())
 
                         // Everything else denied
                         .anyRequest().denyAll()
