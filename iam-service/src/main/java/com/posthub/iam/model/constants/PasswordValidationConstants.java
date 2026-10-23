@@ -1,9 +1,8 @@
 package com.posthub.iam.model.constants;
 
-import lombok.NoArgsConstructor;
+public final class PasswordValidationConstants {
 
-@NoArgsConstructor
-public class ApiConstants {
+    private PasswordValidationConstants() {}
 
     public static final String PASSWORD_ALL_CHARACTERS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?";

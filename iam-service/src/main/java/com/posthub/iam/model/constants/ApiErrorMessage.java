@@ -30,11 +30,11 @@ public enum ApiErrorMessage {
 
     MISMATCH_PASSWORDS("Password does not match"),
     INVALID_PASSWORD("Invalid password. It must have: "
-            + "length at least " + ApiConstants.REQUIRED_MIN_PASSWORD_LENGTH + ", including "
-            + ApiConstants.REQUIRED_MIN_LETTERS_NUMBER_EVERY_CASE_IN_PASSWORD
+            + "length at least " + PasswordValidationConstants.REQUIRED_MIN_PASSWORD_LENGTH + ", including "
+            + PasswordValidationConstants.REQUIRED_MIN_LETTERS_NUMBER_EVERY_CASE_IN_PASSWORD
                 + " letter(s) in upper and lower cases, "
-            + ApiConstants.REQUIRED_MIN_CHARACTERS_NUMBER_IN_PASSWORD + " character(s), "
-            + ApiConstants.REQUIRED_MIN_DIGITS_NUMBER_IN_PASSWORD + " digit(s). "),
+            + PasswordValidationConstants.REQUIRED_MIN_CHARACTERS_NUMBER_IN_PASSWORD + " character(s), "
+            + PasswordValidationConstants.REQUIRED_MIN_DIGITS_NUMBER_IN_PASSWORD + " digit(s). "),
     HAVE_NO_ACCESS("You don`t have the necessary permission"),
     ;
 
