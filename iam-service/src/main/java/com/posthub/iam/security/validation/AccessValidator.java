@@ -9,7 +9,7 @@ import com.posthub.iam.model.request.user.RegistrationUserRequest;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.service.model.IamServiceUserRole;
 import com.posthub.iam.utils.ApiUtils;
-import com.posthub.iam.utils.PasswordUtils;
+import com.posthub.iam.utils.password.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;

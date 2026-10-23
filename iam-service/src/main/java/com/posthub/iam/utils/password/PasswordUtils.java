@@ -1,4 +1,4 @@
-package com.posthub.iam.utils;
+package com.posthub.iam.utils.password;
 
 import com.posthub.iam.model.constants.ApiConstants;
 import lombok.NoArgsConstructor;

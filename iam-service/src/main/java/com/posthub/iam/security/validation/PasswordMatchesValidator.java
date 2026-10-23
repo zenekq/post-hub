@@ -1,7 +1,7 @@
 package com.posthub.iam.security.validation;
 
 import com.posthub.iam.model.request.user.RegistrationUserRequest;
-import com.posthub.iam.utils.PasswordMatches;
+import com.posthub.iam.utils.password.PasswordMatches;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
