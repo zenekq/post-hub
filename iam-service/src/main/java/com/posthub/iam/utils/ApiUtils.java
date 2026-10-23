@@ -1,6 +1,5 @@
 package com.posthub.iam.utils;
 
-import com.posthub.iam.model.constants.ApiConstants;
 import com.posthub.iam.security.JwtTokenProvider;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 @Component
@@ -20,13 +20,17 @@ public class ApiUtils {
             StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
     public static String getMethodName() {
+
+        final String UNDEFINED = "undefined";
         try {
-            return WALKER.walk(frames ->
-                    frames.skip(1).findFirst().map(StackWalker.StackFrame::getMethodName)
-                            .orElse(ApiConstants.UNDEFINED)
-            );
+            return WALKER.walk(frames -> {
+                Iterator<StackWalker.StackFrame> it = frames.iterator();
+                it.next(); // skip this method name: getMethodName
+                return it.hasNext() ? it.next().getMethodName() : UNDEFINED;
+            });
+
         } catch (Exception e) {
-            return ApiConstants.UNDEFINED;
+            return UNDEFINED;
         }
     }
 
