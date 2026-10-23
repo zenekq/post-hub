@@ -48,38 +48,3 @@ CREATE TABLE refresh_token (
     CONSTRAINT FK_refresh_token_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT refresh_token_UNIQUE UNIQUE (user_id, id)
 );
-
-INSERT INTO users (username, password, email, created, updated, registration_status, last_login, deleted) VALUES
-    ('super_admin', '$argon2id$v=19$m=4096,t=3,p=1$qug41fE4Du1KOSxx5q1P9g$Jb6Tv1t8ShC4fowDuGi2LVGsg6g5CPQANeet4qVCmgg', 'super_admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('admin', '$argon2id$v=19$m=4096,t=3,p=1$Sy54v7HacX48ICKoMsuwTA$O0tdHrUOkzwbZr1O7gi/LnLznKrUVH5AgkE721KCYGo', 'admin@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('user', '$argon2id$v=19$m=4096,t=3,p=1$z8XAiCqGuVPJJbULaG6Yyg$Pozjdvl6MGtMsGmOs3+xkzA+rH9EbEGLUpg/76ZDWqE', 'user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('fourth_user', '$argon2id$v=19$m=4096,t=3,p=1$nl4YqL2aFDJ8RTwJelR4cg$+jhYq/lW5H7a+BwnuxyNIsWpwbpo5B9hUB58ZjNZYIg', 'fourth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false),
-    ('fifth_user', '$argon2id$v=19$m=4096,t=3,p=1$pqTsS0z5PPni05kHThP/aQ$hFf4HzdXLjYI9e3lBsbBrrfVnGMtjA0CoJqGXIv3jbA', 'fifth_user@example.com', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ACTIVE', CURRENT_TIMESTAMP, false);
-
-INSERT INTO posts (user_id ,title, content, created, updated, deleted, likes) VALUES
-    (1,'First Posts', 'This is a content for first post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),
-    (3,'Second Posts', 'This is a content for second post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3),
-    (4,'Third Posts', 'This is a content for third post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),
-    (5,'Fourth Posts', 'This is a content for fourth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 7),
-    (1,'Fifth Posts', 'This is a content for fifth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 5),
-    (2,'Sixth Posts', 'This is a content for sixth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),
-    (3,'Seventh Posts', 'This is a content for seventh post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 8),
-    (4,'Eighth Posts', 'This is a content for eighth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 4),
-    (5,'Ninth Posts', 'This is a content for ninth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 6),
-    (1,'Eleventh Posts', 'This is a content for eleventh post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 11),
-    (2,'Twelfth Posts', 'This is a content for twelfth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 15),
-    (3,'Thirteenth Posts', 'This is a content for thirteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 2),
-    (4,'Fourteenth Posts', 'This is a content for fourteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3),
-    (5,'Fifteenth Posts', 'This is a content for fifteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 1);
-
-INSERT INTO roles (name, user_system_role, created_by) VALUES
-    ('SUPER_ADMIN', 'SUPER_ADMIN','SUPER_ADMIN'),
-    ('ADMIN', 'ADMIN', 'SUPER_ADMIN'),
-    ('USER', 'USER', 'SUPER_ADMIN');
-
-INSERT INTO user_roles (user_id, roles_id) VALUES
-    (1,1),
-    (2,2),
-    (3,3),
-    (4,1),
-    (5,2);

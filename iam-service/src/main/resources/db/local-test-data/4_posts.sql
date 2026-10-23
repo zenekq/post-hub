@@ -1,0 +1,15 @@
+INSERT INTO posts (user_id ,title, content, created, updated, deleted, likes) VALUES
+    (1,'First Posts', 'This is a content for first post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),
+    (3,'Second Posts', 'This is a content for second post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3),
+    (4,'Third Posts', 'This is a content for third post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),
+    (5,'Fourth Posts', 'This is a content for fourth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 7),
+    (1,'Fifth Posts', 'This is a content for fifth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 5),
+    (2,'Sixth Posts', 'This is a content for sixth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 10),
+    (3,'Seventh Posts', 'This is a content for seventh post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 8),
+    (4,'Eighth Posts', 'This is a content for eighth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 4),
+    (5,'Ninth Posts', 'This is a content for ninth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 6),
+    (1,'Eleventh Posts', 'This is a content for eleventh post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 11),
+    (2,'Twelfth Posts', 'This is a content for twelfth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 15),
+    (3,'Thirteenth Posts', 'This is a content for thirteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 2),
+    (4,'Fourteenth Posts', 'This is a content for fourteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 3),
+    (5,'Fifteenth Posts', 'This is a content for fifteenth post', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, false, 1);
