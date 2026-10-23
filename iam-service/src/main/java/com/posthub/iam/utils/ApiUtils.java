@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
 import java.util.UUID;
 
 @Component
@@ -15,24 +14,6 @@ import java.util.UUID;
 public class ApiUtils {
 
     private final JwtTokenProvider jwtTokenProvider;
-
-    private static final StackWalker WALKER =
-            StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
-
-    public static String getMethodName() {
-
-        final String UNDEFINED = "undefined";
-        try {
-            return WALKER.walk(frames -> {
-                Iterator<StackWalker.StackFrame> it = frames.iterator();
-                it.next(); // skip this method name: getMethodName
-                return it.hasNext() ? it.next().getMethodName() : UNDEFINED;
-            });
-
-        } catch (Exception e) {
-            return UNDEFINED;
-        }
-    }
 
     public static Cookie createAuthCookie(String value) {
         Cookie authorizationCookie = new Cookie(HttpHeaders.AUTHORIZATION, value);

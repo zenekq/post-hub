@@ -1,12 +1,12 @@
 package com.posthub.iam.controller;
 
-import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.user.LoginRequest;
 import com.posthub.iam.model.dto.user.UserProfileDTO;
 import com.posthub.iam.model.request.user.RegistrationUserRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.service.AuthService;
 import com.posthub.iam.utils.ApiUtils;
+import com.posthub.iam.utils.MethodName;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -30,8 +30,8 @@ public class AuthController {
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful authorization",
-            content = @Content(mediaType = "applicatio/json",
-                    examples = @ExampleObject(value = "{\"token\": \"eyJhbGciOiJIUz\"} ")))
+                    content = @Content(mediaType = "applicatio/json",
+                            examples = @ExampleObject(value = "{\"token\": \"eyJhbGciOiJIUz\"} ")))
 
     })
     @PostMapping("${end.points.login}")
@@ -42,7 +42,8 @@ public class AuthController {
     public ResponseEntity<ApiResult<UserProfileDTO>> login(
             @RequestBody @Valid LoginRequest loginRequest,
             HttpServletResponse response) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.login(loginRequest);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
@@ -57,15 +58,16 @@ public class AuthController {
             description = "Generate new access token using provided refresh token"
     )
     public ResponseEntity<ApiResult<UserProfileDTO>> refreshToken(
-          @RequestParam(name = "token") String refreshToken,
-          HttpServletResponse response) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+            @RequestParam(name = "token") String refreshToken,
+            HttpServletResponse response) {
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.refreshAccessToken(refreshToken);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
         response.addCookie(authCookie);
 
-        return  ResponseEntity.ok(result);
+        return ResponseEntity.ok(result);
     }
 
     @Operation(
@@ -76,7 +78,8 @@ public class AuthController {
     ResponseEntity<ApiResult<UserProfileDTO>> register(
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.registerUser(request);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());

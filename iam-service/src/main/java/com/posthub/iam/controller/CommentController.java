@@ -1,6 +1,5 @@
 package com.posthub.iam.controller;
 
-import com.posthub.iam.model.constants.ApiLogMessage;
 import com.posthub.iam.model.dto.comment.CommentDTO;
 import com.posthub.iam.model.dto.comment.CommentSearchDTO;
 import com.posthub.iam.model.request.comment.CommentRequest;
@@ -10,13 +9,11 @@ import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.service.CommentService;
-import com.posthub.iam.utils.ApiUtils;
+import com.posthub.iam.utils.MethodName;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NullMarked;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +31,8 @@ public class CommentController {
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<CommentDTO>> getCommentById(
             @PathVariable(name = "id") Long commentId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.getCommentById(commentId);
 
@@ -44,7 +42,8 @@ public class CommentController {
     @PostMapping("${end.points.create}")
     public ResponseEntity<ApiResult<CommentDTO>> createComment(
             @RequestBody @Valid CommentRequest commentRequest) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.createComment(commentRequest);
         return ResponseEntity.ok(response);
@@ -54,7 +53,8 @@ public class CommentController {
     public ResponseEntity<ApiResult<CommentDTO>> updateComment(
             @PathVariable(name = "id") Long commentId,
             @RequestBody @Valid UpdateCommentRequest updateCommentRequest) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.updateComment(commentId, updateCommentRequest);
         return ResponseEntity.ok(response);
@@ -63,7 +63,8 @@ public class CommentController {
     @DeleteMapping("${end.points.id}")
     public ResponseEntity<Void> softDeleteComment(
             @PathVariable(name = "id") Long commentId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         commentService.softDelete(commentId);
 
@@ -74,7 +75,7 @@ public class CommentController {
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> getAllComments(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(paginationRequest);
 
@@ -86,11 +87,11 @@ public class CommentController {
             @RequestBody @Valid CommentSearchRequest request,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), ApiUtils.getMethodName());
+        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<PaginationResponse<CommentSearchDTO>> response = commentService.searchComments(request, paginationRequest);
 
-        return  ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 
 }

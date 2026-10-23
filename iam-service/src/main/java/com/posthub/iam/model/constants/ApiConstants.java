@@ -4,7 +4,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class ApiConstants {
-    public static final String UNDEFINED = "undefined";
 
     public static final String PASSWORD_ALL_CHARACTERS =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:'\",<.>/?";
