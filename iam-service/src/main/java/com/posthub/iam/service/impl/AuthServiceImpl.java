@@ -64,7 +64,6 @@ public class AuthServiceImpl implements AuthService {
 
         RefreshToken refreshToken = refreshTokenService.generateOrUpdateRefreshToken(user);
         UserProfileDTO userProfileDTO = userMapper.toUserProfileDTO(user, token, refreshToken.getToken());
-        userProfileDTO.setToken(token);
 
         return ApiResult.createSuccessfulWithNewToken(userProfileDTO);
     }

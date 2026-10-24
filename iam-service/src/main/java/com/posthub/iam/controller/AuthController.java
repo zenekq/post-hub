@@ -46,7 +46,7 @@ public class AuthController {
         log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.login(loginRequest);
-        Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
+        Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
         response.addCookie(authCookie);
 
         return ResponseEntity.ok(result);
@@ -64,7 +64,7 @@ public class AuthController {
         log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.refreshAccessToken(refreshToken);
-        Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
+        Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
         response.addCookie(authCookie);
 
         return ResponseEntity.ok(result);
@@ -82,7 +82,7 @@ public class AuthController {
         log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.registerUser(request);
-        Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().getToken());
+        Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
         response.addCookie(authCookie);
 
         return ResponseEntity.ok(result);
