@@ -1,10 +1,10 @@
-package com.posthub.iam.utils.password;
+package com.posthub.iam.security.password;
 
 import com.posthub.iam.model.constants.PasswordValidationConstants;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class PasswordUtils {
+public final class PasswordValidator {
 
     public static boolean isNotValidPassword(String password) {
         if (password == null || password.isEmpty() || password.trim().isEmpty()) {

@@ -9,7 +9,7 @@ import com.posthub.iam.model.request.user.RegistrationUserRequest;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.service.model.IamServiceUserRole;
 import com.posthub.iam.utils.ApiUtils;
-import com.posthub.iam.utils.password.PasswordUtils;
+import com.posthub.iam.security.password.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,7 @@ public class AccessValidator {
             throw new InvalidDataException(ApiErrorMessage.MISMATCH_PASSWORDS.getMessage());
         }
 
-        if (PasswordUtils.isNotValidPassword(request.password())) {
+        if (PasswordValidator.isNotValidPassword(request.password())) {
             throw new InvalidDataException(ApiErrorMessage.INVALID_PASSWORD.getMessage());
         }
 
