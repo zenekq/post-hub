@@ -1,6 +1,6 @@
 package com.posthub.iam.integration.user_controller;
 
-import com.posthub.iam.factory.TestDataFactory;
+import com.posthub.iam.factory.UserTestData;
 import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.user.NewUserRequest;
@@ -50,7 +50,6 @@ public class UserControllerTest {
     @Autowired @Setter
     private UserRepository userRepository;
 
-    private final TestDataFactory testDataFactory = new TestDataFactory();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private String adminJwt;
@@ -96,7 +95,8 @@ public class UserControllerTest {
     @Test
     @Transactional
     void createUser_AsAdmin_OK_200() throws Exception {
-        NewUserRequest request = testDataFactory.createTestNewUserRequest();
+
+        NewUserRequest request = UserTestData.createTestNewUserRequest();
 
         MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
                         .post(prefix + endPointCreate)
@@ -112,15 +112,15 @@ public class UserControllerTest {
         UserDTO resultBody = Objects.nonNull(response.getPayload()) ? response.getPayload() : null;
         Assertions.assertTrue(response.isSuccess());
         Assertions.assertNotNull(resultBody);
-        Assertions.assertEquals(request.email(), resultBody.getEmail());
-        Assertions.assertEquals(request.username(), resultBody.getUsername());
+        Assertions.assertEquals(request.email(), resultBody.email());
+        Assertions.assertEquals(request.username(), resultBody.username());
     }
 
     @Test
     @Transactional
     void createUser_asUser_withoutAccess_403() throws Exception {
 
-        NewUserRequest request = testDataFactory.createTestNewUserRequest();
+        NewUserRequest request = UserTestData.createTestNewUserRequest();
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post(prefix + endPointCreate)
@@ -134,7 +134,8 @@ public class UserControllerTest {
     @Test
     @Transactional
     void updateUser_AsAdmin_OK_200() throws Exception {
-        UpdateUserRequest request = testDataFactory.createTestUpdateUserRequest();
+
+        UpdateUserRequest request = UserTestData.createTestUpdateUserRequest();
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put(prefix +"/3")

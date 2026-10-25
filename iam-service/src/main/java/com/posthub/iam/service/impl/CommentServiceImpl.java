@@ -80,8 +80,8 @@ public class CommentServiceImpl implements CommentService {
 
         accessValidator.validateAdminOrOwnerAccess(comment.getUser().getId());
 
-        if (request.postId() != null) {
-            Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.postId());
+        if (request.commentId() != null) {
+            Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.commentId());
             comment.setPost(post);
         }
 

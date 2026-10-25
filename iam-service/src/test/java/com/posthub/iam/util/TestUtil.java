@@ -3,7 +3,7 @@ package com.posthub.iam.util;
 import com.posthub.iam.model.responce.ApiResult;
 import tools.jackson.databind.ObjectMapper;
 
-public class TestUtil {
+public final class TestUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

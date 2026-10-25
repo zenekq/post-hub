@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record UpdateCommentRequest(
         @NotNull(message = "Post ID cannot be null")
-        Long postId,
+        Long commentId,
 
         @NotBlank(message = "Content cannot be empty")
         String message

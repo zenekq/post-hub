@@ -1,6 +1,7 @@
 package com.posthub.iam.service;
 
 
+import com.posthub.iam.factory.UserTestData;
 import com.posthub.iam.mapper.UserMapper;
 import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.entity.Role;
@@ -66,10 +67,7 @@ public class UserServiceTest {
         testUser.setPassword("encodedPassword");
         testUser.setRoles(Collections.singleton(superAdminRole));
 
-        testUserDTO = new UserDTO();
-        testUserDTO.setId(testUser.getId());
-        testUserDTO.setUsername(testUser.getUsername());
-        testUserDTO.setEmail(testUser.getEmail());
+        testUserDTO = UserTestData.createTestUserDTO(testUser);
     }
 
     @Test
@@ -80,9 +78,9 @@ public class UserServiceTest {
         UserDTO result = userService.getById(USER_ID).getPayload();
 
         assertNotNull(result);
-        assertEquals(testUserDTO.getId(), result.getId());
-        assertEquals(testUserDTO.getUsername(), result.getUsername());
-        assertEquals(testUserDTO.getEmail(), result.getEmail());
+        assertEquals(testUserDTO.id(), result.id());
+        assertEquals(testUserDTO.username(), result.username());
+        assertEquals(testUserDTO.email(), result.email());
 
         verify(userRepository, times(1)).findByIdAndDeletedFalse(USER_ID);
         verify(userRepository, times(1)).findByIdAndDeletedFalseOrThrow(USER_ID);
@@ -127,8 +125,8 @@ public class UserServiceTest {
         UserDTO result = userService.createUser(request).getPayload();
 
         assertNotNull(result);
-        assertEquals(testUserDTO.getId(), result.getId());
-        assertEquals(testUserDTO.getUsername(), result.getUsername());
+        assertEquals(testUserDTO.id(), result.id());
+        assertEquals(testUserDTO.username(), result.username());
 
         verify(userRepository, times(1)).existsByEmail(request.email());
         verify(userRepository, times(1)).existsByUsername(request.username());

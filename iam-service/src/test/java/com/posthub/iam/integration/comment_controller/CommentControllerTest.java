@@ -1,15 +1,11 @@
 package com.posthub.iam.integration.comment_controller;
 
 import com.posthub.iam.IamServiceApplication;
-import com.posthub.iam.factory.TestDataFactory;
+import com.posthub.iam.factory.CommentTestData;
 import com.posthub.iam.model.dto.comment.CommentDTO;
-import com.posthub.iam.model.dto.post.PostDTO;
-import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
-import com.posthub.iam.model.request.post.NewPostRequest;
-import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
@@ -57,6 +53,7 @@ public class CommentControllerTest {
     private UserRepository userRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     private String currentJwt;
 
     @BeforeAll
@@ -80,7 +77,7 @@ public class CommentControllerTest {
     @Transactional
     void createComment_OK_200() throws Exception {
 
-        CommentRequest request = new CommentRequest(1L, "New Comment");
+        CommentRequest request = CommentTestData.createTestCommentRequest();
 
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/comments/create")
@@ -95,7 +92,7 @@ public class CommentControllerTest {
     @Transactional
     void updateComment_OK_200() throws Exception {
 
-        UpdateCommentRequest request = new UpdateCommentRequest(1L, "Update comment");
+        UpdateCommentRequest request = CommentTestData.createTestUpdateCommentRequest();
 
         MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
                         .put("/comments/1")
@@ -112,7 +109,7 @@ public class CommentControllerTest {
         CommentDTO commentDTO = Objects.nonNull(result.getPayload()) ? result.getPayload() : null;
 
         Assertions.assertNotNull(commentDTO);
-        Assertions.assertEquals(request.postId(), commentDTO.postId());
+        Assertions.assertEquals(request.commentId(), commentDTO.postId());
         Assertions.assertEquals(request.message(), commentDTO.message());
 
     }
