@@ -130,12 +130,11 @@ public class PostServiceImpl implements PostService {
 
         PaginationResponse<PostSearchDTO> paginationResponse = PaginationResponse.<PostSearchDTO>builder()
                 .content(posts.getContent())
-                .pagination(PaginationResponse.Pagination.builder()
-                        .total(posts.getTotalElements())
-                        .limit(pageable.getPageSize())
-                        .page(posts.getNumber() + 1)
-                        .pages(posts.getTotalPages())
-                        .build()
+                .pagination(new PaginationResponse.Pagination(
+                        posts.getTotalElements(),
+                        pageable.getPageSize(),
+                        posts.getNumber() + 1,
+                        posts.getTotalPages())
                 ).build();
 
         return ApiResult.createSuccessful(paginationResponse);

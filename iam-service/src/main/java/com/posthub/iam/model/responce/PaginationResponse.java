@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -17,15 +16,11 @@ public class PaginationResponse<T> {
     private List<T> content;
     private Pagination pagination;
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Pagination {
-        private long total;
-        private int limit;
-        private int page;
-        private int pages;
-    }
+    public record Pagination(
+            long total,
+            int limit,
+            int page,
+            int pages
+    ) {}
 
 }

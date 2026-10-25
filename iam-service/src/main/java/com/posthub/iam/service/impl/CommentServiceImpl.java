@@ -145,14 +145,15 @@ public class CommentServiceImpl implements CommentService {
         Page<CommentSearchDTO> commentPage = commentRepository.findAll(specification, pageable)
                 .map(commentMapper::toCommentSearchDTO);
 
+        PaginationResponse.Pagination pagination = new PaginationResponse.Pagination(
+                commentPage.getTotalElements(),
+                pageable.getPageSize(),
+                commentPage.getNumber() + 1,
+                commentPage.getTotalPages());
+
         PaginationResponse<CommentSearchDTO> response = PaginationResponse.<CommentSearchDTO>builder()
                 .content(commentPage.getContent())
-                .pagination(PaginationResponse.Pagination.builder()
-                        .total(commentPage.getTotalElements())
-                        .limit(pageable.getPageSize())
-                        .page(commentPage.getNumber() + 1)
-                        .page(commentPage.getTotalPages())
-                        .build())
+                .pagination(pagination)
                 .build();
 
         return ApiResult.createSuccessful(response);
