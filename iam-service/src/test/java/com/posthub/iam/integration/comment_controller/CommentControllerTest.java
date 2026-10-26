@@ -17,6 +17,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -52,6 +53,15 @@ public class CommentControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Value("${end.points.comments}")
+    private String prefix;
+
+    @Value("${end.points.all}")
+    private String endPointAll;
+
+    @Value("${end.points.create}")
+    private String endPointCreate;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private String currentJwt;
@@ -67,7 +77,7 @@ public class CommentControllerTest {
     @Test
     void getAllComments_OK_200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/comments/all")
+                        .get(prefix + endPointAll)
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -80,7 +90,7 @@ public class CommentControllerTest {
         CommentRequest request = CommentTestData.createTestCommentRequest();
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/comments/create")
+                        .post(prefix + endPointCreate)
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .contentType(String.valueOf(MediaType.APPLICATION_JSON))
                         .content(objectMapper.writeValueAsBytes(request))
@@ -95,7 +105,7 @@ public class CommentControllerTest {
         UpdateCommentRequest request = CommentTestData.createTestUpdateCommentRequest();
 
         MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
-                        .put("/comments/1")
+                        .put( prefix +"/1")
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .contentType(String.valueOf(MediaType.APPLICATION_JSON))
                         .content(objectMapper.writeValueAsBytes(request))
@@ -119,7 +129,7 @@ public class CommentControllerTest {
     void deleteComment_OK_200() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/comments/1")
+                        .delete( prefix +"/1")
                         .header(HttpHeaders.AUTHORIZATION, currentJwt)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
