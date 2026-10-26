@@ -55,7 +55,8 @@ public class UserControllerTest {
     private String adminJwt;
     private String userJwt;
 
-    private final String prefix = "/users";
+    @Value("${end.points.users}")
+    private String prefix;
 
     @Value("${end.points.all}")
     private String endPointAll;
