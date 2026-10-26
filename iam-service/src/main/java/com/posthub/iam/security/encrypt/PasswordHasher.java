@@ -4,21 +4,9 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 
 public class PasswordHasher {
 
-    private static final int SALT_LENGTH   = 16;
-    private static final int HASH_LENGTH   = 32;
-    private static final int PARALLELISM   = 1;
-    private static final int MEMORY        = 4096;
-    private static final int ITERATIONS    = 3;
-
     static void main() {
 
-        Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(
-                SALT_LENGTH,
-                HASH_LENGTH,
-                PARALLELISM,
-                MEMORY,
-                ITERATIONS
-        );
+        Argon2PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
 
         // Always use encoder.matches(rawPassword, hashedPassword) for verification.
 
