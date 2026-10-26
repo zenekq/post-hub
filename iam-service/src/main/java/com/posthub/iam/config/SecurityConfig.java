@@ -1,5 +1,6 @@
 package com.posthub.iam.config;
 
+import com.posthub.iam.config.properties.SwaggerEndpointsProperties;
 import com.posthub.iam.security.JwtRequestFilter;
 import com.posthub.iam.security.handler.AccessRestrictionHandler;
 import com.posthub.iam.service.UserService;
@@ -43,12 +44,12 @@ public class SecurityConfig {
                                 "/auth/register"
                                 ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/refresh/token").permitAll()
-     //                   .requestMatchers(HttpMethod.GET, "/users/all").hasAnyAuthority(adminAccessSecurityRoles())
-     //                   .requestMatchers(HttpMethod.GET, "/posts/all").hasAnyAuthority(adminAccessSecurityRoles())
+                        .requestMatchers(HttpMethod.GET, "/users/all").hasAnyAuthority(adminAccessSecurityRoles())
+                        .requestMatchers(HttpMethod.GET, "/posts/all").hasAnyAuthority(adminAccessSecurityRoles())
                         .requestMatchers(HttpMethod.POST, "/users/create").hasAnyAuthority(adminAccessSecurityRoles())
 
                         // Swagger / OpenAPI endpoints
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/**").permitAll()
+                        .requestMatchers(SwaggerEndpointsProperties.permit()).permitAll()
 
                         .anyRequest().authenticated()
                 )
