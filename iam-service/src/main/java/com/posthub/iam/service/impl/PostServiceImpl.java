@@ -1,5 +1,6 @@
 package com.posthub.iam.service.impl;
 
+import com.posthub.iam.kafka.service.KafkaMessageService;
 import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
@@ -38,6 +39,7 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final AccessValidator accessValidator;
     private final ApiUtils apiUtils;
+    private final KafkaMessageService kafkaMessageService;
 
     @Override
     public ApiResult<PostDTO> getById(@NotNull Long postId) {
@@ -61,6 +63,9 @@ public class PostServiceImpl implements PostService {
         Post post = postMapper.createPost(newPostRequest, user, user.getUsername());
 
         Post savedPost = postRepository.save(post);
+
+        kafkaMessageService.sendPostCreatedMessage(user.getId(), post.getId());
+
         PostDTO postDTO = postMapper.toPostDTO(savedPost);
 
         return ApiResult.createSuccessful(postDTO);
@@ -80,6 +85,8 @@ public class PostServiceImpl implements PostService {
         post.setUpdated(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
 
+        kafkaMessageService.sendPostUpdatedMessage(post.getUser().getId(), post.getId());
+
         PostDTO postDTO = postMapper.toPostDTO(savedPost);
 
         return ApiResult.createSuccessful(postDTO);
@@ -94,6 +101,8 @@ public class PostServiceImpl implements PostService {
 
         post.setDeleted(true);
         postRepository.save(post);
+
+        kafkaMessageService.sendPostDeletedMessage(post.getUser().getId(), postId);
     }
 
     @Override

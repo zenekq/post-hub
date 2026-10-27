@@ -1,5 +1,6 @@
 package com.posthub.iam.service.impl;
 
+import com.posthub.iam.kafka.service.KafkaMessageService;
 import com.posthub.iam.mapper.CommentMapper;
 import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.dto.comment.CommentDTO;
@@ -43,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final AccessValidator accessValidator;
+    private final KafkaMessageService kafkaMessageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -67,6 +69,8 @@ public class CommentServiceImpl implements CommentService {
         Comment savedComment = commentRepository.save(comment);
         postRepository.save(post);
 
+        kafkaMessageService.sendCommentCreatedMessage(user.getId(), comment.getId());
+
         CommentDTO commentDTO = commentMapper.toDTO(savedComment);
 
         return ApiResult.createSuccessful(commentDTO);
@@ -87,6 +91,9 @@ public class CommentServiceImpl implements CommentService {
 
         commentMapper.updateComment(comment, request);
         Comment savedComment = commentRepository.save(comment);
+
+        kafkaMessageService.sendCommentUpdatedMessage(comment.getUser().getId(), comment.getId(), comment.getMessage());
+
         CommentDTO commentDTO = commentMapper.toDTO(savedComment);
 
         return ApiResult.createSuccessful(commentDTO);
@@ -105,6 +112,8 @@ public class CommentServiceImpl implements CommentService {
 
         Post post = comment.getPost();
         postRepository.save(post);
+
+        kafkaMessageService.sendCommentDeletedMessage(comment.getUser().getId(), comment.getId());
 
         PostDTO postDTO = postMapper.toPostDTO(post);
 
