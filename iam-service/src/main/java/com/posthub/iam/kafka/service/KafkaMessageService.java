@@ -14,7 +14,7 @@ public class KafkaMessageService {
     private final MessageProducer messageProducer;
 
     /* UserServiceImpl messages */
-    public void sendUserCreatedMessage(Integer userId, String username) {
+    public void sendUserCreatedMessage(Long userId, String username) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.CREATE)
@@ -24,7 +24,7 @@ public class KafkaMessageService {
         messageProducer.sendLogs(message);
     }
 
-    public void sendUserUpdatedMessage (Integer userId, String username) {
+    public void sendUserUpdatedMessage (Long userId, String username) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.UPDATE)
@@ -34,7 +34,7 @@ public class KafkaMessageService {
         messageProducer.sendLogs(message);
     }
 
-    public void sendUserDeletedMessage(Integer userId, String username) {
+    public void sendUserDeletedMessage(Long userId, String username) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.DELETE)
@@ -45,7 +45,7 @@ public class KafkaMessageService {
     }
 
     /* PostServiceImpl messages */
-    public void sendPostCreatedMessage(Integer userId, Integer postId) {
+    public void sendPostCreatedMessage(Long userId, Long postId) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.CREATE)
@@ -55,7 +55,7 @@ public class KafkaMessageService {
         messageProducer.sendLogs(message);
     }
 
-    public void sendPostUpdatedMessage(Integer userId, Integer postId) {
+    public void sendPostUpdatedMessage(Long userId, Long postId) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.UPDATE)
@@ -65,7 +65,7 @@ public class KafkaMessageService {
         messageProducer.sendLogs(message);
     }
 
-    public void sendPostDeletedMessage(Integer userId, Integer postId) {
+    public void sendPostDeletedMessage(Long userId, Long postId) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.DELETE)
@@ -76,7 +76,7 @@ public class KafkaMessageService {
     }
 
     /* CommentServiceImpl messages */
-    public void sendCommentCreatedMessage(Integer userId, Integer commentId) {
+    public void sendCommentCreatedMessage(Long userId, Long commentId) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.CREATE)
@@ -86,7 +86,7 @@ public class KafkaMessageService {
         messageProducer.sendLogs(message);
     }
 
-    public void sendCommentUpdatedMessage(Integer userId, Integer commentId, String commentMessage) {
+    public void sendCommentUpdatedMessage(Long userId, Long commentId, String commentMessage) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.UPDATE)
@@ -96,7 +96,7 @@ public class KafkaMessageService {
         messageProducer.sendLogs(message);
     }
 
-    public void sendCommentDeletedMessage(Integer userId, Integer commentId) {
+    public void sendCommentDeletedMessage(Long userId, Long commentId) {
         UtilMessage message = UtilMessage.builder()
                 .userId(userId)
                 .actionType(ActionType.DELETE)
