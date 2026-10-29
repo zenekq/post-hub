@@ -1,2 +1,3 @@
 ### Ignore ###
 /postgres/postgres_data/
+/kafka_akhq/data/
