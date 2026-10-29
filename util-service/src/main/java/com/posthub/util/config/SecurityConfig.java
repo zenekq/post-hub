@@ -39,6 +39,8 @@ public class SecurityConfig {
                         // Swagger / OpenAPI
                         .requestMatchers(SwaggerEndpointsProperties.permit()).permitAll()
 
+                        .requestMatchers("/actuator/**").permitAll()
+
                         // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
