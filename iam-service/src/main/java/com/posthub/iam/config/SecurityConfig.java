@@ -50,6 +50,7 @@ public class SecurityConfig {
 
                         // Swagger / OpenAPI endpoints
                         .requestMatchers(SwaggerEndpointsProperties.permit()).permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
 
                         .anyRequest().authenticated()
                 )
