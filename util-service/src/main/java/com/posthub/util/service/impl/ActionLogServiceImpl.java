@@ -1,6 +1,7 @@
 package com.posthub.util.service.impl;
 
 import com.posthub.util.entity.ActionLog;
+import com.posthub.util.kafka.model.UtilMessage;
 import com.posthub.util.mapper.ActionLogMapper;
 import com.posthub.util.model.constant.ApiErrorMessage;
 import com.posthub.util.model.dto.ActionLogDTO;
@@ -90,5 +91,12 @@ public class ActionLogServiceImpl implements ActionLogService {
                         .skippedIds(skippedIds)
                         .build()
         );
+    }
+
+    @Override
+    @Transactional
+    public ActionLog saveLogFromKafkaMessage(UtilMessage message) {
+        ActionLog actionLog = mapper.mapKafkaMessageToEntity(message);
+        return repository.save(actionLog);
     }
 }

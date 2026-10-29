@@ -17,7 +17,15 @@ public enum ApiLogMessage {
     SERVER_PORT_HEADER("Request's server {}:{}. Service Name Header: '{}'"),
     NAME_OF_CURRENT_METHOD_WITH_REQUEST("{} method executing. Request {}"),
     ACCESS_THROUGH_NOT_API_SERVICE("Unauthorized Access, access must be through the API service('{}')"),
-    INNER_REQUEST("Request from Inner service.");
+    INNER_REQUEST("Request from Inner service."),
+    KAFKA_MESSAGE_RECEIVED("Received message: {}"),
+    KAFKA_LOG_SAVED("Saved new log {}"),
+    KAFKA_PROCESS_ERROR("%s logs consumer has undefined error. Message %s")
+    ;
 
     private final String value;
+
+    public String format(Object... args) {
+        return String.format(value, args);
+    }
 }

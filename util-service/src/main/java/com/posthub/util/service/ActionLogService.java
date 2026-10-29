@@ -1,5 +1,7 @@
 package com.posthub.util.service;
 
+import com.posthub.util.entity.ActionLog;
+import com.posthub.util.kafka.model.UtilMessage;
 import com.posthub.util.model.dto.ActionLogDTO;
 import com.posthub.util.model.request.ActionLogIsReadRequest;
 import com.posthub.util.model.request.ActionLogUpdateResultDTO;
@@ -16,5 +18,7 @@ public interface ActionLogService {
 
     UtilsResponse<ActionLogUpdateResultDTO> setIsReadEqualsTrue(
             @NotNull ActionLogIsReadRequest request);
+
+    ActionLog saveLogFromKafkaMessage(UtilMessage utilMessage);
 
 }
