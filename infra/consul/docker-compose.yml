@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  consul:
+    image: hashicorp/consul:2.1
+    container_name: consul
+    command: agent -server -bootstrap-expect=1 -ui -client=0.0.0.0 -bind=0.0.0.0 -node=consul-dev
+    ports:
+      - "8500:8500" # веб-інтерфейс
+      - "8600:8600/udp" # DNS сервіс
+    environment:
+      CONSUL_BIND_INTERFACE: eth0
+    volumes:
+      - ./data/consul:/consul/data # локальне збереження даних
+    networks:
+      - consul-network
+
+networks:
+  consul-network:
+    driver: bridge
