@@ -2,6 +2,7 @@ package com.posthub.util.entity;
 
 import com.posthub.util.model.enums.ActionType;
 import com.posthub.util.model.enums.PostHubService;
+import com.posthub.util.model.enums.PriorityType;
 import com.posthub.util.utils.PostHubServiceConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,12 +33,16 @@ public class ActionLog {
     @Enumerated(value = EnumType.STRING)
     private ActionType actionType;
 
+    @Column(name = "priority_type", nullable = false, updatable = false)
+    @Enumerated(value = EnumType.STRING)
+    private PriorityType priorityType;
+
     @Column(name = "service", nullable = false, updatable = false)
     @Convert(converter = PostHubServiceConverter.class)
     private PostHubService service;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "message", nullable = false, updatable = false)
     private String message;
