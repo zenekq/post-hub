@@ -38,12 +38,16 @@ public class LocalDataRunner implements CommandLineRunner {
 
         try (Connection connection = dataSource.getConnection()) {
 
+            String schema = connection.getSchema();
+
             connection.setSchema(utilServiceShema);
 
             for (Resource script : scripts) {
                 log.info("Executing: {}", script.getFilename());
                 ScriptUtils.executeSqlScript(connection, script);
             }
+
+            connection.setSchema(schema);
         }
     }
 }
