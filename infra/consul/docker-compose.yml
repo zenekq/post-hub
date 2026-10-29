@@ -6,12 +6,12 @@ services:
     container_name: consul
     command: agent -server -bootstrap-expect=1 -ui -client=0.0.0.0 -bind=0.0.0.0 -node=consul-dev
     ports:
-      - "8500:8500" # веб-інтерфейс
-      - "8600:8600/udp" # DNS сервіс
+      - "8500:8500" # WEB
+      - "8600:8600/udp" # DNS
     environment:
       CONSUL_BIND_INTERFACE: eth0
     volumes:
-      - ./data/consul:/consul/data # локальне збереження даних
+      - ./data/consul:/consul/data
     networks:
       - consul-network
 
