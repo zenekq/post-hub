@@ -18,9 +18,9 @@
 		<java.version>27</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
-		<hibernate.version>7.4.13.Final</hibernate.version>
+		<hibernate.version>7.4.14.Final</hibernate.version>
 		<hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
-		<flyway.version>13.9.0</flyway.version>
+		<flyway.version>13.11.1</flyway.version>
 		<mockito.version>5.24.0</mockito.version>
 		<spring-cloud.version>2026.0.0-RC1</spring-cloud.version>
 	</properties>
@@ -78,10 +78,9 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
-			<version>13.10.3</version>
+			<version>${flyway.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -109,7 +108,7 @@
 		<artifactId>jjwt-impl</artifactId>
 		<version>${jjwt.version}</version>
 		<scope>compile</scope>
-	</dependency>
+		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
@@ -125,7 +124,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>3.1.1</version>
+			<version>3.2.0</version>
 			<scope>compile</scope>
 		</dependency>
 
