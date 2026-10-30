@@ -19,7 +19,7 @@
 		<java.version>27</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
-		<hibernate.version>7.4.13.Final</hibernate.version>
+		<hibernate.version>7.4.14.Final</hibernate.version>
 		<hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
 		<tomcat.version>11.0.27</tomcat.version>
 		<spring-cloud.version>2026.0.0-RC1</spring-cloud.version>
@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>3.1.1</version>
+			<version>3.2.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
