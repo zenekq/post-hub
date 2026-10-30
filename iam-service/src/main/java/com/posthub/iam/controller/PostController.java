@@ -9,7 +9,7 @@ import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.service.PostService;
-import com.posthub.iam.utils.MethodName;
+import com.posthub.iam.utils.StackInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> getPostById(
             @PathVariable("id") Long postId) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PostDTO> response = postService.getById(postId);
 
@@ -41,7 +41,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> createPost(
             @RequestBody @Valid NewPostRequest newPostRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PostDTO> response = postService.createPost(newPostRequest);
 
@@ -53,7 +53,7 @@ public class PostController {
             @PathVariable("id") Long postId,
             @RequestBody @Valid UpdatePostRequest updatePostRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PostDTO> response = postService.updatePost(postId, updatePostRequest);
 
@@ -64,7 +64,7 @@ public class PostController {
     public ResponseEntity<Void> deletePostById(
             @PathVariable("id") Long postId) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         postService.softDeletePost(postId);
 
@@ -75,7 +75,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PaginationResponse<PostSearchDTO>>> getAllPosts(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PaginationResponse<PostSearchDTO>> allPosts = postService.findAllPosts(paginationRequest);
         return ResponseEntity.ok(allPosts);
@@ -86,7 +86,7 @@ public class PostController {
             @RequestBody @Valid PostSearchRequest postSearchRequest,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PaginationResponse<PostSearchDTO>> response = postService.
                 searchPosts(postSearchRequest, paginationRequest);

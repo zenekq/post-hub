@@ -9,7 +9,7 @@ import com.posthub.iam.model.request.user.UserSearchRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.service.UserService;
-import com.posthub.iam.utils.MethodName;
+import com.posthub.iam.utils.StackInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> getUserById(
             @PathVariable(name = "id") Long userId) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<UserDTO> response = userService.getById(userId);
 
@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> createUser(
             @Valid @RequestBody NewUserRequest newUserRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<UserDTO> user = userService.createUser(newUserRequest);
 
@@ -52,7 +52,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> updateUserById(
             @PathVariable(name = "id") Long userId,
             @RequestBody @Valid UpdateUserRequest updateUserRequest) {
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<UserDTO> response = userService.updateUser(userId,updateUserRequest);
         return ResponseEntity.ok(response);
@@ -62,7 +62,7 @@ public class UserController {
     public ResponseEntity<Void> softDeleteUser(
             @PathVariable(name = "id") Long userId) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         userService.softDeleteUser(userId);
         return ResponseEntity.ok().build();
@@ -72,7 +72,7 @@ public class UserController {
     public ResponseEntity<ApiResult<PaginationResponse<UserSearchDTO>>> getAllUsers(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.findAllUsers(paginationRequest);
         return ResponseEntity.ok(response);
@@ -83,7 +83,7 @@ public class UserController {
             @RequestBody @Valid UserSearchRequest request,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.searchUsers(request, paginationRequest);
         return ResponseEntity.ok(response);

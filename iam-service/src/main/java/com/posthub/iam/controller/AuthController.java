@@ -6,7 +6,7 @@ import com.posthub.iam.model.request.user.RegistrationUserRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.service.AuthService;
 import com.posthub.iam.utils.ApiUtils;
-import com.posthub.iam.utils.MethodName;
+import com.posthub.iam.utils.StackInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -43,7 +43,7 @@ public class AuthController {
             @RequestBody @Valid LoginRequest loginRequest,
             HttpServletResponse response) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.login(loginRequest);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
@@ -61,7 +61,7 @@ public class AuthController {
             @RequestParam(name = "token") String refreshToken,
             HttpServletResponse response) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.refreshAccessToken(refreshToken);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
@@ -79,7 +79,7 @@ public class AuthController {
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<UserProfileDTO> result = authService.registerUser(request);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());

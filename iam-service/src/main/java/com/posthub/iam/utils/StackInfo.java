@@ -2,9 +2,9 @@ package com.posthub.iam.utils;
 
 import java.util.Iterator;
 
-public final class MethodName {
+public final class StackInfo {
 
-    private MethodName() {}
+    private StackInfo() {}
 
     private static final StackWalker WALKER =
             StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);

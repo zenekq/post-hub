@@ -1,6 +1,6 @@
 package com.posthub.iam.controller;
 
-import com.posthub.iam.utils.MethodName;
+import com.posthub.iam.utils.StackInfo;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class InnerController {
     @GetMapping("/healthCheck")
     public ResponseEntity<Void> healthCheck() {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         return ResponseEntity.ok().build();
     }

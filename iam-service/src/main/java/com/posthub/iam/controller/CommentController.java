@@ -9,7 +9,7 @@ import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
 import com.posthub.iam.service.CommentService;
-import com.posthub.iam.utils.MethodName;
+import com.posthub.iam.utils.StackInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class CommentController {
     public ResponseEntity<ApiResult<CommentDTO>> getCommentById(
             @PathVariable(name = "id") Long commentId) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.getCommentById(commentId);
 
@@ -43,7 +43,7 @@ public class CommentController {
     public ResponseEntity<ApiResult<CommentDTO>> createComment(
             @RequestBody @Valid CommentRequest commentRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.createComment(commentRequest);
         return ResponseEntity.ok(response);
@@ -54,7 +54,7 @@ public class CommentController {
             @PathVariable(name = "id") Long commentId,
             @RequestBody @Valid UpdateCommentRequest updateCommentRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<CommentDTO> response = commentService.updateComment(commentId, updateCommentRequest);
         return ResponseEntity.ok(response);
@@ -64,7 +64,7 @@ public class CommentController {
     public ResponseEntity<Void> softDeleteComment(
             @PathVariable(name = "id") Long commentId) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         commentService.softDelete(commentId);
 
@@ -75,7 +75,7 @@ public class CommentController {
     public ResponseEntity<ApiResult<PaginationResponse<CommentSearchDTO>>> getAllComments(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PaginationResponse<CommentSearchDTO>> result = commentService.findAllComments(paginationRequest);
 
@@ -87,7 +87,7 @@ public class CommentController {
             @RequestBody @Valid CommentSearchRequest request,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(MethodName.getCurrentMethodLogTemplate(), MethodName.getMethodName());
+        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
 
         ApiResult<PaginationResponse<CommentSearchDTO>> response = commentService.searchComments(request, paginationRequest);
 
