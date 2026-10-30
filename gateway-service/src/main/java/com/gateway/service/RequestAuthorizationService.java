@@ -1,6 +1,6 @@
 package com.gateway.service;
 
-import com.gateway.utils.MethodName;
+import com.gateway.utils.StackInfo;
 import tools.jackson.databind.ObjectMapper;
 import com.gateway.config.PublicApiPaths;
 import com.gateway.model.*;
@@ -49,7 +49,7 @@ public class RequestAuthorizationService {
     }
 
     public Mono<Void> validateKeyHeader(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         ServerHttpRequest request = exchange.getRequest();
         List<String> authHeaders = getHeaders(request, ApiConstants.ACCESS_KEY_HEADER_NAME);
@@ -64,7 +64,7 @@ public class RequestAuthorizationService {
     }
 
     public Mono<Void> validateTokenHeader(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
@@ -85,7 +85,7 @@ public class RequestAuthorizationService {
     }
 
     public Mono<Void> validateAccessToService(ServerWebExchange exchange, GatewayFilterChain chain) {
-        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         String requiredBodyField;
         URI uri = exchange.getRequest().getURI();
@@ -158,7 +158,7 @@ public class RequestAuthorizationService {
     }
 
     private Optional<PostHubJwt> getTokens(ServerHttpRequest request) {
-        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         List<String> authHeaders = getHeaders(request, HttpHeaders.AUTHORIZATION);
         log.info("AuthHeaders: {}", Arrays.toString(authHeaders.toArray()));
@@ -192,7 +192,7 @@ public class RequestAuthorizationService {
     private String handleRequiredFieldsForAccessValidation(
             ServerWebExchange exchange, ServerHttpRequest request, HttpMethod requestHttpMethod
     ) {
-        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         GateWayRequiredBodyField requiredBodyField = new GateWayRequiredBodyField();
         if (Objects.equals(HttpMethod.GET, requestHttpMethod) || Objects.equals(HttpMethod.DELETE, requestHttpMethod)) {
@@ -211,7 +211,7 @@ public class RequestAuthorizationService {
     private GateWayResponse<String> authorizeAccessToService(
             String httpMethodName, String endPoint, String jwt, String requiredBodyField
     ) {
-        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.info(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         GateWayRequest<String> gateWayRequest = GateWayRequest.create(endPoint, httpMethodName, requiredBodyField);
 
@@ -219,7 +219,7 @@ public class RequestAuthorizationService {
     }
 
     private List<String> getHeaders(ServerHttpRequest request, String httpHeader) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         if (request.getHeaders().getFirst(httpHeader) == null) {
 
@@ -235,7 +235,7 @@ public class RequestAuthorizationService {
     }
 
     private GateWayRequiredBodyField parseBodyFromRequest(ServerWebExchange exchange) {
-        log.debug(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.debug(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         LinkedHashMap<String,Object> requestBody;
         GateWayRequiredBodyField requiredBodyField = new GateWayRequiredBodyField();
@@ -251,13 +251,13 @@ public class RequestAuthorizationService {
     }
 
     private boolean isJwtValid(String token) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         return Objects.nonNull(token) && token.startsWith(ApiConstants.TOKEN_PREFIX) && token.contains(Constants.DOT);
     }
 
     private Mono<Void> getUnauthorizedResponse(ServerWebExchange exchange, String error) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), MethodName.getMethodName());
+        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getMessage(), StackInfo.getMethodName());
 
         log.info(ApiLogMessage.AUTH_FILTER_ERROR.getMessage(), error);
         ServerHttpResponse response = exchange.getResponse();
