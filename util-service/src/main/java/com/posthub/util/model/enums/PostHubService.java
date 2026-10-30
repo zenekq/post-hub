@@ -9,8 +9,10 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor()
 public enum PostHubService {
-    IAM_SERVICE ("iam-service"),
-    UNDEFINED_SERVICE ("Undefined-service");
+    GATEWAY_SERVICE("gateway-service"),
+    IAM_SERVICE("iam-service"),
+    UTILS_SERVICE("utils-service"),
+    UNDEFINED_SERVICE("Undefined-service");
 
     private final String value;
 
