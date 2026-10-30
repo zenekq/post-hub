@@ -6,15 +6,15 @@ import jakarta.validation.constraints.Size;
 
 public record NewUserRequest(
         @NotBlank(message = "username cannot be empty")
-        @Size(max = 30)
+        @Size(min = 5, max = 30)
         String username,
 
         @NotBlank
-        @Size(max = 64)
+        @Size(min = 8, max = 64)
         String password,
 
         @NotBlank
-        @Size(max = 50)
+        @Size(min = 5, max = 50)
         @Email
         String email
 ) {}
