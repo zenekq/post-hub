@@ -4,6 +4,8 @@ import com.posthub.iam.kafka.model.utils.PostHubService;
 import com.posthub.iam.kafka.model.utils.UtilMessage;
 import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.constants.ApiLogMessage;
+import com.posthub.iam.model.entity.ActionLog;
+import com.posthub.iam.service.impl.ActionLogServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class MessageProducer {
 
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ActionLogServiceImpl actionLogService;
 
     @Value(value = "${additional.kafka.topic.iam.service.logs}")
     private String logsOutTopic;
@@ -29,9 +32,20 @@ public class MessageProducer {
     @Value("${kafka.enabled:false}")
     private boolean isKafkaEnabled;
 
+    @Value("${actionlog.enabled:true}")
+    private boolean isActionLogEnabled;
+
     public void sendLogs(@NotNull @Valid UtilMessage message) {
         if (!isKafkaEnabled) {
-            log.trace(ApiLogMessage.KAFKA_DISABLED.getMessage(), message);
+            if (isActionLogEnabled) {
+                message.setService(PostHubService.IAM_SERVICE);
+                ActionLog saved = actionLogService.saveLog(message);
+                log.debug("Saved ActionLog locally: {}", saved);
+            }
+            else {
+                log.trace(ApiLogMessage.KAFKA_DISABLED.getMessage(), message);
+            }
+
             return;
         }
         try {
