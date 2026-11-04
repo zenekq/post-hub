@@ -20,8 +20,7 @@ CREATE TABLE posts (
     deleted BOOLEAN      NOT NULL DEFAULT false,
     likes   INTEGER      NOT NULL DEFAULT 0,
     created_by VARCHAR(30),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE (title)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE roles(
