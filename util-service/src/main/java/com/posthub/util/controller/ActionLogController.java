@@ -29,7 +29,8 @@ public class ActionLogController {
     public ResponseEntity<UtilsResponse<ActionLogDTO>> getActionLogById(
             @PathVariable("id") Integer logId,
             @RequestParam(name = "userId", required = false) Long userId) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), StackInfo.getMethodName());
+
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         return ResponseEntity.ok(service.getActionLogById(logId, userId));
     }
@@ -37,7 +38,8 @@ public class ActionLogController {
     @GetMapping("${end.points.all}")
     public ResponseEntity<UtilsResponse<PaginationResponse<ActionLogDTO>>> getAllActionLogs(
             @ModelAttribute PaginationRequest paginationRequest) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), StackInfo.getMethodName());
+
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         Pageable pageRequest = PageRequest.of(paginationRequest.page(), paginationRequest.limit());
 
@@ -49,10 +51,10 @@ public class ActionLogController {
     @PutMapping("${end.points.markAsRead}")
     public ResponseEntity<UtilsResponse<ActionLogUpdateResultDTO>> setIsReadEqualsTrue(
             @RequestBody @Valid ActionLogIsReadRequest request) {
-        log.trace(ApiLogMessage.NAME_OF_CURRENT_METHOD.getValue(), StackInfo.getMethodName());
+
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         return ResponseEntity.ok(service.setIsReadEqualsTrue(request));
     }
-
 
 }
