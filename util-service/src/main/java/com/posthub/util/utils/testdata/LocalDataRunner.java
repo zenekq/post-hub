@@ -7,12 +7,14 @@ import com.posthub.util.model.enums.PriorityType;
 import com.posthub.util.repository.ActionLogRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 //@Profile({"local", "dev", "test"})
@@ -41,6 +43,8 @@ public class LocalDataRunner {
         log2.setMessage("user \"new_user2\" update profile");
 
         actionLogRepository.saveAll(List.of(log1, log2));
+
+        log.info("LocalDataRunner: added test data");
     }
 
 }
