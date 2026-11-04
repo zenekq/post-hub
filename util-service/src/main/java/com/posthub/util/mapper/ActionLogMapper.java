@@ -11,13 +11,10 @@ import java.time.LocalDateTime;
 
 @Mapper(
         componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        imports = {LocalDateTime.class}
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface ActionLogMapper {
 
-    @Mapping(target = "createdAt", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "isRead", expression = "java(false)")
     @Mapping(target = "id", ignore = true)
     ActionLog mapKafkaMessageToEntity(UtilMessage message);
 
