@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-//@Profile({"local", "dev", "test"})
+@Profile({"local", "dev", "test"})
 @ConditionalOnProperty(
         name = "app.db.insert-test-data-on-start",
         havingValue = "true"
