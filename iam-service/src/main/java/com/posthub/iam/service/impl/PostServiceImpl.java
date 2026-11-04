@@ -54,8 +54,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest) {
 
-        postRepository.assertTitleNotExists(newPostRequest.title());
-
         Long userId = apiUtils.getUserIdFromAuthentication();
 
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
@@ -78,8 +76,6 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
 
         accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
-
-        postRepository.assertTitleNotExists(updatePostRequest.title());
 
         postMapper.updatePost(post, updatePostRequest);
         post.setUpdated(LocalDateTime.now());

@@ -2,7 +2,6 @@ package com.posthub.iam.repository;
 
 import com.posthub.iam.model.constants.ApiErrorMessage;
 import com.posthub.iam.model.entity.Post;
-import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,14 +30,6 @@ public interface PostRepository extends JpaRepository<Post, Integer>, JpaSpecifi
                 .orElseThrow(() -> new NotFoundException(
                         ApiErrorMessage.POST_NOT_FOUND_BY_ID.format(id)
                 ));
-    }
-
-    default void assertTitleNotExists(String title) {
-        if (existsByTitle(title)) {
-            throw new DataExistException(
-                    ApiErrorMessage.POST_ALREADY_EXIST.format(title)
-            );
-        }
     }
 
 }
