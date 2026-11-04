@@ -27,29 +27,29 @@ public class ActionLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
+    @Column()
     private Long userId;
 
-    @Column(name = "action_type", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     @Enumerated(value = EnumType.STRING)
     private ActionType actionType;
 
-    @Column(name = "priority_type", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     @Enumerated(value = EnumType.STRING)
     private PriorityType priorityType;
 
-    @Column(name = "service", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     @Convert(converter = PostHubServiceConverter.class)
     private PostHubService service;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "message", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String message;
 
-    @Column(name = "is_read",  nullable = false)
+    @Column(nullable = false)
     private Boolean isRead;
 
     @PrePersist
@@ -58,4 +58,5 @@ public class ActionLog {
             isRead = false;
         }
     }
+
 }
