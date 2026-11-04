@@ -30,15 +30,15 @@ public class ActionLog {
     @Column()
     private Long userId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 55)
     @Enumerated(value = EnumType.STRING)
     private ActionType actionType;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 55)
     @Enumerated(value = EnumType.STRING)
     private PriorityType priorityType;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 55)
     @Convert(converter = PostHubServiceConverter.class)
     private PostHubService service;
 
@@ -46,7 +46,7 @@ public class ActionLog {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 255)
     private String message;
 
     @Column(nullable = false)
