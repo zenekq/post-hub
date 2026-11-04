@@ -30,7 +30,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> getUserById(
             @PathVariable(name = "id") Long userId) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<UserDTO> response = userService.getById(userId);
 
@@ -41,7 +41,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> createUser(
             @Valid @RequestBody NewUserRequest newUserRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<UserDTO> user = userService.createUser(newUserRequest);
 
@@ -52,7 +52,8 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> updateUserById(
             @PathVariable(name = "id") Long userId,
             @RequestBody @Valid UpdateUserRequest updateUserRequest) {
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<UserDTO> response = userService.updateUser(userId,updateUserRequest);
         return ResponseEntity.ok(response);
@@ -62,7 +63,7 @@ public class UserController {
     public ResponseEntity<Void> softDeleteUser(
             @PathVariable(name = "id") Long userId) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         userService.softDeleteUser(userId);
         return ResponseEntity.ok().build();
@@ -72,7 +73,7 @@ public class UserController {
     public ResponseEntity<ApiResult<PaginationResponse<UserSearchDTO>>> getAllUsers(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.findAllUsers(paginationRequest);
         return ResponseEntity.ok(response);
@@ -83,7 +84,7 @@ public class UserController {
             @RequestBody @Valid UserSearchRequest request,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.searchUsers(request, paginationRequest);
         return ResponseEntity.ok(response);

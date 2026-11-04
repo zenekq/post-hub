@@ -30,7 +30,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> getPostById(
             @PathVariable("id") Long postId) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PostDTO> response = postService.getById(postId);
 
@@ -41,7 +41,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> createPost(
             @RequestBody @Valid NewPostRequest newPostRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PostDTO> response = postService.createPost(newPostRequest);
 
@@ -53,7 +53,7 @@ public class PostController {
             @PathVariable("id") Long postId,
             @RequestBody @Valid UpdatePostRequest updatePostRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PostDTO> response = postService.updatePost(postId, updatePostRequest);
 
@@ -64,7 +64,7 @@ public class PostController {
     public ResponseEntity<Void> deletePostById(
             @PathVariable("id") Long postId) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         postService.softDeletePost(postId);
 
@@ -75,7 +75,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PaginationResponse<PostSearchDTO>>> getAllPosts(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PaginationResponse<PostSearchDTO>> allPosts = postService.findAllPosts(paginationRequest);
         return ResponseEntity.ok(allPosts);
@@ -86,7 +86,7 @@ public class PostController {
             @RequestBody @Valid PostSearchRequest postSearchRequest,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PaginationResponse<PostSearchDTO>> response = postService.
                 searchPosts(postSearchRequest, paginationRequest);

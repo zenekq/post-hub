@@ -19,7 +19,7 @@ public class InnerController {
     @GetMapping("/healthCheck")
     public ResponseEntity<Void> healthCheck() {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         return ResponseEntity.ok().build();
     }

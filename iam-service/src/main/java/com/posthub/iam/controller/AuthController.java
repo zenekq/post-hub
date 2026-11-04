@@ -43,7 +43,7 @@ public class AuthController {
             @RequestBody @Valid LoginRequest loginRequest,
             HttpServletResponse response) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<UserProfileDTO> result = authService.login(loginRequest);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
@@ -61,7 +61,7 @@ public class AuthController {
             @RequestParam(name = "token") String refreshToken,
             HttpServletResponse response) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<UserProfileDTO> result = authService.refreshAccessToken(refreshToken);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
@@ -79,7 +79,7 @@ public class AuthController {
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {
 
-        log.trace(StackInfo.getCurrentMethodLogTemplate(), StackInfo.getMethodName());
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<UserProfileDTO> result = authService.registerUser(request);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
