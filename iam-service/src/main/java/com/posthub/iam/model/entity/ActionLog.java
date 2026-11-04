@@ -1,6 +1,5 @@
 package com.posthub.iam.model.entity;
 
-
 import com.posthub.iam.kafka.model.utils.ActionType;
 import com.posthub.iam.kafka.model.utils.PostHubService;
 import com.posthub.iam.kafka.model.utils.PriorityType;
@@ -9,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -43,6 +43,7 @@ public class ActionLog {
     private PostHubService service;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "message", nullable = false, updatable = false)
@@ -50,4 +51,11 @@ public class ActionLog {
 
     @Column(name = "is_read",  nullable = false)
     private Boolean isRead;
+
+    @PrePersist
+    public void prePersist() {
+        if (isRead == null) {
+            isRead = false;
+        }
+    }
 }
