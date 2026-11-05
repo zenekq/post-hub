@@ -5,6 +5,7 @@ import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
+import com.posthub.iam.model.request.post.UpdateCommentRestrictionRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
@@ -56,6 +57,18 @@ public class PostController {
         if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
 
         ApiResult<PostDTO> response = postService.updatePost(postId, updatePostRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("${end.points.id}${end.points.comment.restriction}")
+    public ResponseEntity<ApiResult<PostDTO>> updateCommentRestriction(
+            @PathVariable("id") Long postId,
+            @RequestBody @Valid UpdateCommentRestrictionRequest request) {
+
+        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+
+        ApiResult<PostDTO> response = postService.updateCommentRestriction(postId, request);
 
         return ResponseEntity.ok(response);
     }

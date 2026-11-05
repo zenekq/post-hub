@@ -1,13 +1,17 @@
 package com.posthub.iam.service;
 
+import com.posthub.iam.kafka.service.KafkaMessageService;
 import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.enums.CommentRestriction;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.request.post.NewPostRequest;
+import com.posthub.iam.model.request.post.UpdateCommentRestrictionRequest;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
+import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.impl.PostServiceImpl;
 import com.posthub.iam.utils.ApiUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +44,12 @@ public class PostServiceTest {
     @Mock()
     private ApiUtils apiUtils;
 
+    @Mock()
+    private AccessValidator accessValidator;
+
+    @Mock()
+    private KafkaMessageService kafkaMessageService;
+
     @InjectMocks
     private PostServiceImpl postService;
 
@@ -57,6 +67,7 @@ public class PostServiceTest {
         testPost.setId(1L);
         testPost.setTitle("Test Post");
         testPost.setContent("Test Content");
+        testPost.setCommentRestriction(CommentRestriction.ALL);
         testPost.setUser(testUser);
 
         testPostDTO = new PostDTO(
@@ -65,7 +76,8 @@ public class PostServiceTest {
                 testPost.getContent(),
                 testPost.getLikes(),
                 testPost.getCreated(),
-                testPost.getCreatedBy()
+                testPost.getCreatedBy(),
+                testPost.getCommentRestriction()
         );
     }
 
@@ -101,7 +113,7 @@ public class PostServiceTest {
 
     @Test
     void createPost_OK() {
-        NewPostRequest newPostRequest = new NewPostRequest("New Title", "New Content", 100);
+        NewPostRequest newPostRequest = new NewPostRequest("New Title", "New Content", 100, CommentRestriction.ALL);
 
         when(apiUtils.getUserIdFromAuthentication()).thenReturn(testUser.getId());
         when(userRepository.findByIdAndDeletedFalse(testUser.getId())).thenReturn(Optional.of(testUser));
@@ -121,6 +133,40 @@ public class PostServiceTest {
         verify(postRepository, times(1)).save(any(Post.class));
         verify(postMapper, times(1)).toPostDTO(any(Post.class));
 
+    }
+
+    @Test
+    void updateCommentRestriction_OK() {
+        UpdateCommentRestrictionRequest request = new UpdateCommentRestrictionRequest(CommentRestriction.DISABLED);
+
+        when(postRepository.findByIdAndDeletedFalse(1L)).thenReturn(Optional.of(testPost));
+        when(postRepository.save(any(Post.class))).thenReturn(testPost);
+        when(postMapper.toPostDTO(testPost)).thenReturn(testPostDTO);
+
+        PostDTO result = postService.updateCommentRestriction(1L, request).getPayload();
+
+        assertNotNull(result);
+        assertEquals(CommentRestriction.DISABLED, testPost.getCommentRestriction());
+
+        verify(accessValidator, times(1)).validateAdminOrOwnerAccess(testUser.getId());
+        verify(postRepository, times(1)).save(any(Post.class));
+        verify(kafkaMessageService, times(1))
+                .sendPostCommentRestrictionUpdatedMessage(testUser.getId(), 1L, CommentRestriction.DISABLED);
+    }
+
+    @Test
+    void updateCommentRestriction_PostNotFound_ThrowsException() {
+        final long NON_EXISTENT_POST_ID = 999;
+        UpdateCommentRestrictionRequest request = new UpdateCommentRestrictionRequest(CommentRestriction.DISABLED);
+
+        when(postRepository.findByIdAndDeletedFalse(NON_EXISTENT_POST_ID)).thenReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class,
+                () -> postService.updateCommentRestriction(NON_EXISTENT_POST_ID, request));
+
+        assertTrue(exception.getMessage().contains("not found"));
+
+        verify(postRepository, never()).save(any(Post.class));
     }
 
 }

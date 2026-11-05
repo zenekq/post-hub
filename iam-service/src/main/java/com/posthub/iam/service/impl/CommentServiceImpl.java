@@ -65,6 +65,8 @@ public class CommentServiceImpl implements CommentService {
         User user = userRepository.findByIdAndDeletedFalseOrThrow(userId);
         Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.postId());
 
+        accessValidator.validateCommentPermission(post);
+
         Comment comment = commentMapper.createComment(request, user, post);
         Comment savedComment = commentRepository.save(comment);
         postRepository.save(post);
@@ -86,6 +88,10 @@ public class CommentServiceImpl implements CommentService {
 
         if (request.commentId() != null) {
             Post post = postRepository.findByIdAndDeletedFalseOrThrow(request.commentId());
+
+            // Moving a comment under another post is a new comment for that post owner.
+            accessValidator.validateCommentPermission(post);
+
             comment.setPost(post);
         }
 

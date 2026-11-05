@@ -1,7 +1,9 @@
 package com.posthub.iam.security.validation;
 
 import com.posthub.iam.model.constants.ApiErrorMessage;
+import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.enums.CommentRestriction;
 import com.posthub.iam.model.exception.DataExistException;
 import com.posthub.iam.model.exception.InvalidDataException;
 import com.posthub.iam.model.exception.NotFoundException;
@@ -15,6 +17,7 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -62,5 +65,35 @@ public class AccessValidator {
             throw new AccessDeniedException(ApiErrorMessage.HAVE_NO_ACCESS.getMessage());
        }
    }
+
+    /**
+     * Checks that the current user is allowed to write a comment under the post
+     * according to the comment restriction chosen by the post owner.
+     * Admins and super admins are always allowed to comment.
+     */
+    @SneakyThrows
+    public void validateCommentPermission(Post post) {
+        CommentRestriction restriction = post.getCommentRestriction();
+
+        if (Objects.isNull(restriction) || restriction == CommentRestriction.ALL) {
+            return;
+        }
+
+        Long currentUserId = apiUtils.getUserIdFromAuthentication();
+
+        if (isAdminOrSuperAdmin(currentUserId)) {
+            return;
+        }
+
+        if (restriction == CommentRestriction.ONLY_OWNER && currentUserId.equals(post.getUser().getId())) {
+            return;
+        }
+
+        if (restriction == CommentRestriction.DISABLED) {
+            throw new AccessDeniedException(ApiErrorMessage.COMMENTING_DISABLED_FOR_POST.format(post.getId()));
+        }
+
+        throw new AccessDeniedException(ApiErrorMessage.COMMENTING_RESTRICTED_TO_OWNER.format(post.getId()));
+    }
 
 }

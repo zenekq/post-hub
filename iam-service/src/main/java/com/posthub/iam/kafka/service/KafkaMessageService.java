@@ -5,6 +5,7 @@ import com.posthub.iam.kafka.model.utils.ActionType;
 import com.posthub.iam.kafka.model.utils.PriorityType;
 import com.posthub.iam.kafka.model.utils.UtilMessage;
 import com.posthub.iam.model.constants.ApiKafkaMessage;
+import com.posthub.iam.model.enums.CommentRestriction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,16 @@ public class KafkaMessageService {
                 .actionType(ActionType.DELETE)
                 .priorityType(PriorityType.LOW)
                 .message(ApiKafkaMessage.POST_DELETED.getMessage(postId, userId))
+                .build();
+        messageProducer.sendLogs(message);
+    }
+
+    public void sendPostCommentRestrictionUpdatedMessage(Long userId, Long postId, CommentRestriction restriction) {
+        UtilMessage message = UtilMessage.builder()
+                .userId(userId)
+                .actionType(ActionType.UPDATE)
+                .priorityType(PriorityType.MEDIUM)
+                .message(ApiKafkaMessage.POST_COMMENT_RESTRICTION_UPDATED.getMessage(postId, restriction, userId))
                 .build();
         messageProducer.sendLogs(message);
     }

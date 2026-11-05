@@ -4,8 +4,10 @@ import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.enums.CommentRestriction;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -34,5 +36,13 @@ public interface PostMapper {
 
     @Mapping(target = "createdBy", source = "user.username")
     PostSearchDTO toPostSearchDTO(Post post);
+
+    // Posts created without an explicit restriction are open for everybody.
+    @AfterMapping
+    default void setDefaultCommentRestriction(@MappingTarget Post post) {
+        if (post.getCommentRestriction() == null) {
+            post.setCommentRestriction(CommentRestriction.ALL);
+        }
+    }
 
 }

@@ -1,15 +1,19 @@
 package com.posthub.iam.service;
 
+import com.posthub.iam.kafka.service.KafkaMessageService;
 import com.posthub.iam.mapper.CommentMapper;
+import com.posthub.iam.mapper.PostMapper;
 import com.posthub.iam.model.dto.comment.CommentDTO;
 import com.posthub.iam.model.entity.Comment;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.enums.CommentRestriction;
 import com.posthub.iam.model.exception.NotFoundException;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.repository.CommentRepository;
 import com.posthub.iam.repository.PostRepository;
 import com.posthub.iam.repository.UserRepository;
+import com.posthub.iam.security.validation.AccessValidator;
 import com.posthub.iam.service.impl.CommentServiceImpl;
 import com.posthub.iam.utils.ApiUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +47,15 @@ public class CommentServiceTest {
     private CommentMapper commentMapper;
 
     @Mock
+    private PostMapper postMapper;
+
+    @Mock
+    private AccessValidator accessValidator;
+
+    @Mock
+    private KafkaMessageService kafkaMessageService;
+
+    @Mock
     private ApiUtils apiUtils;
 
     @InjectMocks
@@ -64,6 +77,8 @@ public class CommentServiceTest {
         testPost = new Post();
         testPost.setId(1L);
         testPost.setTitle("TestPost");
+        testPost.setCommentRestriction(CommentRestriction.ALL);
+        testPost.setUser(testUser);
 
         testComment = new Comment();
         testComment.setId(COMMENT_ID);
@@ -133,6 +148,7 @@ public class CommentServiceTest {
         verify(apiUtils, times(1)).getUserIdFromAuthentication();
         verify(userRepository, times(1)).findByIdAndDeletedFalse(testUser.getId());
         verify(postRepository, times(1)).findByIdAndDeletedFalse(testPost.getId());
+        verify(accessValidator, times(1)).validateCommentPermission(testPost);
         verify(commentRepository, times(1)).save(any(Comment.class));
         verify(commentMapper, times(1)).toDTO(any(Comment.class));
     }

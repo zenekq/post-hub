@@ -1,5 +1,6 @@
 package com.posthub.iam.model.request.post;
 
+import com.posthub.iam.model.enums.CommentRestriction;
 import com.posthub.iam.model.enums.PostSortField;
 
 public record PostSearchRequest(
@@ -7,6 +8,7 @@ public record PostSearchRequest(
         String content,
         Integer likes,
         Boolean deleted,
+        CommentRestriction commentRestriction,
         String keyword,
         PostSortField sortField
 ) {}

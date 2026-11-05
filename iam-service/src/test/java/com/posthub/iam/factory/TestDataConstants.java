@@ -1,5 +1,7 @@
 package com.posthub.iam.factory;
 
+import com.posthub.iam.model.enums.CommentRestriction;
+
 public final class TestDataConstants {
 
     public static final Long TEST_USER_ID = 1L;
@@ -10,6 +12,8 @@ public final class TestDataConstants {
     public static final String TEST_NEW_USER_EMAIL = "test_new_user@example.com";
     public static final String TEST_UPDATE_EMAIL = "test_updated_email@example.com";
     public static final Long TEST_POST_ID = 1L;
+    public static final CommentRestriction TEST_COMMENT_RESTRICTION = CommentRestriction.ALL;
+    public static final CommentRestriction TEST_UPDATE_COMMENT_RESTRICTION = CommentRestriction.ONLY_OWNER;
     public static final String TEST_POST_TITLE = "Test Post";
     public static final String TEST_POST_CONTENT = "Test Content";
     public static final String TEST_NEW_POST_TITLE = "New post title";

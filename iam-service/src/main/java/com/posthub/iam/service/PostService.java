@@ -5,6 +5,7 @@ import com.posthub.iam.model.dto.post.PostSearchDTO;
 import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
+import com.posthub.iam.model.request.post.UpdateCommentRestrictionRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
@@ -18,6 +19,9 @@ public interface PostService {
     ApiResult<PostDTO> createPost(@NotNull NewPostRequest newPostRequest);
 
     ApiResult<PostDTO> updatePost(@NotNull Long postId, @NotNull UpdatePostRequest updatePostRequest);
+
+    ApiResult<PostDTO> updateCommentRestriction(@NotNull Long postId,
+                                                @NotNull UpdateCommentRestrictionRequest request);
 
     void softDeletePost(@NotNull Long postId);
 

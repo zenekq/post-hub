@@ -45,6 +45,10 @@ public class PostSearchCriteria implements Specification<Post> {
             predicates.add(criteriaBuilder.equal(root.get(Post.DELETED_FIELD), request.deleted()));
         }
 
+        if (Objects.nonNull(request.commentRestriction())) {
+            predicates.add(criteriaBuilder.equal(root.get(Post.COMMENT_RESTRICTION_FIELD), request.commentRestriction()));
+        }
+
         if (Objects.nonNull(request.keyword())) {
             Predicate keywordPredicate = criteriaBuilder.or(
                     criteriaBuilder.like(root.get(Post.TITLE_NAME_FIELD), "%" + request.keyword() + "%"),

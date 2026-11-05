@@ -36,6 +36,8 @@ public enum ApiErrorMessage {
             + PasswordValidationConstants.REQUIRED_MIN_CHARACTERS_NUMBER_IN_PASSWORD + " character(s), "
             + PasswordValidationConstants.REQUIRED_MIN_DIGITS_NUMBER_IN_PASSWORD + " digit(s). "),
     HAVE_NO_ACCESS("You don`t have the necessary permission"),
+    COMMENTING_DISABLED_FOR_POST("Commenting is disabled under post with ID: {}"),
+    COMMENTING_RESTRICTED_TO_OWNER("Only the post author can comment under post with ID: {}"),
     KAFKA_SEND_FAILED("Kafka message didn't send."),
     ;
 

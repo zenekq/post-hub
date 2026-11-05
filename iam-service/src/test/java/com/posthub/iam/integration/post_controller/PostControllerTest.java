@@ -4,7 +4,9 @@ import com.posthub.iam.IamServiceApplication;
 import com.posthub.iam.factory.PostTestData;
 import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.User;
+import com.posthub.iam.model.enums.CommentRestriction;
 import com.posthub.iam.model.request.post.NewPostRequest;
+import com.posthub.iam.model.request.post.UpdateCommentRestrictionRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.repository.UserRepository;
@@ -60,6 +62,9 @@ public class PostControllerTest {
 
     @Value("${end.points.create}")
     private String endPointCreate;
+
+    @Value("${end.points.comment.restriction}")
+    private String endPointCommentRestriction;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -125,9 +130,31 @@ public class PostControllerTest {
 
     @Test
     @Transactional
+    void updateCommentRestriction_OK_200() throws Exception {
+
+        UpdateCommentRestrictionRequest request = PostTestData.createTestUpdateCommentRestrictionRequest();
+
+        MvcResult requestResult = mockMvc.perform(MockMvcRequestBuilders
+                        .patch(prefix + "/1" + endPointCommentRestriction)
+                        .header(HttpHeaders.AUTHORIZATION, currentJwt)
+                        .contentType(String.valueOf(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsBytes(request))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        ApiResult<PostDTO> result = TestUtil.parseDTOResponse
+                (requestResult.getResponse().getContentAsByteArray(), PostDTO.class);
+
+        Assertions.assertNotNull(result.getPayload());
+        Assertions.assertEquals(request.commentRestriction(), result.getPayload().commentRestriction());
+    }
+
+    @Test
+    @Transactional
     void deletePosts_OK_200() throws Exception {
 
-        UpdatePostRequest request = new UpdatePostRequest("Update title", "Update content", 0);
+        UpdatePostRequest request = new UpdatePostRequest("Update title", "Update content", 0, CommentRestriction.ALL);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete(prefix +"/1")

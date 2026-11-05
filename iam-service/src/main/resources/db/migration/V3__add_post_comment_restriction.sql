@@ -1,0 +1,1 @@
+ALTER TABLE posts ADD COLUMN comment_restriction VARCHAR(32) NOT NULL DEFAULT 'ALL';

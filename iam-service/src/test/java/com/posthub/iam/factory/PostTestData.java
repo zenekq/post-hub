@@ -4,6 +4,7 @@ import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.Post;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.post.NewPostRequest;
+import com.posthub.iam.model.request.post.UpdateCommentRestrictionRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 
 import static com.posthub.iam.factory.TestDataConstants.*;
@@ -17,6 +18,7 @@ public final class PostTestData {
         post.setId(1L);
         post.setTitle(TEST_POST_TITLE);
         post.setContent(TEST_POST_CONTENT);
+        post.setCommentRestriction(TEST_COMMENT_RESTRICTION);
         post.setUser(user);
 
         return post;
@@ -34,7 +36,8 @@ public final class PostTestData {
             post.getContent(),
             post.getLikes(),
             post.getCreated(),
-            post.getCreatedBy()
+            post.getCreatedBy(),
+            post.getCommentRestriction()
         );
     }
 
@@ -46,7 +49,8 @@ public final class PostTestData {
         return new NewPostRequest(
                 TEST_NEW_POST_TITLE,
                 TEST_NEW_POST_CONTENT,
-            0
+            0,
+                TEST_COMMENT_RESTRICTION
         );
     }
 
@@ -54,8 +58,13 @@ public final class PostTestData {
         return new UpdatePostRequest(
                 TEST_UPDATE_POST_TITLE,
                 TEST_UPDATE_POST_CONTENT,
-                0
+                0,
+                TEST_COMMENT_RESTRICTION
         );
+    }
+
+    public static UpdateCommentRestrictionRequest createTestUpdateCommentRestrictionRequest() {
+        return new UpdateCommentRestrictionRequest(TEST_UPDATE_COMMENT_RESTRICTION);
     }
 
 }

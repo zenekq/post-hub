@@ -14,6 +14,7 @@ public enum ApiKafkaMessage {
     POST_CREATED("Post created by userId: %s, postId: %s"),
     POST_UPDATED("Post with ID: '%s' was successfully updated"),
     POST_DELETED("Post with ID: '%s' was deleted by userId: '%s'"),
+    POST_COMMENT_RESTRICTION_UPDATED("Comment restriction of post with ID: '%s' was changed to '%s' by userId: %s"),
     COMMENT_CREATED("Comment created by userId: %s, commentId: %s"),
     COMMENT_UPDATED("Comment: '%s' was updated by userId: %s, commentId: %s"),
     COMMENT_DELETED("Comment with ID: '%s' was deleted by userId: %s"),

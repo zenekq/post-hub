@@ -1,5 +1,6 @@
 package com.posthub.iam.model.entity;
 
+import com.posthub.iam.model.enums.CommentRestriction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Post {
     public static final String CONTENT_NAME_FIELD = "content";
     public static final String LIKES_NAME_FIELD = "likes";
     public static final String DELETED_FIELD = "deleted";
+    public static final String COMMENT_RESTRICTION_FIELD = "commentRestriction";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +45,10 @@ public class Post {
 
     @Column(nullable = false)
     private Boolean deleted = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "comment_restriction", nullable = false, length = 32)
+    private CommentRestriction commentRestriction = CommentRestriction.ALL;
 
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)

@@ -1,5 +1,7 @@
 package com.posthub.iam.model.dto.post;
 
+import com.posthub.iam.model.enums.CommentRestriction;
+
 import java.time.LocalDateTime;
 
 public record PostSearchDTO(
@@ -9,5 +11,6 @@ public record PostSearchDTO(
         Integer likes,
         LocalDateTime created,
         Boolean deleted,
-        String createdBy
+        String createdBy,
+        CommentRestriction commentRestriction
 ) {}

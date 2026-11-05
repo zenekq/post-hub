@@ -9,6 +9,7 @@ import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
+import com.posthub.iam.model.request.post.UpdateCommentRestrictionRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
 import com.posthub.iam.model.responce.ApiResult;
 import com.posthub.iam.model.responce.PaginationResponse;
@@ -82,6 +83,28 @@ public class PostServiceImpl implements PostService {
         Post savedPost = postRepository.save(post);
 
         kafkaMessageService.sendPostUpdatedMessage(post.getUser().getId(), post.getId());
+
+        PostDTO postDTO = postMapper.toPostDTO(savedPost);
+
+        return ApiResult.createSuccessful(postDTO);
+    }
+
+    @Override
+    @Transactional
+    public ApiResult<PostDTO> updateCommentRestriction(
+            @NotNull Long postId, @NotNull UpdateCommentRestrictionRequest request) {
+
+        Post post = postRepository.findByIdAndDeletedFalseOrThrow(postId);
+
+        // Only the post owner or an admin is allowed to change who can comment.
+        accessValidator.validateAdminOrOwnerAccess(post.getUser().getId());
+
+        post.setCommentRestriction(request.commentRestriction());
+        post.setUpdated(LocalDateTime.now());
+        Post savedPost = postRepository.save(post);
+
+        kafkaMessageService.sendPostCommentRestrictionUpdatedMessage(
+                post.getUser().getId(), postId, savedPost.getCommentRestriction());
 
         PostDTO postDTO = postMapper.toPostDTO(savedPost);
 
