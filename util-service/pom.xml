@@ -20,7 +20,7 @@
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
 		<hibernate.version>7.4.14.Final</hibernate.version>
-		<hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
+		<hibernate-validator.version>9.1.6.Final</hibernate-validator.version>
 		<tomcat.version>11.0.27</tomcat.version>
 		<spring-cloud.version>2026.0.0-RC1</spring-cloud.version>
 	</properties>
