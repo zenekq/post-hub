@@ -12,6 +12,7 @@ public final class StackInfo {
     private static final String CURRENT_METHOD_LOG = "Current method: ";
     private static final String CURRENT_METHOD_LOG_TEMPLATE = CURRENT_METHOD_LOG + "{}";
     private static final String CURRENT_METHOD_STRING_FORMAT = CURRENT_METHOD_LOG + "%s";
+    private static final String LINE_NUMBER = "Line Number: ";
     private static final String UNDEFINED = "undefined";
 
     public static String getMethodName() {
@@ -30,6 +31,36 @@ public final class StackInfo {
             it.next(); // skip this method name: getCurrentMethod()
             String methodName = it.hasNext() ? it.next().getMethodName() : UNDEFINED;
             return CURRENT_METHOD_LOG + methodName;
+        });
+    }
+
+    public static String getLineNumber() {
+        return WALKER.walk(frames -> {
+            Iterator<StackWalker.StackFrame> it = frames.iterator();
+            it.next(); // skip getLineNumber()
+            String lineNumber = it.hasNext() ? String.valueOf(it.next().getLineNumber()) : "-1";
+            return LINE_NUMBER + lineNumber;
+        });
+    }
+
+    public static String getMethodNameAndLineNumber() {
+        return WALKER.walk(frames -> {
+            Iterator<StackWalker.StackFrame> it = frames.iterator();
+            it.next(); // skip getCallerInfo()
+
+            if (it.hasNext()) {
+                StackWalker.StackFrame frame = it.next();
+
+                return String.format(
+                        "%s%s, %s%d",
+                        CURRENT_METHOD_LOG,
+                        frame.getMethodName(),
+                        LINE_NUMBER,
+                        frame.getLineNumber()
+                );
+            }
+
+            return UNDEFINED;
         });
     }
 
