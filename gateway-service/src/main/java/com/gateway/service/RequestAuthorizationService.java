@@ -2,6 +2,7 @@ package com.gateway.service;
 
 import com.gateway.utils.StackInfo;
 import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Value;
 import tools.jackson.databind.ObjectMapper;
 import com.gateway.config.PublicApiPaths;
 import com.gateway.model.*;
@@ -40,7 +41,8 @@ public class RequestAuthorizationService {
     private final RemoteIamService remoteIamService;
     private final PublicApiPaths publicApiPaths;
 
-    private final Level logLevel = Level.TRACE;
+    @Value("${com.gateway.service.RequestAuthorizationService.logLevel:TRACE}")
+    private Level logLevel;
 
     public RequestAuthorizationService(
             MicroServiceNames microServiceNames, ObjectMapper objectMapper, @Lazy RemoteIamService remoteIamService, PublicApiPaths publicApiPaths
