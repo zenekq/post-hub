@@ -23,6 +23,7 @@
 		<flyway.version>13.11.1</flyway.version>
 		<mockito.version>5.24.0</mockito.version>
 		<spring-cloud.version>2026.0.0-RC1</spring-cloud.version>
+		<jetty.version>12.1.14</jetty.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -62,6 +63,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
