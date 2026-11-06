@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.2.0-RC1</version>
+		<version>4.2.0-RC2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.posthub</groupId>
@@ -19,12 +19,13 @@
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
 		<hibernate.version>7.4.14.Final</hibernate.version>
-		<hibernate-validator.version>9.1.5.Final</hibernate-validator.version>
+		<hibernate-validator.version>9.1.6.Final</hibernate-validator.version>
 		<flyway.version>13.11.1</flyway.version>
 		<mockito.version>5.24.0</mockito.version>
-		<spring-cloud.version>2026.0.0-RC1</spring-cloud.version>
+		<spring-cloud.version>2026.0.0-RC2</spring-cloud.version>
 		<jetty.version>12.1.14</jetty.version>
 	</properties>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -43,6 +44,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -193,7 +195,6 @@
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
