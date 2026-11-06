@@ -6,7 +6,7 @@ import com.posthub.iam.model.dto.comment.CommentDTO;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.comment.CommentRequest;
 import com.posthub.iam.model.request.comment.UpdateCommentRequest;
-import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.response.ApiResult;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import lombok.Setter;

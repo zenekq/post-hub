@@ -6,7 +6,7 @@ import com.posthub.iam.model.dto.post.PostDTO;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
-import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.response.ApiResult;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import com.posthub.iam.util.TestUtil;

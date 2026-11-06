@@ -5,7 +5,7 @@ import com.posthub.iam.model.dto.user.UserDTO;
 import com.posthub.iam.model.entity.User;
 import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.request.user.UpdateUserRequest;
-import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.response.ApiResult;
 import com.posthub.iam.repository.UserRepository;
 import com.posthub.iam.security.JwtTokenProvider;
 import jakarta.transaction.Transactional;

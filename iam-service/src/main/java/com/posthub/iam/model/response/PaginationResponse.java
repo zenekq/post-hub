@@ -1,4 +1,4 @@
-package com.posthub.iam.model.responce;
+package com.posthub.iam.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

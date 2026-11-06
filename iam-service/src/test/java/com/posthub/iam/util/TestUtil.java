@@ -1,6 +1,6 @@
 package com.posthub.iam.util;
 
-import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.response.ApiResult;
 import tools.jackson.databind.ObjectMapper;
 
 public final class TestUtil {

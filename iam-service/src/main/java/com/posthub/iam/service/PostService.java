@@ -6,8 +6,8 @@ import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.post.NewPostRequest;
 import com.posthub.iam.model.request.post.PostSearchRequest;
 import com.posthub.iam.model.request.post.UpdatePostRequest;
-import com.posthub.iam.model.responce.ApiResult;
-import com.posthub.iam.model.responce.PaginationResponse;
+import com.posthub.iam.model.response.ApiResult;
+import com.posthub.iam.model.response.PaginationResponse;
 import lombok.NonNull;
 import jakarta.validation.constraints.NotNull;
 

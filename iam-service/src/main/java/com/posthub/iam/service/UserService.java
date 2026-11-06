@@ -6,8 +6,8 @@ import com.posthub.iam.model.request.pagination.PaginationRequest;
 import com.posthub.iam.model.request.user.NewUserRequest;
 import com.posthub.iam.model.request.user.UpdateUserRequest;
 import com.posthub.iam.model.request.user.UserSearchRequest;
-import com.posthub.iam.model.responce.ApiResult;
-import com.posthub.iam.model.responce.PaginationResponse;
+import com.posthub.iam.model.response.ApiResult;
+import com.posthub.iam.model.response.PaginationResponse;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

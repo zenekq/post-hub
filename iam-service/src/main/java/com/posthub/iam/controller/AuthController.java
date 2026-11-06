@@ -3,7 +3,7 @@ package com.posthub.iam.controller;
 import com.posthub.iam.model.dto.user.LoginRequest;
 import com.posthub.iam.model.dto.user.UserProfileDTO;
 import com.posthub.iam.model.request.user.RegistrationUserRequest;
-import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.response.ApiResult;
 import com.posthub.iam.service.AuthService;
 import com.posthub.iam.utils.ApiUtils;
 import com.posthub.iam.utils.StackInfo;

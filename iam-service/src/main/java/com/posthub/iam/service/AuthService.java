@@ -3,7 +3,7 @@ package com.posthub.iam.service;
 import com.posthub.iam.model.dto.user.LoginRequest;
 import com.posthub.iam.model.dto.user.UserProfileDTO;
 import com.posthub.iam.model.request.user.RegistrationUserRequest;
-import com.posthub.iam.model.responce.ApiResult;
+import com.posthub.iam.model.response.ApiResult;
 
 public interface AuthService {
 
