@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.2.0-RC1</version>
+		<version>4.2.0-RC2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.util</groupId>
@@ -22,7 +22,7 @@
 		<hibernate.version>7.4.14.Final</hibernate.version>
 		<hibernate-validator.version>9.1.6.Final</hibernate-validator.version>
 		<tomcat.version>11.0.27</tomcat.version>
-		<spring-cloud.version>2026.0.0-RC1</spring-cloud.version>
+		<spring-cloud.version>2026.0.0-RC2</spring-cloud.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
