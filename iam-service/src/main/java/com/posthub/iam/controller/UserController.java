@@ -13,6 +13,8 @@ import com.posthub.iam.utils.StackInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +28,14 @@ public class UserController {
 
     private final UserService userService;
 
+    @Value("${app.controller.UserController.logLevel:TRACE}")
+    private Level logLevel;
+
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<UserDTO>> getUserById(
             @PathVariable(name = "id") Long userId) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<UserDTO> response = userService.getById(userId);
 
@@ -41,7 +46,7 @@ public class UserController {
     public ResponseEntity<ApiResult<UserDTO>> createUser(
             @Valid @RequestBody NewUserRequest newUserRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<UserDTO> user = userService.createUser(newUserRequest);
 
@@ -53,7 +58,7 @@ public class UserController {
             @PathVariable(name = "id") Long userId,
             @RequestBody @Valid UpdateUserRequest updateUserRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<UserDTO> response = userService.updateUser(userId,updateUserRequest);
         return ResponseEntity.ok(response);
@@ -63,7 +68,7 @@ public class UserController {
     public ResponseEntity<Void> softDeleteUser(
             @PathVariable(name = "id") Long userId) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         userService.softDeleteUser(userId);
         return ResponseEntity.ok().build();
@@ -73,7 +78,7 @@ public class UserController {
     public ResponseEntity<ApiResult<PaginationResponse<UserSearchDTO>>> getAllUsers(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.findAllUsers(paginationRequest);
         return ResponseEntity.ok(response);
@@ -84,7 +89,7 @@ public class UserController {
             @RequestBody @Valid UserSearchRequest request,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PaginationResponse<UserSearchDTO>> response = userService.searchUsers(request, paginationRequest);
         return ResponseEntity.ok(response);

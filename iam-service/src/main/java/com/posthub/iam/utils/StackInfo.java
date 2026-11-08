@@ -43,7 +43,7 @@ public final class StackInfo {
         });
     }
 
-    public static String getMethodNameAndLineNumber() {
+    public static String getMethodInfo() {
         return WALKER.walk(frames -> {
             Iterator<StackWalker.StackFrame> it = frames.iterator();
             it.next(); // skip getCallerInfo()

@@ -13,6 +13,8 @@ import com.posthub.iam.utils.StackInfo;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +28,14 @@ public class PostController {
 
     private final PostService postService;
 
+    @Value("${app.controller.PostController.logLevel:TRACE}")
+    private Level logLevel;
+
     @GetMapping("${end.points.id}")
     public ResponseEntity<ApiResult<PostDTO>> getPostById(
             @PathVariable("id") Long postId) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PostDTO> response = postService.getById(postId);
 
@@ -41,7 +46,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PostDTO>> createPost(
             @RequestBody @Valid NewPostRequest newPostRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PostDTO> response = postService.createPost(newPostRequest);
 
@@ -53,7 +58,7 @@ public class PostController {
             @PathVariable("id") Long postId,
             @RequestBody @Valid UpdatePostRequest updatePostRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PostDTO> response = postService.updatePost(postId, updatePostRequest);
 
@@ -64,7 +69,7 @@ public class PostController {
     public ResponseEntity<Void> deletePostById(
             @PathVariable("id") Long postId) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         postService.softDeletePost(postId);
 
@@ -75,7 +80,7 @@ public class PostController {
     public ResponseEntity<ApiResult<PaginationResponse<PostSearchDTO>>> getAllPosts(
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PaginationResponse<PostSearchDTO>> allPosts = postService.findAllPosts(paginationRequest);
         return ResponseEntity.ok(allPosts);
@@ -86,7 +91,7 @@ public class PostController {
             @RequestBody @Valid PostSearchRequest postSearchRequest,
             @ModelAttribute PaginationRequest paginationRequest) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<PaginationResponse<PostSearchDTO>> response = postService.
                 searchPosts(postSearchRequest, paginationRequest);

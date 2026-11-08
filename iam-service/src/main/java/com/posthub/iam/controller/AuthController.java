@@ -17,6 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+
+    @Value("${app.controller.AuthController.logLevel:TRACE}")
+    private Level logLevel;
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful authorization",
@@ -43,7 +48,7 @@ public class AuthController {
             @RequestBody @Valid LoginRequest loginRequest,
             HttpServletResponse response) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<UserProfileDTO> result = authService.login(loginRequest);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
@@ -79,7 +84,7 @@ public class AuthController {
             @RequestBody @Valid RegistrationUserRequest request,
             HttpServletResponse response) {
 
-        if (log.isTraceEnabled()) log.trace(StackInfo.getCurrentMethod());
+        if (log.isEnabledForLevel(logLevel)) log.atLevel(logLevel).log(StackInfo.getMethodInfo());
 
         ApiResult<UserProfileDTO> result = authService.registerUser(request);
         Cookie authCookie = ApiUtils.createAuthCookie(result.getPayload().token());
