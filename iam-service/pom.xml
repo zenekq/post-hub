@@ -18,12 +18,12 @@
 		<java.version>27</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
-		<hibernate.version>7.4.15.Final</hibernate.version>
+		<hibernate.version>7.4.16.Final</hibernate.version>
 		<hibernate-validator.version>9.1.6.Final</hibernate-validator.version>
-		<flyway.version>13.12.1</flyway.version>
+		<flyway.version>13.12.2</flyway.version>
 		<mockito.version>5.24.0</mockito.version>
 		<spring-cloud.version>2026.0.0-RC2</spring-cloud.version>
-		<jetty.version>12.1.14</jetty.version>
+		<jetty.version>12.1.15</jetty.version>
 	</properties>
 
 	<dependencyManagement>
