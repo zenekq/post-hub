@@ -19,7 +19,7 @@
 		<java.version>27</java.version>
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jjwt.version>0.13.0</jjwt.version>
-		<hibernate.version>7.4.16.Final</hibernate.version>
+		<hibernate.version>7.4.17.Final</hibernate.version>
 		<hibernate-validator.version>9.1.6.Final</hibernate-validator.version>
 		<tomcat.version>11.0.29</tomcat.version>
 		<spring-cloud.version>2026.0.0-RC2</spring-cloud.version>
